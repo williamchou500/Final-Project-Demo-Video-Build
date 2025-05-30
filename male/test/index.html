@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Glucose Tracker</title>
+  <link rel="stylesheet" href="test.css">
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script type="module" src="test.js"></script>
+</head>
+<body>
+
+<div id="graph"></div>
+
+<!-- Prompt Overlay -->
+<div id="promptOverlay" class="overlay">
+  <h2 id="promptMessage">When would you like to eat your breakfast?</h2>
+  <input type="range" id="mealTimeSlider" min="0" max="23" value="8" />
+  <span id="sliderLabel">8:00</span>
+  <br>
+  <button id="confirmTimeBtn">Next</button>
+</div>
+
+<!-- Meal Input Form -->
+<div id="mealForm">
+  <h3 id="mealLabel">Log Your Meal</h3>
+  <label for="mealType">Meal Type:</label>
+  <select id="mealType">
+    <option value="carb">Carbohydrates</option>
+    <option value="protein">Protein</option>
+    <option value="fat">Fat</option>
+  </select>
+  <label for="grams">Grams:</label>
+  <input type="number" id="grams" value="50" />
+  <label for="time">Hour:</label>
+  <input type="number" id="time" disabled />
+  <span id="timeLabel">8</span>
+  <br>
+  <button id="submit">Submit</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
