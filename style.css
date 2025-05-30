@@ -1,0 +1,33 @@
+body {
+    font: 100%/1.5 system-ui;
+    margin-inline: auto;
+    padding: 20px;
+}
+
+#title {
+    margin: auto;
+    text-align: center;
+}
+
+#genderChoice {
+    display: grid;
+    grid-template-columns: subgrid;
+    margin: auto;
+    text-align: center;
+}
+
+#male, #female {
+    text-decoration: none;
+    display: flex;
+    grid-column: 1;
+    font-size: 3000%;
+    margin: auto;
+}
+
+#female {
+    text-decoration: none;
+    display: flex;
+    grid-column: 2;
+    font-size: 3000%;
+    margin: auto;
+}

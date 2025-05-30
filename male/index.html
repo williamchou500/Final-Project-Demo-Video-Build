@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Male</title>
+    <link rel="stylesheet" href="male.css">
+    <script type="module" src="../global.js"></script>
+    <script type="module" src="male.js"></script>
+</head>
+<body>
+    <div class="container">
+  <h2>Glucose vs. Food</h2>
+
+  <div class="form-row">
+    <label for="time">Time of Day (Hour):</label>
+    <input type="range" id="time" min="0" max="24" value="0">
+    <span id="timeLabel">0</span>:00
+  </div>
+
+  <div class="form-row">
+    <label for="dish">Dish:</label>
+    <input type="text" id="dish">
+  </div>
+
+  <div class="form-row">
+    <label for="calories">Calories:</label>
+    <input type="number" id="calories">
+  </div>
+
+  <div class="form-row">
+    <label for="carbs">Total Carbs (g):</label>
+    <input type="number" id="carbs">
+  </div>
+
+  <div class="form-row">
+    <label for="fiber">Dietary Fiber (g):</label>
+    <input type="number" id="fiber">
+  </div>
+
+  <div class="form-row">
+    <label for="sugar">Sugar (g):</label>
+    <input type="number" id="sugar">
+  </div>
+
+  <div class="form-row">
+    <label for="fat">Total Fat (g):</label>
+    <input type="number" id="fat">
+  </div>
+
+  <div class="form-row">
+    <label for="protein">Protein (g):</label>
+    <input type="number" id="protein">
+  </div>
+
+  <div class="form-row">
+    <label for="Hb1Ac">Hb1Ac:</label>
+    <input type="number" id="Hb1Ac">
+  </div>
+
+  <button id="submit">Submit</button>
+  <button id="nextDayBtn">Next Day</button>
+
+  <h3 id="result"></h3>
+  <div id="character">😐</div>
+
+  <div id="graph"></div>
+
+  <button id="logBtn">Log</button>
+  <div id="logArea"></div>
+
+  <button id="summaryBtn">Weekly Summaries</button>
+  <div id="summaryArea"></div>
+</body>
+</html>

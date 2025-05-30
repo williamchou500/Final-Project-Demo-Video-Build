@@ -1,0 +1,131 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f3f3f3;
+  margin: 0;
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+.form-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.form-row label {
+  flex: 0 0 120px;
+  margin: 0;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+.form-row input,
+.form-row select {
+  flex: 1;
+  padding: 6px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.container {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  width: 100%;
+}
+
+h2, h3, h4 {
+  text-align: center;
+  margin: 10px 0;
+  color: #333;
+}
+
+label {
+  display: block;
+  margin: 5px 0 3px;
+  color: #333;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+
+input[type="number"],
+input[type="text"],
+select {
+  width: 100%;
+  padding: 6px;
+  margin-bottom: 6px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input[type="range"] {
+  width: 100%;
+  margin: 5px 0 10px;
+}
+
+
+button, #submit, #logBtn, #summaryBtn {
+  background-color: #888;
+  color: white;
+  padding: 8px 12px;
+  margin-top: 8px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 14px;
+}
+
+button:hover, #submit:hover, #logBtn:hover, #summaryBtn:hover {
+  background-color: #666;
+}
+
+#character {
+  font-size: 50px;
+  text-align: center;
+  margin: 10px 0;
+}
+
+#result {
+  font-size: 1.1em;
+  font-weight: bold;
+  text-align: center;
+  margin: 10px 0;
+}
+
+#logArea, #summaryArea {
+  display: none;
+  max-height: 400px;
+  overflow-y: auto;
+  background: #fff;
+  padding: 10px;
+  border-radius: 6px;
+  margin-top: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.log-entry, .summary {
+  border-left: 4px solid #888;
+  background: #f9f9f9;
+  margin-bottom: 8px;
+  padding: 8px;
+  border-radius: 4px;
+}
+
+.danger {
+  color: #d32f2f;
+  font-weight: bold;
+  animation: pulse 1s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 1; }
+  50% { opacity: 0.5; }
+  100% { opacity: 1; }
+}
+
+#graph {
+  display: none;
+}
