@@ -38,6 +38,7 @@ const confirmTimeBtn = document.getElementById("confirmTimeBtn");
 const mealType = document.getElementById("mealType");
 const gramsInput = document.getElementById("grams");
 const timeInput = document.getElementById("time");
+const timeLabel = document.getElementById("timeLabel");
 const submitBtn = document.getElementById("submit");
 
 const weights = {
@@ -118,6 +119,7 @@ mealTimeSlider.addEventListener("input", () => {
 confirmTimeBtn.addEventListener("click", () => {
   const selectedHour = parseInt(mealTimeSlider.value);
   timeInput.value = selectedHour;
+  timeLabel.textContent = selectedHour;
   firstMealTime = firstMealTime === null ? selectedHour : firstMealTime;
 
   mealLabel.textContent = `Log your ${mealStages[currentMealIndex]}:`;
