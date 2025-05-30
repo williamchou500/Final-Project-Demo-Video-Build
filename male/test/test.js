@@ -41,6 +41,18 @@ const timeInput = document.getElementById("time");
 const timeLabel = document.getElementById("timeLabel");
 const submitBtn = document.getElementById("submit");
 
+const weights = {
+  hour: 0.280645,
+  HbA1c: 0.118344,
+  total_carb: 0.112520,
+  sugar: 0.110247,
+  calories: 0.099352,
+  protein: 0.090501,
+  total_fat: 0.078747,
+  dietary_fiber: 0.061027,
+  gender: 0.048618,
+};
+
 function drawLine() {
   svg.selectAll(".glucose-line").remove();
   const path = svg.append("path")
@@ -116,14 +128,27 @@ confirmTimeBtn.addEventListener("click", () => {
 });
 
 submitBtn.addEventListener("click", () => {
+  const calories = parseFloat(document.querySelector('#calories').value) || 0;
+  const carbs = parseFloat(document.querySelector('#carbs').value) || 0;
+  const dietary_fiber = parseFloat(document.querySelector('#fiber').value) || 0;
+  const sugar = parseFloat(document.querySelector('#sugar').value) || 0;
+  const total_fat = parseFloat(document.querySelector('#fat').value) || 0;
+  const protein = parseFloat(document.querySelector('#protein').value) || 0;
+  const Hb1Ac = parseFloat(document.querySelector('#Hb1Ac').value) || 0;
   const hour = parseInt(timeInput.value);
-  const grams = parseFloat(gramsInput.value);
-  const type = mealType.value;
 
-  const base = type === "carb" ? 40 : type === "protein" ? 20 : 10;
-  const increment = base * grams / 50;
+  const increment =
+    calories * weights.calories +
+    carbs * weights.total_carb +
+    sugar * weights.sugar +
+    protein * weights.protein +
+    Hb1Ac * weights.HbA1c +
+    hour * weights.hour +
+    dietary_fiber * weights.dietary_fiber +
+    total_fat * weights.total_fat;
+
   const peakHour = hour + 1;
-  const peakValue = getGlucoseAtHour(hour) + increment;
+  const peakValue = getGlucoseAtHour(hour) + increment + 0 * weights.gender;
   const dropHour = peakHour + 2;
 
   if (data.length === 0) {

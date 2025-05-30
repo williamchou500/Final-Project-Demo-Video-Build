@@ -23,18 +23,50 @@
 <!-- Meal Input Form -->
 <div id="mealForm">
   <h3 id="mealLabel">Log Your Meal</h3>
-  <label for="mealType">Meal Type:</label>
-  <select id="mealType">
-    <option value="carb">Carbohydrates</option>
-    <option value="protein">Protein</option>
-    <option value="fat">Fat</option>
-  </select>
-  <label for="grams">Grams:</label>
-  <input type="number" id="grams" value="50" />
-  <label for="time">Hour:</label>
-  <input type="number" id="time" disabled />
-  <span id="timeLabel">8</span>
-  <br>
+    <div class="form-row">
+        <label for="time">Hour:</label>
+        <input type="number" id="time" disabled />
+        <span id="timeLabel">8</span>
+    </div>
+    <div class="form-row">
+        <label for="dish">Dish:</label>
+        <input type="text" id="dish">
+    </div>
+
+    <div class="form-row">
+        <label for="calories">Calories:</label>
+        <input type="number" id="calories">
+    </div>
+
+    <div class="form-row">
+        <label for="carbs">Total Carbs (g):</label>
+        <input type="number" id="carbs">
+    </div>
+
+    <div class="form-row">
+        <label for="fiber">Dietary Fiber (g):</label>
+        <input type="number" id="fiber">
+    </div>
+
+    <div class="form-row">
+        <label for="sugar">Sugar (g):</label>
+        <input type="number" id="sugar">
+    </div>
+
+    <div class="form-row">
+        <label for="fat">Total Fat (g):</label>
+        <input type="number" id="fat">
+    </div>
+
+    <div class="form-row">
+        <label for="protein">Protein (g):</label>
+        <input type="number" id="protein">
+    </div>
+
+    <div class="form-row">
+        <label for="Hb1Ac">Hb1Ac:</label>
+        <input type="number" id="Hb1Ac">
+    </div>
   <button id="submit">Submit</button>
 </div>
 

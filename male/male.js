@@ -1,62 +1,45 @@
-import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm';
+d3.select("#graph").html("");
+const graph = d3.select("#graph");
+const svg = graph.append("svg").attr("width", "100%").attr("height", 400);
+const width = graph.node().getBoundingClientRect().width;
+const height = 400;
 
-const timeInput = document.querySelector('#time');
-const timeLabel = document.querySelector('#timeLabel');
-const submit = document.querySelector('#submit');
-const nextDayBtn = document.querySelector('#nextDayBtn');
-const resultDisplay = document.querySelector('#result');
-const inputGender = document.querySelector('#gender');
-const logBtn = document.querySelector('#logBtn');
-const logArea = document.querySelector('#logArea');
-const summaryArea = document.querySelector('#summaryArea');
-const graph = document.querySelector('#graph');
+const x = d3.scaleLinear().domain([0, 24]).range([50, width - 50]);
+const y = d3.scaleLinear().domain([100, 200]).range([height - 50, 50]);
 
-let prevDaysLogHTML;
-
-// Initialize graph 
-
-const width = 400;
-const height = 200;
-const margin = { top: 20, right: 20, bottom: 20, left: 50 };
-const baseline = 110;
-
-const glucoseArray = Array.from({ length: 25 }, (_, hour) => ({
-  hour,
-  finalScore: baseline
-}));
-
-const svg = d3.select("#graph")
-  .append("svg")
-  .attr("width", width)
-  .attr("height", height);
-
-const xScale = d3.scaleLinear()
-  .domain([0, 24])
-  .range([margin.left, width - margin.right]);
-
-const yScale = d3.scaleLinear()
-  .range([height - margin.bottom, margin.top])
-  .domain([50, 250]);
-
-const lineGenerator = d3.line()
-  .x(d => xScale(d.hour))
-  .y(d => yScale(d.finalScore))
+const line = d3.line()
+  .x(d => x(d.hour))
+  .y(d => y(d.glucose))
   .curve(d3.curveMonotoneX);
 
-const xAxis = svg.append("g")
-  .attr("transform", `translate(0, ${height - margin.bottom})`)
-  .call(d3.axisBottom(xScale));
+svg.append("g")
+  .attr("transform", `translate(0,${height - 50})`)
+  .call(d3.axisBottom(x).ticks(24).tickFormat(d => `${d}:00`));
 
-const yAxis = svg.append("g")
-  .attr("transform", `translate(${margin.left}, 0)`)
-  .call(d3.axisLeft(yScale));
+svg.append("g")
+  .attr("transform", `translate(50,0)`)
+  .call(d3.axisLeft(y));
 
-const path = svg.append("path")
-  .attr("fill", "none")
-  .attr("stroke", "steelblue")
-  .attr("stroke-width", 2);
+let data = [];
+const baseline = 110;
+const mealStages = ["breakfast", "lunch", "dinner", "snack"];
+let currentMealIndex = 0;
+let firstMealTime = null;
+let lastMeal = null;
 
-renderGraph();
+const mealForm = document.getElementById("mealForm");
+const mealLabel = document.getElementById("mealLabel");
+const promptOverlay = document.getElementById("promptOverlay");
+const promptMessage = document.getElementById("promptMessage");
+const mealTimeSlider = document.getElementById("mealTimeSlider");
+const sliderLabel = document.getElementById("sliderLabel");
+const confirmTimeBtn = document.getElementById("confirmTimeBtn");
+
+const mealType = document.getElementById("mealType");
+const gramsInput = document.getElementById("grams");
+const timeInput = document.getElementById("time");
+const timeLabel = document.getElementById("timeLabel");
+const submitBtn = document.getElementById("submit");
 
 const weights = {
   hour: 0.280645,
@@ -70,23 +53,81 @@ const weights = {
   gender: 0.048618,
 };
 
-const logData = [];
+function drawLine() {
+  svg.selectAll(".glucose-line").remove();
+  const path = svg.append("path")
+    .datum(data)
+    .attr("class", "glucose-line")
+    .attr("fill", "none")
+    .attr("stroke", "steelblue")
+    .attr("stroke-width", 2)
+    .attr("d", line);
 
-let currentDay = 1; // track current day for graph & filtering
+  const totalLength = path.node().getTotalLength();
+  path
+    .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
+    .attr("stroke-dashoffset", totalLength)
+    .transition()
+    .duration(4000)
+    .ease(d3.easeLinear)
+    .attr("stroke-dashoffset", 0)
+    .on("end", () => {
+      svg.selectAll(".dot").data(data)
+        .join("circle")
+        .attr("class", "dot")
+        .attr("cx", d => x(d.hour))
+        .attr("cy", d => y(d.glucose))
+        .attr("r", 4)
+        .attr("fill", "orange");
 
-let numWarnings = 0;
+      if (currentMealIndex < mealStages.length) {
+        setTimeout(() => {
+          promptNextMeal();
+        }, 1000); // Delay until peak hour
+      }
+    });
+}
 
-// Slider start at 0 initially
-timeInput.value = 0;
-timeLabel.textContent = '0';
+function getGlucoseAtHour(targetHour) {
+  for (let i = 1; i < data.length; i++) {
+    const prev = data[i - 1];
+    const next = data[i];
+    if (targetHour >= prev.hour && targetHour <= next.hour) {
+      const ratio = (targetHour - prev.hour) / (next.hour - prev.hour);
+      return prev.glucose + ratio * (next.glucose - prev.glucose);
+    }
+  }
+  return baseline;
+}
 
-// Update label when slider moves
-timeInput.addEventListener('input', () => {
-  timeLabel.textContent = timeInput.value;
+function promptNextMeal() {
+  if (lastMeal) {
+    const suggestedNextHour = lastMeal.peakHour; // prompt at peak
+    mealTimeSlider.value = suggestedNextHour;
+    sliderLabel.textContent = `${suggestedNextHour}:00`;
+  }
+
+  mealForm.style.display = "none";
+  promptOverlay.style.display = "flex";
+  promptMessage.textContent = `When would you like to eat your ${mealStages[currentMealIndex]}?`;
+}
+
+mealTimeSlider.addEventListener("input", () => {
+  sliderLabel.textContent = `${mealTimeSlider.value}:00`;
 });
 
-submit.addEventListener('click', () => {
-  const dish = document.querySelector('#dish').value || 'No dish named';
+confirmTimeBtn.addEventListener("click", () => {
+  const selectedHour = parseInt(mealTimeSlider.value);
+  timeInput.value = selectedHour;
+  timeLabel.textContent = selectedHour;
+  firstMealTime = firstMealTime === null ? selectedHour : firstMealTime;
+
+  mealLabel.textContent = `Log your ${mealStages[currentMealIndex]}:`;
+  promptOverlay.style.display = "none";
+  mealForm.style.display = "block";
+});
+
+submitBtn.addEventListener("click", () => {
   const calories = parseFloat(document.querySelector('#calories').value) || 0;
   const carbs = parseFloat(document.querySelector('#carbs').value) || 0;
   const dietary_fiber = parseFloat(document.querySelector('#fiber').value) || 0;
@@ -94,9 +135,9 @@ submit.addEventListener('click', () => {
   const total_fat = parseFloat(document.querySelector('#fat').value) || 0;
   const protein = parseFloat(document.querySelector('#protein').value) || 0;
   const Hb1Ac = parseFloat(document.querySelector('#Hb1Ac').value) || 0;
-  const hour = parseInt(timeInput.value) || 0;
+  const hour = parseInt(timeInput.value);
 
-  const nutrientScore =
+  const increment =
     calories * weights.calories +
     carbs * weights.total_carb +
     sugar * weights.sugar +
@@ -106,213 +147,35 @@ submit.addEventListener('click', () => {
     dietary_fiber * weights.dietary_fiber +
     total_fat * weights.total_fat;
 
-  const finalScore = 110 + nutrientScore + 1 * weights.gender;
+  const peakHour = hour + 1;
+  const peakValue = getGlucoseAtHour(hour) + increment + 1 * weights.gender;
+  const dropHour = peakHour + 2;
 
-  resultDisplay.textContent =
-    `Expected Glucose Level: ${finalScore.toFixed(1)}`;
-
-  updateCharacter(finalScore);
-
-  logData.push({
-    day: currentDay,
-    dish,
-    hour,
-    calories,
-    carbs,
-    sugar,
-    protein,
-    finalScore
-  });
-
-  // Reset glucoseArray baseline
-  for (let i = 0; i < glucoseArray.length; i++) {
-    glucoseArray[i].finalScore = baseline;
-  }
-
-  // Update glucoseArray only for current day entries, keeping max finalScore per hour
-  logData.filter(entry => entry.day === currentDay).forEach(entry => {
-    if (glucoseArray[entry.hour].finalScore < entry.finalScore) {
-      glucoseArray[entry.hour].finalScore = entry.finalScore;
-    }
-  });
-
-  updateLog();
-  showSummary();
-  renderGraph();
-  graph.style.display = 'block';
-});
-
-nextDayBtn.addEventListener('click', () => {
-  currentDay++;
-  
-  // Hide the graph until next submit
-  graph.style.display = 'none';
-  
-  // Reset glucoseArray baseline
-  for (let i = 0; i < glucoseArray.length; i++) {
-    glucoseArray[i].finalScore = baseline;
-  }
-
-  // Clear logs and summaries for new day
-  showSummary();
-  renderGraph(); // You can still render the empty graph if you want
-
-  // Optionally, clear any messages or results
-  resultDisplay.textContent = '';
-
-  prevDaysLogHTML = logArea.innerHTML;
-});
-
-
-// Toggle log visibility
-let logVisible = false;
-logBtn.addEventListener('click', () => {
-  logVisible = !logVisible;
-  logArea.style.display = logVisible ? 'block' : 'none';
-});
-
-function updateLog() {
-  const entries = logData
-    .filter(entry => entry.day === currentDay)
-    .map(entry => {
-      const warning = entry.finalScore > 180
-        ? `<br><span class="danger">Dangerous glucose spike occurred!</span>`
-        : '';
-      if (warning) {
-        numWarnings++;
-      }
-      return `
-      <div class="log-entry">
-        <strong>Day ${entry.day}:</strong><br><br>
-        <strong>Dish:</strong> ${entry.dish}<br>
-        <strong>Time:</strong> ${entry.hour}:00<br>
-        <strong>Calories:</strong> ${entry.calories}<br>
-        <strong>Carbs:</strong> ${entry.carbs}g<br>
-        <strong>Sugar:</strong> ${entry.sugar}g<br>
-        <strong>Protein:</strong> ${entry.protein}g<br>
-        <strong>Glucose Level:</strong> ${entry.finalScore.toFixed(1)}
-        ${warning}
-        <br><br>
-      </div>`;
-    }).join('');
-
-  logArea.innerHTML = prevDaysLogHTML + `<h3>Meal Log - Day ${currentDay}</h3>${entries}`;
-  if (logVisible) logArea.style.display = 'block';
-}
-
-function showSummary() {
-  if (currentDay % 7 !== 0) return;
-
-  const block = Math.floor(currentDay / 7);
-  const startDay = block * 7 - 6;
-  const endDay = block * 7;
-
-  const blockEntries = logData.filter(entry => entry.day >= startDay && entry.day <= endDay);
-
-  const total = {
-    calories: 0,
-    carbs: 0,
-    sugar: 0,
-    protein: 0,
-    dangerousSpikes: 0
-  };
-
-  blockEntries.forEach(entry => {
-    total.calories += entry.calories;
-    total.carbs += entry.carbs;
-    total.sugar += entry.sugar;
-    total.protein += entry.protein;
-    if (entry.finalScore > 180) total.dangerousSpikes++;
-  });
-
-  const avg = {
-    calories: (total.calories / 7).toFixed(2),
-    carbs: (total.carbs / 7).toFixed(2),
-    sugar: (total.sugar / 7).toFixed(2),
-    protein: (total.protein / 7).toFixed(2)
-  };
-
-  summaryArea.insertAdjacentHTML('beforeend', `
-    <div class="summary">
-      <h3>Days ${startDay} to ${endDay} Summary</h3>
-      <strong>Total Nutrients Consumed:</strong><br>
-      Calories: ${total.calories}<br>
-      Carbs: ${total.carbs}g<br>
-      Sugar: ${total.sugar}g<br>
-      Protein: ${total.protein}g<br><br>
-
-      <strong>Average Nutrients per Day:</strong><br>
-      Calories: ${avg.calories}<br>
-      Carbs: ${avg.carbs}g<br>
-      Sugar: ${avg.sugar}g<br>
-      Protein: ${avg.protein}g<br><br>
-
-      <strong>Dangerous Glucose Spikes:</strong> ${total.dangerousSpikes}
-    </div>
-  `);
-}
-
-let summaryVisible = false;
-summaryBtn.addEventListener('click', () => {
-  summaryVisible = !summaryVisible;
-  summaryArea.style.display = summaryVisible ? 'block' : 'none';
-});
-
-function updateCharacter(glucoseLevel) {
-  const character = document.querySelector('#character');
-  if (glucoseLevel > 180) {
-    character.textContent = '😢';
-  } else if (glucoseLevel < 120) {
-    character.textContent = '😊';
+  if (data.length === 0) {
+    data = [
+      { hour: 0, glucose: baseline },
+      { hour: hour, glucose: baseline },
+      { hour: peakHour, glucose: peakValue }
+    ];
   } else {
-    character.textContent = '😐';
+    const current = getGlucoseAtHour(hour);
+    data.push({ hour, glucose: current });
+    data.push({ hour: peakHour, glucose: peakValue });
   }
-}
 
-function renderGraph() {
-  // Adjust y domain dynamically based on current day data
-  yScale.domain([50, d3.max(glucoseArray, d => d.finalScore) + 20]);
-  yAxis.call(d3.axisLeft(yScale));
+  // Save info about this meal for next prompt
+  lastMeal = { hour, peakHour, peakValue, dropHour };
 
-  const linePath = lineGenerator(glucoseArray);
-  path.datum(glucoseArray).attr("d", linePath);
+  currentMealIndex++;
 
-  // Animate line drawing
-  const totalLength = path.node().getTotalLength();
-  path
-    .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
-    .attr("stroke-dashoffset", totalLength)
-    .transition()
-    .duration(1000)
-    .ease(d3.easeLinear)
-    .attr("stroke-dashoffset", 0);
-
-  // Remove old peaks & tooltips
-  svg.selectAll(".peak-dot").remove();
-  svg.selectAll(".peak-tooltip").remove();
-
-  // Draw all peaks for current day (all points with finalScore > baseline)
-  glucoseArray.forEach(point => {
-    if (point.finalScore > baseline) {
-      const peakDot = svg.append("circle")
-        .attr("class", "peak-dot")
-        .attr("cx", xScale(point.hour))
-        .attr("cy", yScale(point.finalScore))
-        .attr("r", 5)
-        .attr("fill", "red");
-
-      const tooltip = svg.append("text")
-        .attr("class", "peak-tooltip")
-        .attr("x", xScale(point.hour))
-        .attr("y", yScale(point.finalScore) - 10)
-        .attr("text-anchor", "middle")
-        .attr("fill", "red")
-        .style("opacity", 0)
-        .text(`Peak: ${point.finalScore.toFixed(1)}`);
-
-      peakDot
-        .on("mouseover", () => tooltip.style("opacity", 1))
-        .on("mouseout", () => tooltip.style("opacity", 0));
+  if (currentMealIndex >= mealStages.length) {
+    // Final meal, draw final drop if needed
+    if (dropHour <= 24) {
+      data.push({ hour: dropHour, glucose: baseline });
     }
-  });
-}
+    drawLine();
+    mealForm.innerHTML = "<h3>All meals logged! Here's your glucose curve for the day.</h3>";
+  } else {
+    drawLine();
+  }
+});
