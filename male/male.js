@@ -148,31 +148,41 @@ submitBtn.addEventListener("click", () => {
     total_fat * weights.total_fat;
 
   const peakHour = hour + 1;
-  const peakValue = getGlucoseAtHour(hour) + increment + 1 * weights.gender;
-  const dropHour = peakHour + 2;
+  const currentGlucose = getGlucoseAtHour(hour);
+  const peakValue = currentGlucose + increment + 1 * weights.gender;
 
+  // Handle drop from last peak, only if 2 hours or more gap
   if (data.length === 0) {
     data = [
       { hour: 0, glucose: baseline },
       { hour: hour, glucose: baseline },
-      { hour: peakHour, glucose: peakValue }
     ];
-  } else {
-    const current = getGlucoseAtHour(hour);
-    data.push({ hour, glucose: current });
-    data.push({ hour: peakHour, glucose: peakValue });
-  }
+  } else if (lastMeal) {
+      const hoursSinceLastPeak = hour - lastMeal.peakHour;
+      if (hoursSinceLastPeak >= 2) {
+        data.push({ hour: lastMeal.peakHour + 2, glucose: baseline });
+      } else if (hoursSinceLastPeak > 0) {
+        const partialDropHour = hour;
+        const partialGlucose = getGlucoseAtHour(partialDropHour);
+        data.push({ hour: partialDropHour, glucose: partialGlucose });
+      }
+    }
 
-  // Save info about this meal for next prompt
-  lastMeal = { hour, peakHour, peakValue, dropHour };
+  // Add meal point and peak
+  data.push({ hour: hour, glucose: currentGlucose });
+  data.push({ hour: peakHour, glucose: peakValue });
+
+  lastMeal = { hour, peakHour, peakValue };
 
   currentMealIndex++;
 
   if (currentMealIndex >= mealStages.length) {
-    // Final meal, draw final drop if needed
-    if (dropHour <= 24) {
-      data.push({ hour: dropHour, glucose: baseline });
+    // Final meal: drop to baseline if within bounds
+    const finalDropHour = peakHour + 2;
+    if (finalDropHour <= 24) {
+      data.push({ hour: finalDropHour, glucose: baseline });
     }
+
     drawLine();
     mealForm.innerHTML = "<h3>All meals logged! Here's your glucose curve for the day.</h3>";
   } else {
