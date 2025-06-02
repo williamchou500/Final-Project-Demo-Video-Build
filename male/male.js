@@ -1,10 +1,10 @@
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
-const svg = graph.append("svg").attr("width", "100%").attr("height", 400);
+const svg = graph.append("svg").attr("width", "100%").attr("height", 800);
 const width = graph.node().getBoundingClientRect().width;
-const height = 400;
+const height = 800;
 
-const x = d3.scaleLinear().domain([0, 24]).range([50, width - 50]);
+const x = d3.scaleLinear().domain([4, 27]).range([50, width - 50]);
 const y = d3.scaleLinear().domain([100, 240]).range([height - 50, 50]);
 
 const line = d3.line()
@@ -14,18 +14,24 @@ const line = d3.line()
 
 svg.append("g")
   .attr("transform", `translate(0,${height - 50})`)
-  .call(d3.axisBottom(x).ticks(24).tickFormat(d => `${d}:00`));
+  .call(d3.axisBottom(x).ticks(24).tickFormat(d => `${(d % 24).toString().padStart(2, '0')}:00`));
 
 svg.append("g")
   .attr("transform", `translate(50,0)`)
   .call(d3.axisLeft(y));
 
-let data = [];
+let data = [{ hour: 4, glucose: 110 }];
 const baseline = 110;
 const mealStages = ["breakfast", "snack", "lunch", "snack", "dinner"];
 let currentMealIndex = 0;
-let firstMealTime = null;
 let lastMeal = null;
+
+const dropRates = {
+  breakfast: 10,
+  snack: 16,
+  lunch: 12,
+  dinner: 14
+};
 
 const mealForm = document.getElementById("mealForm");
 const mealLabel = document.getElementById("mealLabel");
@@ -38,7 +44,6 @@ const confirmTimeBtn = document.getElementById("confirmTimeBtn");
 const timeInput = document.getElementById("time");
 const timeLabel = document.getElementById("timeLabel");
 const submitBtn = document.getElementById("submit");
-
 const ship = document.getElementById("ship");
 
 const weights = {
@@ -55,7 +60,6 @@ const weights = {
 
 function drawLine() {
   svg.selectAll(".glucose-line").remove();
-
   const path = svg.append("path")
     .datum(data)
     .attr("class", "glucose-line")
@@ -66,7 +70,6 @@ function drawLine() {
 
   const totalLength = path.node().getTotalLength();
 
-  // Initialize dash array for animation
   path
     .attr("stroke-dasharray", `${totalLength} ${totalLength}`)
     .attr("stroke-dashoffset", totalLength);
@@ -77,25 +80,20 @@ function drawLine() {
   function animateShip(timestamp) {
     if (!start) start = timestamp;
     const elapsed = timestamp - start;
-    const duration = 4000; // 4 seconds animation
+    const duration = 4000;
     const progress = Math.min(elapsed / duration, 1);
 
-    // Animate stroke dashoffset
     path.attr("stroke-dashoffset", totalLength * (1 - progress));
 
-    // Move ship along the path
     const pointAtLength = path.node().getPointAtLength(progress * totalLength);
-
-    // Calculate graph's bounding rect to position ship absolutely
     const graphRect = graph.node().getBoundingClientRect();
 
-    ship.style.left = `${pointAtLength.x + graphRect.left - 20}px`; // offset for centering ship
+    ship.style.left = `${pointAtLength.x + graphRect.left - 20}px`;
     ship.style.top = `${pointAtLength.y + graphRect.top - 20}px`;
 
     if (progress < 1) {
       requestAnimationFrame(animateShip);
     } else {
-      // Animation finished, draw dots
       svg.selectAll(".dot").data(data)
         .join("circle")
         .attr("class", "dot")
@@ -128,27 +126,32 @@ function getGlucoseAtHour(targetHour) {
 }
 
 function promptNextMeal() {
-  let suggestedNextHour = 8;
+  let suggestedNextHour = 4;
   if (lastMeal) {
     suggestedNextHour = lastMeal.peakHour;
   }
-  mealTimeSlider.value = suggestedNextHour;
-  sliderLabel.textContent = `${suggestedNextHour}:00`;
+
+  const minHour = Math.max(4, Math.floor(suggestedNextHour));
+  mealTimeSlider.min = minHour;
+  mealTimeSlider.max = 27;
+  mealTimeSlider.value = minHour; // Ensure initial value is within allowed range
+
+  sliderLabel.textContent = `${minHour % 24}:00`;
 
   mealForm.style.display = "none";
   promptBox.classList.remove("hidden");
   promptMessage.textContent = `When would you like to eat your ${mealStages[currentMealIndex]}?`;
 }
 
+
 mealTimeSlider.addEventListener("input", () => {
-  sliderLabel.textContent = `${mealTimeSlider.value}:00`;
+  sliderLabel.textContent = `${mealTimeSlider.value % 24}:00`;
 });
 
 confirmTimeBtn.addEventListener("click", () => {
   const selectedHour = parseInt(mealTimeSlider.value);
   timeInput.value = selectedHour;
-  timeLabel.textContent = selectedHour;
-  firstMealTime = firstMealTime === null ? selectedHour : firstMealTime;
+  timeLabel.textContent = selectedHour % 24;
 
   mealLabel.textContent = `Log your ${mealStages[currentMealIndex]}:`;
   promptBox.classList.add("hidden");
@@ -164,6 +167,7 @@ submitBtn.addEventListener("click", () => {
   const protein = parseFloat(document.querySelector('#protein').value) || 0;
   const Hb1Ac = parseFloat(document.querySelector('#Hb1Ac').value) || 0;
   const hour = parseInt(timeInput.value);
+  const mealType = mealStages[currentMealIndex];
 
   const increment =
     calories * weights.calories +
@@ -173,40 +177,49 @@ submitBtn.addEventListener("click", () => {
     Hb1Ac * weights.HbA1c +
     hour * weights.hour +
     dietary_fiber * weights.dietary_fiber +
-    total_fat * weights.total_fat;
+    total_fat * weights.total_fat +
+    0.048618;
 
-  const peakHour = hour + 1;
-  const currentGlucose = getGlucoseAtHour(hour);
-  const peakValue = currentGlucose + increment + 1 * weights.gender;
+  let currentGlucose = getGlucoseAtHour(hour);
 
-  if (data.length === 0) {
-    data = [
-      { hour: 0, glucose: baseline },
-      { hour: hour, glucose: baseline },
-    ];
-  } else if (lastMeal) {
-    const hoursSinceLastPeak = hour - lastMeal.peakHour;
-    if (hoursSinceLastPeak >= 2) {
-      data.push({ hour: lastMeal.peakHour + 2, glucose: baseline });
-    } else if (hoursSinceLastPeak > 0) {
-      const partialDropHour = hour;
-      const partialGlucose = getGlucoseAtHour(partialDropHour);
-      data.push({ hour: partialDropHour, glucose: partialGlucose });
+  if (lastMeal) {
+    const timeSinceLastPeak = hour - lastMeal.peakHour;
+    const dropRate = dropRates[lastMeal.type] || 12;
+    const expectedDrop = timeSinceLastPeak * dropRate;
+    const projectedGlucose = lastMeal.peakValue - expectedDrop;
+
+    if (projectedGlucose > baseline) {
+      // Drop to projected glucose level
+      data.push({ hour, glucose: projectedGlucose });
+      currentGlucose = projectedGlucose;
+    } else {
+      // Compute when it would have reached baseline
+      const timeToBaseline = (lastMeal.peakValue - baseline) / dropRate;
+      const baselineHour = Math.ceil(lastMeal.peakHour + timeToBaseline);
+
+      if (baselineHour < hour) {
+        data.push({ hour: baselineHour, glucose: baseline });
+        data.push({ hour: hour, glucose: baseline });
+        currentGlucose = baseline;
+      } else {
+        const glucoseAtHour = lastMeal.peakValue - dropRate * (hour - lastMeal.peakHour);
+        data.push({ hour, glucose: glucoseAtHour });
+        currentGlucose = glucoseAtHour;
+      }
     }
+  } else {
+    data.push({ hour, glucose: baseline });
+    currentGlucose = baseline;
   }
 
-  data.push({ hour: hour, glucose: currentGlucose });
+  const peakHour = hour + 1;
+  const peakValue = currentGlucose + increment + 1 * weights.gender;
+
   data.push({ hour: peakHour, glucose: peakValue });
-
-  lastMeal = { hour, peakHour, peakValue };
-
+  lastMeal = { hour, peakHour, peakValue, type: mealType };
   currentMealIndex++;
 
   if (currentMealIndex >= mealStages.length) {
-    const finalDropHour = peakHour + 2;
-    if (finalDropHour <= 24) {
-      data.push({ hour: finalDropHour, glucose: baseline });
-    }
     drawLine();
     mealForm.innerHTML = "<h3>All meals logged! Here's your glucose curve for the day.</h3>";
   } else {
@@ -214,5 +227,4 @@ submitBtn.addEventListener("click", () => {
   }
 });
 
-// Start by prompting the first meal time
 promptNextMeal();
