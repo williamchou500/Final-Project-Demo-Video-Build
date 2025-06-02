@@ -1,3 +1,4 @@
+d3.select("#graph").html("");
 const graph = d3.select("#graph");
 const svg = graph.append("svg").attr("width", "100%").attr("height", 800);
 const width = graph.node().getBoundingClientRect().width;
@@ -26,10 +27,10 @@ let currentMealIndex = 0;
 let lastMeal = null;
 
 const dropRates = {
-  breakfast: -20,
-  snack: -18,
-  lunch: -15,
-  dinner: -18
+  breakfast: 10,
+  snack: 16,
+  lunch: 12,
+  dinner: 14
 };
 
 const mealForm = document.getElementById("mealForm");
@@ -141,7 +142,6 @@ function promptNextMeal() {
   promptBox.classList.remove("hidden");
   promptMessage.textContent = `When would you like to eat your ${mealStages[currentMealIndex]}?`;
 }
-
 
 mealTimeSlider.addEventListener("input", () => {
   sliderLabel.textContent = `${mealTimeSlider.value % 24}:00`;
