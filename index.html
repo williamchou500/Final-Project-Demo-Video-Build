@@ -1,17 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLUCOSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="module" src="global.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GLUCOSE - Gender Picker</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  body {
+    font-family: 'Orbitron', sans-serif;
+    text-align: center;
+    background-color: rgb(11, 8, 37);
+    color: white;
+    margin: 0;
+    padding: 0;
+  }
+
+  h1#title {
+    font-size: 3.2rem;
+    margin-top: 30px;
+    margin-bottom: 20px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+  }
+
+  h2#subtitle {
+    font-size: 1.2rem;
+    color: #ddd;
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+    line-height: 1.6;
+    white-space: pre-line;
+  }
+
+  p#choose-character {
+    font-size: 1.5rem;
+    color: #ccc;
+    margin-bottom: 30px;
+    font-weight: 500;
+  }
+
+  #genderChoice {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+    flex-wrap: wrap;
+    position: relative;
+  }
+
+  .gender-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: white;
+    overflow: visible;
+    position: relative;
+  }
+
+  .gender-option img {
+    width: 200px;
+    height: auto;
+    border-radius: 20px;
+    padding: 10px;
+    filter: drop-shadow(0 0 4px white);
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+
+  .gender-option img:hover {
+    filter: drop-shadow(0 0 10px white);
+    transform: scale(1.05);
+  }
+
+  .gender-label {
+    margin-top: 10px;
+    font-size: 1.3rem;
+    font-weight: bold;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+  }
+
+  .bunny-name {
+    position: absolute;
+    font-size: 1.5rem; /* Increased font size */
+    font-weight: 700;
+    color: #fff;
+    opacity: 0.9;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+  }
+
+  .male-name {
+    left: -50px;
+    top: 50%;
+    transform: rotate(-30deg);
+  }
+
+  .female-name {
+    right: -50px;
+    top: 50%;
+    transform: rotate(30deg);
+  }
+</style>
 </head>
 <body>
-    <h1 id="title">PICK YOUR GENDER</h1>
 
-    <div id="genderChoice">
-        <a id="male" href="/Final-Project-Demo-Video-Build/male">♂️</a><a id="female" href="/Final-Project-Demo-Video-Build/female">♀️</a>
-    </div>
+<h1 id="title">Glucose Spikes: Bunny's Space Quest</h1>
+
+<h2 id="subtitle">
+Balance your meals to avoid glucose spikes—
+spikes cause crashes, put your pilot at risk, and lead to long-term damage.
+High glucose spikes stress your body, causing fatigue, weight gain, organ damage, and even diabetes.
+Learn how to manage them!
+</h2>
+
+<p id="choose-character">Choose your character:</p>
+
+<div id="genderChoice">
+  <a class="gender-option" href="/Final-Project-Demo-Video-Build/male">
+    <span class="bunny-name male-name">Greg</span>
+    <img src="male.png" alt="Male Bunny" />
+    <div class="gender-label">Male</div>
+  </a>
+  <a class="gender-option" href="/Final-Project-Demo-Video-Build/female">
+    <span class="bunny-name female-name">Bonnie</span>
+    <img src="female.png" alt="Female Bunny" />
+    <div class="gender-label">Female</div>
+  </a>
+</div>
+
 </body>
 </html>
