@@ -4,6 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>GLUCOSE - Gender Picker</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -16,10 +17,11 @@
   }
 
   h1#title {
+    font-family: 'Orbitron', sans-serif;
     font-size: 3.2rem;
     margin-top: 30px;
-    margin-bottom: 10px;
-    font-weight: bold;
+    margin-bottom: 20px;
+    font-weight: 700;
     letter-spacing: 1px;
     text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   }
@@ -29,7 +31,8 @@
     color: #ddd;
     max-width: 800px;
     margin: 0 auto 20px auto;
-    line-height: 1.4;
+    line-height: 1.6;
+    white-space: pre-line; /* preserve new lines */
   }
 
   p#choose-character {
@@ -44,6 +47,7 @@
     justify-content: center;
     gap: 50px;
     flex-wrap: wrap;
+    position: relative;
   }
 
   .gender-option {
@@ -53,6 +57,7 @@
     text-decoration: none;
     color: white;
     overflow: visible;
+    position: relative;
   }
 
   .gender-option img {
@@ -75,6 +80,28 @@
     font-weight: bold;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
   }
+
+  /* Diagonal bunny names */
+  .bunny-name {
+    position: absolute;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #fff;
+    opacity: 0.8;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  }
+
+  .male-name {
+    left: -40px;
+    top: 50%;
+    transform: rotate(-30deg);
+  }
+
+  .female-name {
+    right: -40px;
+    top: 50%;
+    transform: rotate(30deg);
+  }
 </style>
 </head>
 <body>
@@ -82,18 +109,22 @@
 <h1 id="title">Glucose Spikes: Bunny's Space Quest</h1>
 
 <h2 id="subtitle">
-  Balance your meals to avoid glucose spikes—spikes cause crashes, put your pilot at risk, and lead to long-term damage. 
-  High glucose spikes stress your body, causing fatigue, weight gain, organ damage, and even diabetes. Learn how to manage them!
+Balance your meals to avoid glucose spikes—
+spikes cause crashes, put your pilot at risk, and lead to long-term damage.
+High glucose spikes stress your body, causing fatigue, weight gain, organ damage, and even diabetes.
+Learn how to manage them!
 </h2>
 
 <p id="choose-character">Choose your character:</p>
 
 <div id="genderChoice">
   <a class="gender-option" href="/Final-Project-Demo-Video-Build/male">
+    <span class="bunny-name male-name">Greg</span>
     <img src="male.png" alt="Male Bunny" />
     <div class="gender-label">Male</div>
   </a>
   <a class="gender-option" href="/Final-Project-Demo-Video-Build/female">
+    <span class="bunny-name female-name">Bonnie</span>
     <img src="female.png" alt="Female Bunny" />
     <div class="gender-label">Female</div>
   </a>
