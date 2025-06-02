@@ -16,15 +16,27 @@
   }
 
   h1#title {
-    font-size: 3rem;
+    font-size: 3.2rem;
     margin-top: 30px;
     margin-bottom: 10px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
   }
 
   h2#subtitle {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     color: #ddd;
+    max-width: 800px;
+    margin: 0 auto 20px auto;
+    line-height: 1.4;
+  }
+
+  p#choose-character {
+    font-size: 1.5rem;
+    color: #ccc;
     margin-bottom: 30px;
+    font-weight: 500;
   }
 
   #genderChoice {
@@ -59,7 +71,7 @@
 
   .gender-label {
     margin-top: 10px;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     font-weight: bold;
     text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
   }
@@ -68,16 +80,22 @@
 <body>
 
 <h1 id="title">Glucose Spikes: Bunny's Space Quest</h1>
-<h2 id="subtitle">Balance your meals to avoid glucose spikes—spikes cause crashes, put your pilot at risk, and lead to long-term damage. High glucose spikes stress your body, causing fatigue, weight gain, organ damage, and even diabetes. Learn how to manage them!</h2>
+
+<h2 id="subtitle">
+  Balance your meals to avoid glucose spikes—spikes cause crashes, put your pilot at risk, and lead to long-term damage. 
+  High glucose spikes stress your body, causing fatigue, weight gain, organ damage, and even diabetes. Learn how to manage them!
+</h2>
+
+<p id="choose-character">Choose your character:</p>
 
 <div id="genderChoice">
   <a class="gender-option" href="/Final-Project-Demo-Video-Build/male">
-    <div class="gender-label">Male</div>
     <img src="male.png" alt="Male Bunny" />
+    <div class="gender-label">Male</div>
   </a>
   <a class="gender-option" href="/Final-Project-Demo-Video-Build/female">
-    <div class="gender-label">Female</div>
     <img src="female.png" alt="Female Bunny" />
+    <div class="gender-label">Female</div>
   </a>
 </div>
 
