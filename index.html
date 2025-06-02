@@ -1,17 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GLUCOSE!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!</title>
-    <link rel="stylesheet" href="style.css">
-    <script type="module" src="global.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GLUCOSE - Gender Picker</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: white;
+  }
+  h1#title {
+    font-size: 3rem;
+    margin-top: 30px;
+    margin-bottom: 10px;
+  }
+  h2#subtitle {
+    font-size: 1.5rem;
+    color: #555;
+    margin-bottom: 30px;
+  }
+  #genderChoice {
+    display: flex;
+    justify-content: center;
+    gap: 50px;
+  }
+  .gender-option {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+  }
+  .gender-option img {
+    width: 150px;
+    height: auto;
+    border-radius: 50%;
+    transition: box-shadow 0.3s ease;
+  }
+  .gender-option img:hover {
+    box-shadow: 0 0 20px 5px white;
+  }
+  .gender-label {
+    margin-top: 10px;
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+</style>
 </head>
 <body>
-    <h1 id="title">PICK YOUR GENDER</h1>
 
-    <div id="genderChoice">
-        <a id="male" href="/Final-Project-Demo-Video-Build/male">♂️</a><a id="female" href="/Final-Project-Demo-Video-Build/female">♀️</a>
-    </div>
+<h1 id="title">PICK YOUR GENDER</h1>
+<h2 id="subtitle">Choose the option that suits you best</h2>
+
+<div id="genderChoice">
+  <a class="gender-option" href="/Final-Project-Demo-Video-Build/male">
+    <div class="gender-label">Male</div>
+    <img src="male.png" alt="Male">
+  </a>
+  <a class="gender-option" href="/Final-Project-Demo-Video-Build/female">
+    <div class="gender-label">Female</div>
+    <img src="female.png" alt="Female">
+  </a>
+</div>
+
 </body>
 </html>
