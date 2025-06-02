@@ -31,3 +31,39 @@ label, select, input {
   margin: 8px;
   font-size: 1rem;
 }
+
+#shipPromptContainer {
+  position: absolute;
+  margin: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+#ship {
+  position: absolute;
+  width: 40px; /* Adjust size */
+  height: 40px;
+  pointer-events: none; /* So it doesn’t interfere with UI */
+  transform: translate(-50%, -50%) rotate(0deg); /* Center the ship on the coordinate */
+  transition: transform 0.1s linear;
+  display: none; /* hidden initially */
+}
+
+
+.prompt-box {
+  background: white;
+  padding: 16px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.prompt-box.hidden {
+  display: none;
+}
+
+
