@@ -79,30 +79,40 @@
 
   .gender-label {
     margin-top: 10px;
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: bold;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+    text-shadow: 0 0 4px white;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .gender-label::after {
+    content: attr(data-symbol);
+    font-size: 1.2rem;
+    margin-left: 5px;
   }
 
   .bunny-name {
     position: absolute;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: 700;
     color: #fff;
-    opacity: 0.9;
-    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    opacity: 0.95;
+    text-shadow: 0 0 4px white;
+    letter-spacing: 1px;
   }
 
   .male-name {
-    left: -50px;
+    left: -60px;
     top: 50%;
-    transform: rotate(-30deg);
+    transform: rotate(-20deg);
   }
 
   .female-name {
-    right: -50px;
+    right: -60px;
     top: 50%;
-    transform: rotate(30deg);
+    transform: rotate(20deg);
   }
 
   /* Responsive image sizing */
@@ -111,7 +121,7 @@
       width: 250px;
     }
     .bunny-name {
-      font-size: 1.8rem;
+      font-size: 2.2rem;
     }
   }
 
@@ -131,7 +141,7 @@
       width: 150px;
     }
     .bunny-name {
-      font-size: 1.2rem;
+      font-size: 1.5rem;
     }
   }
 </style>
@@ -153,12 +163,12 @@
   <a class="gender-option" href="/Final-Project-Demo-Video-Build/male">
     <span class="bunny-name male-name">Greg</span>
     <img src="male.png" alt="Male Bunny" />
-    <div class="gender-label">Male</div>
+    <div class="gender-label" data-symbol="♂️">Male</div>
   </a>
   <a class="gender-option" href="/Final-Project-Demo-Video-Build/female">
     <span class="bunny-name female-name">Bonnie</span>
     <img src="female.png" alt="Female Bunny" />
-    <div class="gender-label">Female</div>
+    <div class="gender-label" data-symbol="♀️">Female</div>
   </a>
 </div>
 
