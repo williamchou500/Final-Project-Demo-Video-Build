@@ -25,11 +25,11 @@
   }
 
   h2#subtitle {
-    font-size: 1.2rem;
+    font-size: 1.4rem;
     color: #ddd;
     max-width: 800px;
-    margin: 0 auto 20px auto;
-    line-height: 1.6;
+    margin: 0 auto 30px auto;
+    line-height: 1.8;
     white-space: pre-line;
   }
 
@@ -81,7 +81,7 @@
 
   .bunny-name {
     position: absolute;
-    font-size: 1.5rem; /* Increased font size */
+    font-size: 1.5rem;
     font-weight: 700;
     color: #fff;
     opacity: 0.9;
@@ -99,6 +99,33 @@
     top: 50%;
     transform: rotate(30deg);
   }
+
+  /* Responsive image sizing */
+  @media (min-width: 1024px) {
+    .gender-option img {
+      width: 250px;
+    }
+    .bunny-name {
+      font-size: 1.8rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    h1#title {
+      font-size: 2rem;
+    }
+    h2#subtitle {
+      font-size: 1rem;
+      max-width: 90%;
+      line-height: 1.6;
+    }
+    .gender-option img {
+      width: 150px;
+    }
+    .bunny-name {
+      font-size: 1.2rem;
+    }
+  }
 </style>
 </head>
 <body>
@@ -106,8 +133,7 @@
 <h1 id="title">Glucose Spikes: Bunny's Space Quest</h1>
 
 <h2 id="subtitle">
-Balance your meals to avoid glucose spikes—
-spikes cause crashes, put your pilot at risk, and lead to long-term damage.
+Balance your meals to avoid glucose spikes — spikes cause crashes, put your pilot at risk, and lead to long-term damage.
 High glucose spikes stress your body, causing fatigue, weight gain, organ damage, and even diabetes.
 Learn how to manage them!
 </h2>
