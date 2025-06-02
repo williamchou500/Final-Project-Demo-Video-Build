@@ -84,13 +84,13 @@
     text-shadow: 0 0 4px white;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
   }
 
-  .gender-label::after {
-    content: attr(data-symbol);
-    font-size: 1.2rem;
-    margin-left: 5px;
+  .gender-symbol {
+    font-size: 1.5rem; /* match text size */
+    font-weight: bold;
+    line-height: 1;
   }
 
   .bunny-name {
@@ -104,18 +104,17 @@
   }
 
   .male-name {
-    left: -60px;
+    left: -80px;
     top: 50%;
     transform: rotate(-20deg);
   }
 
   .female-name {
-    right: -60px;
+    right: -80px;
     top: 50%;
     transform: rotate(20deg);
   }
 
-  /* Responsive image sizing */
   @media (min-width: 1024px) {
     .gender-option img {
       width: 250px;
@@ -163,12 +162,12 @@
   <a class="gender-option" href="/Final-Project-Demo-Video-Build/male">
     <span class="bunny-name male-name">Greg</span>
     <img src="male.png" alt="Male Bunny" />
-    <div class="gender-label" data-symbol="♂️">Male</div>
+    <div class="gender-label">Male <span class="gender-symbol">♂️</span></div>
   </a>
   <a class="gender-option" href="/Final-Project-Demo-Video-Build/female">
     <span class="bunny-name female-name">Bonnie</span>
     <img src="female.png" alt="Female Bunny" />
-    <div class="gender-label" data-symbol="♀️">Female</div>
+    <div class="gender-label">Female <span class="gender-symbol">♀️</span></div>
   </a>
 </div>
 
