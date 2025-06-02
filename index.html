@@ -63,6 +63,7 @@
     position: relative;
     min-height: 300px;
     padding-bottom: 10px;
+    transition: filter 0.3s ease, transform 0.3s ease;
   }
 
   .gender-option img {
@@ -74,8 +75,20 @@
     transition: filter 0.3s ease, transform 0.3s ease;
   }
 
-  .gender-option img:hover {
-    filter: drop-shadow(0 0 10px white);
+  .bunny-name {
+    position: absolute;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #fff;
+    opacity: 0.95;
+    text-shadow: 0 0 4px white;
+    letter-spacing: 1px;
+    transition: filter 0.3s ease, transform 0.3s ease;
+  }
+
+  .gender-option:hover img,
+  .gender-option:hover .bunny-name {
+    filter: drop-shadow(0 0 15px white);
     transform: scale(1.05);
   }
 
@@ -95,16 +108,6 @@
     display: inline-block;
   }
 
-  .bunny-name {
-    position: absolute;
-    font-size: 2rem;
-    font-weight: 700;
-    color: #fff;
-    opacity: 0.95;
-    text-shadow: 0 0 4px white;
-    letter-spacing: 1px;
-  }
-
   .male-name {
     left: -80px;
     top: 50%;
@@ -116,7 +119,6 @@
     top: 50%;
     transform: rotate(20deg);
   }
-
 
   @media (min-width: 1024px) {
     .gender-option img {
