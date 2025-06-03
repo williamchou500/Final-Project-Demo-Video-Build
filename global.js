@@ -1,3 +1,21 @@
+window.onload = () => {
+  const queryParams = new URLSearchParams(window.location.search);
+  if (queryParams.get("restart") === "1") {
+    // Reset all global state
+    danger_count = 0;
+    too_dangerous = false;
+    data = [{ hour: 4, glucose: 110 }];
+    currentMealIndex = 0;
+    lastMeal = null;
+
+    // Optional: clear localStorage if needed
+    // localStorage.removeItem("glucoseData");
+  }
+
+  // Always initialize the sim
+  initializeShip();
+  promptNextMeal();
+};
 
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
