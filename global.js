@@ -254,7 +254,7 @@ function animateSmokyPath(startLen, endLen) {
 
     const graphRect = graph.node().getBoundingClientRect();
     const shipLeft = point.x + graphRect.left;
-    const shipTop = smokeY + graphRect.top - ship.offsetHeight;
+    const shipTop = point.y + graphRect.top - ship.offsetHeight;
 
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
