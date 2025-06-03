@@ -2,6 +2,20 @@
 let danger_count = 0;
 let too_dangerous = false;
 
+const queryParams = new URLSearchParams(window.location.search);
+if (queryParams.get("restart") === "1") {
+  // Reset all global state
+  danger_count = 0;
+  too_dangerous = false;
+  data = [{ hour: 4, glucose: 110 }];
+  currentMealIndex = 0;
+  lastMeal = null;
+
+  // Optional: clear localStorage if needed
+  // localStorage.removeItem("glucoseData");
+}
+
+
 
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
@@ -543,3 +557,13 @@ submitBtn.addEventListener("click", () => {
 
 initializeShip();
 promptNextMeal();
+
+document.getElementById("restartBtnF").addEventListener("click", () => {
+  window.location.href = "female/index.html?restart=1";
+});
+
+document.getElementById("restartBtnM").addEventListener("click", () => {
+  window.location.href = "male/index.html?restart=1";
+});
+
+
