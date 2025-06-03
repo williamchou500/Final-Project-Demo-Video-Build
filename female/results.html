@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="../graph.css">
   <style>
     body {
-      background: url('../images/stars.png') center/cover no-repeat fixed;
+      background: url('../stars.png') center/cover no-repeat fixed;
       color: white;
       font-family: 'Orbitron', sans-serif;
       margin: 0;
@@ -65,7 +65,14 @@
     container.innerHTML = html;
   </script>
 
-  <button class="restartBtnF">Restart Simulation</button>
+  <button id="restartBtnF">Restart Simulation</button>
+  <script>
+    const restartBtn = document.getElementById("restartBtnF");
+    restartBtn.addEventListener("click", () => {
+      window.location.href = "../female/index.html?restart=1";
+    });
+  </script>
+  
 
 
 </body>
