@@ -1,40 +1,40 @@
+
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
 const svg = graph.append("svg").attr("width", "100%").attr("height", 800);
 const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
+
 const breakfast = [
   {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
-  {food: "Milk", calories: 120, carbs: 9.0, sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
-  {food: "Pepsi", calories: 150, carbs: 41, sugars: 41, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
+  {food: "Pepsi",  calories: 150.0, carbs: 41.0, sugars: 41.0, protein: 0.0,  fiber: 0.0, fat: 0.0},
   {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
-  {food: "Donut", calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
-]
-
+  {food: "Donut",  calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+];
 const snack = [
   {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
-  {food: "Milk", calories: 120, carbs: 9.0, sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
-  {food: "Pepsi", calories: 150, carbs: 41, sugars: 41, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
+  {food: "Pepsi",  calories: 150.0, carbs: 41.0, sugars: 41.0, protein: 0.0,  fiber: 0.0, fat: 0.0},
   {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
-  {food: "Donut", calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
-]
-
+  {food: "Donut",  calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+];
 const lunch = [
   {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
-  {food: "Milk", calories: 120, carbs: 9.0, sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
-  {food: "Pepsi", calories: 150, carbs: 41, sugars: 41, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
+  {food: "Pepsi",  calories: 150.0, carbs: 41.0, sugars: 41.0, protein: 0.0,  fiber: 0.0, fat: 0.0},
   {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
-  {food: "Donut", calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
-]
-
+  {food: "Donut",  calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+];
 const dinner = [
   {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
-  {food: "Milk", calories: 120, carbs: 9.0, sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
-  {food: "Pepsi", calories: 150, carbs: 41, sugars: 41, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
+  {food: "Pepsi",  calories: 150.0, carbs: 41.0, sugars: 41.0, protein: 0.0,  fiber: 0.0, fat: 0.0},
   {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
-  {food: "Donut", calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
-]
+  {food: "Donut",  calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+];
+
 
 const x = d3.scaleLinear().domain([4, 27]).range([50, width - 50]);
 const y = d3.scaleLinear().domain([100, 240]).range([height - 50, 50]);
@@ -65,13 +65,14 @@ yAxis.selectAll("text").attr("fill", "white");
 // Y axis label
 svg.append("text")
   .attr("transform", "rotate(-90)")
-  .attr("y", 60)          // position left side, tweak as needed
+  .attr("y", 60)
   .attr("x", -height / 2)
-  .attr("dy", "-3.5em")   // vertical shift
+  .attr("dy", "-3.5em")
   .attr("text-anchor", "middle")
   .attr("font-size", "14px")
   .attr("fill", "white")
   .text("Glucose (mg/dL)");
+
 
 svg.append("line")
   .attr("x1", 50)
@@ -84,49 +85,57 @@ svg.append("line")
 
 svg.append("rect")
   .attr("x", 50)
-  .attr("y", 50)                  // top of the chart area (lowest y value)
+  .attr("y", 50)
   .attr("width", width - 100)
-  .attr("height", y(180) - 50)   // height from top down to y(180)
+  .attr("height", y(180) - 50)
   .attr("fill", "red")
   .attr("opacity", 0.3);
 
-let data = [{ hour: 4, glucose: 110 }];
-const baseline = 110;
+
+let data = [{ hour: 4, glucose: 110 }];  
+const baseline = 110;                    
 const mealStages = ["breakfast", "snack", "lunch", "snack", "dinner"];
 let currentMealIndex = 0;
 let lastMeal = null;
 
+
 const dropRates = {
   breakfast: 10,
-  snack: 16,
-  lunch: 12,
-  dinner: 14
+  snack:     16,
+  lunch:     12,
+  dinner:    14
 };
 
-const mealForm = document.getElementById("mealForm");
-const mealLabel = document.getElementById("mealLabel");
-const promptBox = document.getElementById("promptBox");
-const promptMessage = document.getElementById("promptMessage");
-const mealTimeSlider = document.getElementById("mealTimeSlider");
-const sliderLabel = document.getElementById("sliderLabel");
-const confirmTimeBtn = document.getElementById("confirmTimeBtn");
-
-const timeInput = document.getElementById("time");
-const timeLabel = document.getElementById("timeLabel");
-const submitBtn = document.getElementById("submit");
-const ship = document.getElementById("ship");
 
 const weights = {
-  hour: 0.280645,
-  HbA1c: 0.118344,
-  total_carb: 0.112520,
-  sugar: 0.110247,
-  calories: 0.099352,
-  protein: 0.090501,
-  total_fat: 0.078747,
+  hour:          0.280645,
+  HbA1c:         0.118344,
+  total_carb:    0.112520,
+  sugar:         0.110247,
+  calories:      0.099352,
+  protein:       0.090501,
+  total_fat:     0.078747,
   dietary_fiber: 0.061027,
-  gender: 0.048618,
+  gender:        0.048618
 };
+
+const mealForm       = document.getElementById("mealForm");
+const mealLabel      = document.getElementById("mealLabel");
+const promptBox      = document.getElementById("promptBox");
+const promptMessage  = document.getElementById("promptMessage");
+const mealTimeSlider = document.getElementById("mealTimeSlider");
+const sliderLabel    = document.getElementById("sliderLabel");
+const confirmTimeBtn = document.getElementById("confirmTimeBtn");
+
+const timeInput      = document.getElementById("time");
+const timeLabel      = document.getElementById("timeLabel");
+const foodButtons    = document.getElementById("foodButtons");
+const submitBtn      = document.getElementById("submit");
+const ship           = document.getElementById("ship");
+
+
+let selectedFood = null;
+
 
 function drawLine() {
   svg.selectAll(".glucose-line").remove();
@@ -183,6 +192,7 @@ function drawLine() {
   requestAnimationFrame(animateShip);
 }
 
+
 function getGlucoseAtHour(targetHour) {
   for (let i = 1; i < data.length; i++) {
     const prev = data[i - 1];
@@ -195,6 +205,7 @@ function getGlucoseAtHour(targetHour) {
   return baseline;
 }
 
+
 function promptNextMeal() {
   let suggestedNextHour = 4;
   if (lastMeal) {
@@ -204,7 +215,7 @@ function promptNextMeal() {
   const minHour = Math.max(4, Math.floor(suggestedNextHour));
   mealTimeSlider.min = minHour;
   mealTimeSlider.max = 27;
-  mealTimeSlider.value = minHour; // Ensure initial value is within allowed range
+  mealTimeSlider.value = minHour;
 
   sliderLabel.textContent = `${minHour % 24}:00`;
 
@@ -213,9 +224,38 @@ function promptNextMeal() {
   promptMessage.textContent = `When would you like to eat your ${mealStages[currentMealIndex]}?`;
 }
 
+
+function renderFoodButtons() {
+
+  foodButtons.innerHTML = "";
+  selectedFood = null;
+
+  const mealType = mealStages[currentMealIndex];
+  let list = [];
+  if (mealType === "breakfast") list = breakfast;
+  else if (mealType === "snack") list = snack;
+  else if (mealType === "lunch") list = lunch;
+  else if (mealType === "dinner") list = dinner;
+
+  list.forEach((item, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = item.food;
+    btn.classList.add("food-btn");
+    btn.addEventListener("click", () => {
+    
+      document.querySelectorAll(".food-btn").forEach(b => b.classList.remove("selected"));
+      btn.classList.add("selected");
+      selectedFood = item;
+    });
+    foodButtons.appendChild(btn);
+  });
+}
+
+
 mealTimeSlider.addEventListener("input", () => {
   sliderLabel.textContent = `${mealTimeSlider.value % 24}:00`;
 });
+
 
 confirmTimeBtn.addEventListener("click", () => {
   const selectedHour = parseInt(mealTimeSlider.value);
@@ -225,41 +265,40 @@ confirmTimeBtn.addEventListener("click", () => {
   mealLabel.textContent = `Log your ${mealStages[currentMealIndex]}:`;
   promptBox.classList.add("hidden");
   mealForm.style.display = "block";
+
+
+  renderFoodButtons();
 });
 
-submitBtn.addEventListener("click", () => {
-  const calories = parseFloat(document.querySelector('#calories').value) || 0;
-  const carbs = parseFloat(document.querySelector('#carbs').value) || 0;
-  const dietary_fiber = parseFloat(document.querySelector('#fiber').value) || 0;
-  const sugar = parseFloat(document.querySelector('#sugar').value) || 0;
-  const total_fat = parseFloat(document.querySelector('#fat').value) || 0;
-  const protein = parseFloat(document.querySelector('#protein').value) || 0;
-  const Hb1Ac = parseFloat(document.querySelector('#Hb1Ac').value) || 0;
-  const hour = parseInt(timeInput.value);
-  const mealType = mealStages[currentMealIndex];
-  let gender;
 
-  if (document.location.pathname === '/female/index.html') {
-    gender = 0;
-  } else {
-    gender = 1;
+submitBtn.addEventListener("click", () => {
+  if (!selectedFood) {
+    alert("pick a food item first!");
+    return;
   }
 
+  const hour = parseInt(timeInput.value);
+  const mealType = mealStages[currentMealIndex];
 
-  console.log(gender);
+
+  const { calories, carbs, sugars, protein, fiber, fat } = selectedFood;
+
+
+  let gender = (document.location.pathname.includes("/female/")) ? 0 : 1;
 
   const increment =
     calories * weights.calories +
-    carbs * weights.total_carb +
-    sugar * weights.sugar +
-    protein * weights.protein +
-    Hb1Ac * weights.HbA1c +
-    hour * weights.hour +
-    dietary_fiber * weights.dietary_fiber +
-    total_fat * weights.total_fat +
-    gender * weights.gender;
+    carbs    * weights.total_carb +
+    sugars   * weights.sugar +
+    protein  * weights.protein +
+    fiber    * weights.dietary_fiber +
+    fat      * weights.total_fat +
+    hour     * weights.hour +
+    gender   * weights.gender;
 
+ 
   let currentGlucose = getGlucoseAtHour(hour);
+
 
   if (lastMeal) {
     const timeSinceLastPeak = hour - lastMeal.peakHour;
@@ -268,17 +307,17 @@ submitBtn.addEventListener("click", () => {
     const projectedGlucose = lastMeal.peakValue - expectedDrop;
 
     if (projectedGlucose > baseline) {
-      // Drop to projected glucose level
+
       data.push({ hour, glucose: projectedGlucose });
       currentGlucose = projectedGlucose;
     } else {
-      // Compute when it would have reached baseline
+
       const timeToBaseline = (lastMeal.peakValue - baseline) / dropRate;
       const baselineHour = Math.ceil(lastMeal.peakHour + timeToBaseline);
 
       if (baselineHour < hour) {
         data.push({ hour: baselineHour, glucose: baseline });
-        data.push({ hour: hour, glucose: baseline });
+        data.push({ hour: hour,       glucose: baseline });
         currentGlucose = baseline;
       } else {
         const glucoseAtHour = lastMeal.peakValue - dropRate * (hour - lastMeal.peakHour);
@@ -287,12 +326,14 @@ submitBtn.addEventListener("click", () => {
       }
     }
   } else {
+
     data.push({ hour, glucose: baseline });
     currentGlucose = baseline;
   }
 
+
   const peakHour = hour + 1;
-  const peakValue = currentGlucose + increment + 1 * weights.gender;
+  const peakValue = currentGlucose + increment;
 
   data.push({ hour: peakHour, glucose: peakValue });
   lastMeal = { hour, peakHour, peakValue, type: mealType };
@@ -305,5 +346,6 @@ submitBtn.addEventListener("click", () => {
     drawLine();
   }
 });
+
 
 promptNextMeal();

@@ -2,81 +2,48 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Glucose Tracker</title>
+  <title>Glucose Tracker (Simplified)</title>
   <link rel="stylesheet" href="../graph.css">
   <script src="https://d3js.org/d3.v7.min.js"></script>
-  <script type='module' src="../global.js"></script>
+  <script type="module" src="../global.js"></script>
 </head>
 <body>
 
-<div id="shipPromptContainer" style="position: absolute; display: flex; align-items: center;">
-  <img id="ship" src="../images/ship.png" style="display:none;" />
-  <div id="promptBox" class="prompt-box hidden">
-    <h2 id="promptMessage">When is your next meal?</h2>
-    <input type="range" id="mealTimeSlider" min="0" max="23" value="8" />
-    <span id="sliderLabel">8:00</span>
-    <br>
-    <button id="confirmTimeBtn">Next</button>
-  </div>
-</div>
-
-<!-- Glucose Graph -->
-<div id="graph"></div>
-
-<!-- Meal Input Form -->
-<div id="mealForm">
-  <h3 id="mealLabel">Log Your Meal</h3>
-
-  <div class="form-row">
-    <label for="time">Hour:</label>
-    <input type="number" id="time" disabled />
-    <span id="timeLabel">8</span>
+  <div id="shipPromptContainer" style="position: absolute; display: flex; align-items: center;">
+    <img id="ship" src="../images/ship.png" style="display:none;" />
+    <div id="promptBox" class="prompt-box hidden">
+      <h2 id="promptMessage">When is your next meal?</h2>
+      <input type="range" id="mealTimeSlider" min="0" max="23" value="8" />
+      <span id="sliderLabel">8:00</span>
+      <br>
+      <button id="confirmTimeBtn">Next</button>
+    </div>
   </div>
 
-  <div class="form-row">
-    <label for="dish">Dish:</label>
-    <input type="text" id="dish">
+  <div id="graph"></div>
+
+  <div id="mealForm" style="margin-top: 30px;">
+    <h3 id="mealLabel">Log Your Meal</h3>
+
+
+    <div class="form-row" style="margin-bottom: 12px;">
+      <label for="time">Hour:</label>
+      <input type="number" id="time" disabled style="width: 40px;" />
+      <span id="timeLabel" style="margin-left: 8px;">8</span>
+    </div>
+
+ 
+    <div class="form-row" style="margin-bottom: 12px;">
+      <label>Food:</label>
+      <div id="foodButtons" style="display: inline-block; margin-left: 10px;"></div>
+    </div>
+
+
+
+    <div class="form-row">
+      <button id="submit" style="padding: 6px 14px;">Submit</button>
+    </div>
   </div>
-
-  <div class="form-row">
-    <label for="calories">Calories:</label>
-    <input type="number" id="calories">
-  </div>
-
-  <div class="form-row">
-    <label for="carbs">Total Carbs (g):</label>
-    <input type="number" id="carbs">
-  </div>
-
-  <div class="form-row">
-    <label for="fiber">Dietary Fiber (g):</label>
-    <input type="number" id="fiber">
-  </div>
-
-  <div class="form-row">
-    <label for="sugar">Sugar (g):</label>
-    <input type="number" id="sugar">
-  </div>
-
-  <div class="form-row">
-    <label for="fat">Total Fat (g):</label>
-    <input type="number" id="fat">
-  </div>
-
-  <div class="form-row">
-    <label for="protein">Protein (g):</label>
-    <input type="number" id="protein">
-  </div>
-
-  <div class="form-row">
-    <label for="Hb1Ac">Hb1Ac:</label>
-    <input type="number" id="Hb1Ac">
-  </div>
-
-  <button id="submit">Submit</button>
-</div>
-
-<div id="food-container"></div>
 
 </body>
 </html>
