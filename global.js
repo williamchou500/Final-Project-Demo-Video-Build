@@ -456,6 +456,16 @@ submitBtn.addEventListener("click", () => {
   const peakHour = hour + 1;
   const peakValue = currentGlucose + increment;
 
+  if (peakHour >= 23) {
+    data.push({ hour: peakHour, glucose: peakValue });
+    drawLine();
+    setTimeout(() => {
+      const tooFlag = too_dangerous ? 1 : 0;
+      window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
+    }, 800); // optional pause
+    return;
+  }  
+
   if (peakValue > 180) danger_count++;
   if (peakValue >= 240) too_dangerous = true;
 
