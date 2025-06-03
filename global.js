@@ -23,6 +23,7 @@ const svg = graph.append("svg").attr("width", "100%").attr("height", 800);
 const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
+let danger_count = 0;
 const ceilingGlucose = 240;
 
 const breakfast = [
