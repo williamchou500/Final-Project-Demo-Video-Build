@@ -239,11 +239,11 @@ function animateSmokyPath(startLen, endLen) {
     if (currentGlucose >= ceilingGlucose) {
       const ceilingY = y(ceilingGlucose);
       const graphRect = graph.node().getBoundingClientRect();
-      const shipLeft = point.x + graphRect.left;
-      const adjustedShipTop = ceilingY + graphRect.top - ship.offsetHeight / 2;
+      const shipLeft = point.x + graphRect.left + 200;
+      const shipTop = point.y + graphRect.top - 20;
 
       ship.style.left = `${shipLeft}px`;
-      ship.style.top = `${adjustedShipTop}px`;
+      ship.style.top = `${shipTop}px`;
       ship.style.transform = `rotate(0deg)`;
 
       createBangEffect(point.x, ceilingY);
@@ -273,8 +273,8 @@ function animateSmokyPath(startLen, endLen) {
       .attr("filter", "url(#smoke-blur)");
 
     const graphRect = graph.node().getBoundingClientRect();
-    const shipLeft = point.x + graphRect.left;
-    const shipTop = point.y + graphRect.top - ship.offsetHeight * 2;
+    const shipLeft = point.x + graphRect.left - 80;
+    const shipTop = point.y + graphRect.top - 200;
 
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
