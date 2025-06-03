@@ -5,7 +5,7 @@ const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
 console.log(width);
-const ceilingGlucose = 240;
+const ceilingGlucose = 220;
 const breakfast = [
   {food: "Coffee", calories: 780.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
   {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
