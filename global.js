@@ -134,25 +134,52 @@ const ship           = document.getElementById("ship");
 
 
 let selectedFood = null;
-function animateShip(startLength, endLength) {
-  ship.style.display = "block";
-  const duration = 4000;
-  let startTime = null;
 
-  function step(timestamp) {
+let path = null;
+let previousLength = 0;
+function drawLine() {
+  if (!path) {
+    path = svg.append("path")
+      .datum(data)
+      .attr("class", "glucose-line")
+      .attr("fill", "none")
+      .attr("stroke", "white")
+      .attr("stroke-width", 2)
+      .attr("d", line);
+
+    previousLength = path.node().getTotalLength();
+  } else {
+    path.datum(data)
+      .attr("d", line);
+  }
+
+  const newLength = path.node().getTotalLength();
+  const segmentLength = newLength - previousLength;
+
+  
+  ship.style.display = "block";
+  let startTime = null;
+  const duration = 4000;
+
+  function animate(timestamp) {
     if (!startTime) startTime = timestamp;
     const elapsed = timestamp - startTime;
     const progress = Math.min(elapsed / duration, 1);
-    const currentLength = startLength + (endLength - startLength) * progress;
+    const currentSegmentLength = segmentLength * progress;
 
+    path
+      .attr("stroke-dasharray", `${newLength} ${newLength}`)
+      .attr("stroke-dashoffset", segmentLength - currentSegmentLength);
+    const currentLength = previousLength + currentSegmentLength;
     const point = path.node().getPointAtLength(currentLength);
     const graphRect = graph.node().getBoundingClientRect();
     ship.style.left = `${point.x + graphRect.left - 20}px`;
     ship.style.top = `${point.y + graphRect.top - 20}px`;
 
     if (progress < 1) {
-      requestAnimationFrame(step);
+      requestAnimationFrame(animate);
     } else {
+      previousLength = newLength;
       svg.selectAll(".dot").data(data)
         .join("circle")
         .attr("class", "dot")
@@ -169,49 +196,7 @@ function animateShip(startLength, endLength) {
     }
   }
 
-  requestAnimationFrame(step);
-}
-let path = null;
-let previousLength = 0;
-function drawLine() {
-  if (!path) {
-    path = svg.append("path")
-      .datum(data)
-      .attr("class", "glucose-line")
-      .attr("fill", "none")
-      .attr("stroke", "white")
-      .attr("stroke-width", 2)
-      .attr("d", line);
-
-    previousLength = path.node().getTotalLength();
-
-    path
-      .attr("stroke-dasharray", `${previousLength} ${previousLength}`)
-      .attr("stroke-dashoffset", previousLength)
-      .transition()
-      .duration(4000)
-      .ease(d3.easeLinear)
-      .attr("stroke-dashoffset", 0)
-      .on("end", () => animateShip(previousLength, previousLength));
-  } else {
-    path.datum(data)
-        .attr("d", line);
-
-    const newLength = path.node().getTotalLength();
-    const segmentLength = newLength - previousLength;
-
-    path
-      .attr("stroke-dasharray", `${newLength} ${newLength}`)
-      .attr("stroke-dashoffset", segmentLength)
-      .transition()
-      .duration(4000)
-      .ease(d3.easeLinear)
-      .attr("stroke-dashoffset", 0)
-      .on("end", () => {
-        animateShip(previousLength, newLength);
-        previousLength = newLength;
-      });
-  }
+  requestAnimationFrame(animate);
 }
 
 function getGlucoseAtHour(targetHour) {
