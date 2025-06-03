@@ -208,10 +208,7 @@ function createBangEffect(cx, cy) {
 function animateSmokyPath(startLen, endLen) {
   ship.style.display = "block";
 
-  let gender = "male";
-  if (document.location.pathname.includes("/female/")) {
-    gender = "female";
-  }
+  let gender = document.location.pathname.includes("/female/") ? "female" : "male";
 
   const duration = 4000;
   let startTime = null;
@@ -236,7 +233,7 @@ function animateSmokyPath(startLen, endLen) {
       ship.style.transform = `rotate(0deg)`;
 
       createBangEffect(point.x, ceilingY);
-      if (gender === "female") ship.src = "../images/deadF.png"; else ship.src = "../images/deadM.png";
+      ship.src = gender === "female" ? "../images/deadF.png" : "../images/deadM.png";
       return;
     }
 
@@ -245,42 +242,44 @@ function animateSmokyPath(startLen, endLen) {
     const ndy = nextPoint.y - point.y;
     const nang = Math.atan2(ndy, ndx) * (180 / Math.PI);
 
+    const smokeYOffset = ship.offsetHeight * 0.3;
+    const smokeY = point.y + smokeYOffset;
+
+    svg.append("circle")
+      .attr("cx", point.x)
+      .attr("cy", smokeY)
+      .attr("r", Math.random() * 8 + 4)
+      .attr("fill", "white")
+      .attr("opacity", 0.05 + Math.random() * 0.1)
+      .attr("filter", "url(#smoke-blur)");
+
     const graphRect = graph.node().getBoundingClientRect();
     const shipLeft = point.x + graphRect.left;
-    let shipTop = point.y + graphRect.top - ship.offsetHeight / 2;
+    const shipTop = smokeY + graphRect.top - ship.offsetHeight;
 
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
     ship.style.transform = `rotate(${nang}deg)`;
 
     if (currentGlucose > 180) {
-      if (gender === "female" && !ship.src.includes("redF.png")) ship.src = "../images/redF.png";
-      else if (gender === "male" && !ship.src.includes("redM.png")) ship.src = "../images/redM.png";
+      const redSrc = gender === "female" ? "redF.png" : "redM.png";
+      if (!ship.src.includes(redSrc)) ship.src = `../images/${redSrc}`;
     } else {
-      if (gender === "female" && !ship.src.includes("rocketg.png")) ship.src = "../images/rocketg.png";
-      else if (gender === "male" && !ship.src.includes("rocketm.png")) ship.src = "../images/rocketm.png";
+      const greenSrc = gender === "female" ? "rocketg.png" : "rocketm.png";
+      if (!ship.src.includes(greenSrc)) ship.src = `../images/${greenSrc}`;
     }
-    const shipYOffset = ship.offsetHeight / 2;
-    updatePromptPosition(shipLeft + 20, shipTop + 20);
-    svg.append("circle")
-      .attr("cx", point.x)
-      .attr("cy", point.y + shipYOffset)
-      .attr("r", Math.random() * 8 + 4)
-      .attr("fill", "white")
-      .attr("opacity", 0.05 + Math.random() * 0.1)
-      .attr("filter", "url(#smoke-blur)");
 
-    if (progress < 1) requestAnimationFrame(step);
-    else {
-      if (currentMealIndex < mealStages.length) {
-        setTimeout(promptNextMeal, 500);
-      }
+    updatePromptPosition(shipLeft + 20, shipTop + 20);
+
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else if (currentMealIndex < mealStages.length) {
+      setTimeout(promptNextMeal, 500);
     }
   }
 
   requestAnimationFrame(step);
 }
-
 function getGlucoseAtHour(targetHour) {
   for (let i = 1; i < data.length; i++) {
     const prev = data[i - 1];
