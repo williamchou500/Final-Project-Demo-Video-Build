@@ -31,3 +31,8 @@ body {
     font-size: 3000%;
     margin: auto;
 }
+#ship {
+  width: 100px;
+  height: auto;
+  z-index: 10;
+}
