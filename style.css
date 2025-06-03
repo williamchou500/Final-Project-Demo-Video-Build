@@ -32,7 +32,7 @@ body {
     margin: auto;
 }
 #ship {
-  width: 100px;
-  height: auto;
-  z-index: 10;
+    width: 200px;
+    height: auto;
+    z-index: 10;
 }
