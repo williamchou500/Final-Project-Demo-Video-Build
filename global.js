@@ -350,12 +350,63 @@ function renderFoodButtons() {
   else if (mealType === "lunch") list = lunch;
   else if (mealType === "dinner") list = dinner;
 
+  const imageMap = {
+    "Fried Eggs": "egg.png",
+    "Bacon": "bacon.png",
+    "Pancakes with Syrup": "pancakes.png",
+    "Hash Browns": "toast.png",
+    "Bagel with Cream Cheese": "bagel.png",
+    "Orange Juice (1 glass)": "juice.png",
+    "Cappuccino (1 cup)": "coffee.png",
+    "Syrup (1 tbsp)": "pancakes.png", // fallback
+    "Water (1 glass)": "water.png",
+    "Milk (1 glass)": "juice.png",
+    "Granola with Greek Yogurt": "oatmeal.png",
+    "Oatmeal": "oatmeal.png",
+    "Avocado Toast": "toast.png",
+
+    "Granola Bar": "oatmeal.png",
+    "Bag of Chips (2.5 oz)": "toast.png",
+    "Cheese Sticks": "bagel.png",
+    "Apple Slices with Peanut Butter": "juice.png",
+    "Crackers with Hummus": "toast.png",
+    "Iced Tea (sweetened)": "juice.png",
+    "Smoothie (fruit blend, 8 oz)": "juice.png",
+    "Sparkling Water (flavored)": "water.png",
+
+    "Grilled Chicken Sandwich": "bagel.png",
+    "Cheeseburger": "bacon.png",
+    "Caesar Salad with Chicken": "egg.png",
+    "Turkey Wrap": "toast.png",
+    "Vegetable Stir Fry with Rice": "oatmeal.png",
+    "Lemonade": "juice.png",
+    "Iced Coffee with Cream": "coffee.png",
+    "Water (1 glass)": "water.png",
+
+    "Grilled Salmon with Veggies": "bacon.png",
+    "Spaghetti with Marinara Sauce": "toast.png",
+    "Beef Tacos (2)": "bacon.png",
+    "Chicken Stir Fry with Noodles": "egg.png",
+    "Vegetable Curry with Rice": "oatmeal.png",
+    "Red Wine (5 oz)": "juice.png",
+    "Sparkling Water (unsweetened)": "water.png",
+    "Apple Juice (1 glass)": "juice.png"
+  };
+
   list.forEach(item => {
     const container = document.createElement("div");
     container.classList.add("food-item");
 
-    const name = document.createElement("div");
-    name.textContent = item.food;
+    const img = document.createElement("img");
+    img.classList.add("food-img");
+
+    const imageName = imageMap[item.food] || "toast.png";
+    img.src = `../images/${imageName}`;
+    img.alt = item.food;
+
+    const label = document.createElement("div");
+    label.classList.add("food-label");
+    label.textContent = item.food;
 
     const input = document.createElement("input");
     input.type = "number";
@@ -387,12 +438,12 @@ function renderFoodButtons() {
       if (index !== -1) selectedFoods[index].quantity = quantity;
     });
 
-    container.appendChild(name);
+    container.appendChild(img);
+    container.appendChild(label);
     container.appendChild(input);
     foodButtons.appendChild(container);
   });
 }
-
 
 mealTimeSlider.addEventListener("input", () => {
   sliderLabel.textContent = `${mealTimeSlider.value % 24}:00`;
