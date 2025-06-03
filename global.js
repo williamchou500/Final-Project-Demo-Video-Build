@@ -356,9 +356,8 @@ function renderFoodButtons() {
     const container = document.createElement("div");
     container.classList.add("food-item");
 
-    const btn = document.createElement("button");
-    btn.textContent = item.food;
-    btn.classList.add("food-btn");
+    const name = document.createElement("div");
+    name.textContent = item.food;
 
     const input = document.createElement("input");
     input.type = "number";
@@ -368,9 +367,11 @@ function renderFoodButtons() {
 
     let isSelected = false;
 
-    btn.addEventListener("click", () => {
+    container.addEventListener("click", (e) => {
+      if (e.target.tagName === "INPUT") return;
+
       isSelected = !isSelected;
-      btn.classList.toggle("selected");
+      container.classList.toggle("selected");
 
       const quantity = parseInt(input.value) || 1;
       const index = selectedFoods.findIndex(f => f.food === item.food);
@@ -388,11 +389,12 @@ function renderFoodButtons() {
       if (index !== -1) selectedFoods[index].quantity = quantity;
     });
 
-    container.appendChild(btn);
+    container.appendChild(name);
     container.appendChild(input);
     foodButtons.appendChild(container);
   });
 }
+
 
 mealTimeSlider.addEventListener("input", () => {
   sliderLabel.textContent = `${mealTimeSlider.value % 24}:00`;
