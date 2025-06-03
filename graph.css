@@ -48,7 +48,7 @@ label, select, input {
   pointer-events: none; /* So it doesn’t interfere with UI */
   transform: translate(-50%, -50%) rotate(0deg); /* Center the ship on the coordinate */
   transition: transform 0.1s linear;
-  display: none; /* hidden initially */
+  display: block; /* hidden initially */
 }
 
 
