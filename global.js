@@ -15,7 +15,6 @@ const breakfast = [
   {food: "Fried Eggs", calories: 90.0, carbs: 0.4, sugars: 0.4, protein: 6.3, fiber: 0.0, fat: 7.0},
   {food: "Bacon", calories: 180.0, carbs: 1.4, sugars: 0.0, protein: 12.0, fiber: 0.0, fat: 15.0},
   {food: "Pancakes with Syrup", calories: 350.0, carbs: 60.0, sugars: 14.0, protein: 6.0, fiber: 1.0, fat: 9.0},
-  {food: "Breakfast Sausage", calories: 200.0, carbs: 1.0, sugars: 0.0, protein: 8.0, fiber: 0.0, fat: 19.0},
   {food: "Hash Browns", calories: 140.0, carbs: 15.0, sugars: 0.3, protein: 1.5, fiber: 1.3, fat: 9.0},
   {food: "Bagel with Cream Cheese", calories: 290.0, carbs: 36.0, sugars: 5.0, protein: 9.0, fiber: 2.0, fat: 11.0},
   {food: "Orange Juice (1 glass)", calories: 110.0, carbs: 26.0, sugars: 21.0, protein: 2.0, fiber: 0.5, fat: 0.5},
@@ -28,25 +27,34 @@ const breakfast = [
   {food: "Avocado Toast", calories: 220.0, carbs: 20.0, sugars: 1.0, protein: 5.0, fiber: 5.0, fat: 14.0}
 ];
 const snack = [
-  {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
-  {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
-  {food: "Pepsi",  calories: 150.0, carbs: 41.0, sugars: 41.0, protein: 0.0,  fiber: 0.0, fat: 0.0},
-  {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
-  {food: "Donut",  calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+  {food: "Granola Bar", calories: 190.0, carbs: 25.0, sugars: 10.0, protein: 4.0, fiber: 2.0, fat: 7.0},
+  {food: "Bag of Chips (2.5 oz)", calories: 390.0, carbs: 37.0, sugars: 0.5, protein: 4.0, fiber: 2.0, fat: 25.0},
+  {food: "Cheese Sticks", calories: 80.0, carbs: 1.0, sugars: 0.5, protein: 6.0, fiber: 0.0, fat: 6.0},
+  {food: "Apple Slices with Peanut Butter", calories: 150.0, carbs: 18.0, sugars: 9.0, protein: 4.0, fiber: 3.0, fat: 8.0},
+  {food: "Crackers with Hummus", calories: 200.0, carbs: 22.0, sugars: 1.0, protein: 5.0, fiber: 3.0, fat: 10.0},
+  {food: "Iced Tea (sweetened)", calories: 90.0, carbs: 23.0, sugars: 22.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Smoothie (fruit blend, 8 oz)", calories: 140.0, carbs: 30.0, sugars: 25.0, protein: 2.0, fiber: 2.0, fat: 1.0},
+  {food: "Sparkling Water (flavored)", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
 ];
 const lunch = [
-  {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
-  {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
-  {food: "Pepsi",  calories: 150.0, carbs: 41.0, sugars: 41.0, protein: 0.0,  fiber: 0.0, fat: 0.0},
-  {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
-  {food: "Donut",  calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+  {food: "Grilled Chicken Sandwich", calories: 430.0, carbs: 40.0, sugars: 6.0, protein: 35.0, fiber: 3.0, fat: 15.0},
+  {food: "Cheeseburger", calories: 520.0, carbs: 35.0, sugars: 7.0, protein: 25.0, fiber: 2.0, fat: 30.0},
+  {food: "Caesar Salad with Chicken", calories: 410.0, carbs: 10.0, sugars: 2.0, protein: 30.0, fiber: 3.0, fat: 28.0},
+  {food: "Turkey Wrap", calories: 390.0, carbs: 30.0, sugars: 3.0, protein: 22.0, fiber: 2.5, fat: 20.0},
+  {food: "Vegetable Stir Fry with Rice", calories: 450.0, carbs: 55.0, sugars: 8.0, protein: 10.0, fiber: 5.0, fat: 15.0},
+  {food: "Lemonade", calories: 120.0, carbs: 31.0, sugars: 29.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Iced Coffee with Cream", calories: 90.0, carbs: 10.0, sugars: 7.0, protein: 2.0, fiber: 0.0, fat: 4.0},
+  {food: "Water (1 glass)", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
 ];
 const dinner = [
-  {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
-  {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
-  {food: "Pepsi",  calories: 150.0, carbs: 41.0, sugars: 41.0, protein: 0.0,  fiber: 0.0, fat: 0.0},
-  {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
-  {food: "Donut",  calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+  {food: "Grilled Salmon with Veggies", calories: 520.0, carbs: 10.0, sugars: 3.0, protein: 40.0, fiber: 4.0, fat: 32.0},
+  {food: "Spaghetti with Marinara Sauce", calories: 480.0, carbs: 65.0, sugars: 9.0, protein: 15.0, fiber: 6.0, fat: 12.0},
+  {food: "Beef Tacos (2)", calories: 560.0, carbs: 30.0, sugars: 3.0, protein: 28.0, fiber: 4.0, fat: 36.0},
+  {food: "Chicken Stir Fry with Noodles", calories: 510.0, carbs: 45.0, sugars: 6.0, protein: 32.0, fiber: 4.0, fat: 20.0},
+  {food: "Vegetable Curry with Rice", calories: 490.0, carbs: 55.0, sugars: 7.0, protein: 10.0, fiber: 5.0, fat: 22.0},
+  {food: "Red Wine (5 oz)", calories: 125.0, carbs: 4.0, sugars: 1.0, protein: 0.1, fiber: 0.0, fat: 0.0},
+  {food: "Sparkling Water (unsweetened)", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Apple Juice (1 glass)", calories: 110.0, carbs: 28.0, sugars: 24.0, protein: 0.5, fiber: 0.2, fat: 0.3}
 ];
 
 const x = d3.scaleLinear().domain([4, 27]).range([50, width - 50]);
