@@ -221,7 +221,7 @@ function animateSmokyPath(startLength, endLength) {
     const angle = Math.atan2(dy, dx) * (180 / Math.PI);
     const graphRect = graph.node().getBoundingClientRect();
     const shipLeft = point.x + graphRect.left;
-    const shipTop = point.y + graphRect.top - 20;
+    const shipTop = point.y + graphRect.top - 10;
 
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
