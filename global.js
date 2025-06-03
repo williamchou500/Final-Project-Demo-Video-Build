@@ -145,6 +145,16 @@ let selectedFood = null;
 let path = null;
 let previousLength = 0;
 
+// Initialize ship position at starting point (4:00 AM, 110 glucose)
+function initializeShip() {
+  ship.style.display = "block";
+  const startX = x(4);
+  const startY = y(110);
+  const graphRect = graph.node().getBoundingClientRect();
+  ship.style.left = `${startX + graphRect.left - 20}px`;
+  ship.style.top = `${startY + graphRect.top - 20}px`;
+}
+
 function drawLine() {
   if (!path) {
     path = svg.append("path")
@@ -380,5 +390,7 @@ submitBtn.addEventListener("click", () => {
   }
 });
 
+// Initialize ship position when the page loads
+initializeShip();
 
 promptNextMeal();
