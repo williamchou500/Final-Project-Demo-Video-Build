@@ -242,8 +242,7 @@ function animateSmokyPath(startLen, endLen) {
     const ndy = nextPoint.y - point.y;
     const nang = Math.atan2(ndy, ndx) * (180 / Math.PI);
 
-    const smokeYOffset = ship.offsetHeight * 0.3;
-    const smokeY = point.y + smokeYOffset;
+    const smokeY = point.y + ship.offsetHeight / 2;
 
     svg.append("circle")
       .attr("cx", point.x)
