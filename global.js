@@ -499,12 +499,9 @@ function renderFoodButtons() {
     "Bacon": "bacon.png",
     "Pancakes with Syrup": "pancakes.png",
     "Bagel with Cream Cheese": "bagel.png",
-    "Orange Juice (1 glass)": "juice.png",
-    "Cappuccino (1 cup)": "coffee.png",
-    "Syrup (1 tbsp)": "pancakes.png",
-    "Water (1 glass)": "water.png",
-    "Milk (1 glass)": "juice.png",
-    "Granola with Greek Yogurt": "oatmeal.png",
+    "Orange Juice": "juice.png",
+    "Cappuccino": "coffee.png",
+    "Water": "water.png",
     "Oatmeal": "oatmeal.png",
     "Avocado Toast": "toast.png",
 
@@ -529,7 +526,7 @@ function renderFoodButtons() {
     "Chicken Stir Fry with Noodles": "chicken.png",
     "Red Wine": "wine.png",
     "Water": "water.png",
-    "Apple Juice": "apple juicee.png"
+    "Apple Juice": "apple juice.png"
   };
 
   list.forEach(item => {
