@@ -214,14 +214,18 @@ function animateSmokyPath(startLength, endLength) {
     const elapsed = timestamp - startTime;
     const progress = Math.min(elapsed / duration, 1);
     const currentLength = startLength + (endLength - startLength) * progress;
-
     const point = path.node().getPointAtLength(currentLength);
+    const nextPoint = path.node().getPointAtLength(Math.min(currentLength + 1, endLength));
+    const dx = nextPoint.x - point.x;
+    const dy = nextPoint.y - point.y;
+    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
     const graphRect = graph.node().getBoundingClientRect();
     const shipLeft = point.x + graphRect.left;
     const shipTop = point.y + graphRect.top - 20;
 
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
+    ship.style.transform = `rotate(${angle}deg)`;
 
     updatePromptPosition(shipLeft + 20, shipTop + 20);
     svg.append("circle")
@@ -229,7 +233,7 @@ function animateSmokyPath(startLength, endLength) {
       .attr("cy", point.y)
       .attr("r", Math.random() * 8 + 4)
       .attr("fill", "white")
-      .attr("opacity", 0.05 + Math.random() * 0.1) 
+      .attr("opacity", 0.05 + Math.random() * 0.1)
       .attr("filter", "url(#smoke-blur)");
 
     if (progress < 1) {
@@ -243,7 +247,6 @@ function animateSmokyPath(startLength, endLength) {
 
   requestAnimationFrame(step);
 }
-
 
 function getGlucoseAtHour(targetHour) {
   for (let i = 1; i < data.length; i++) {
