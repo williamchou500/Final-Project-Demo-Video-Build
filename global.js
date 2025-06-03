@@ -343,7 +343,7 @@ function promptNextMeal() {
 
 function renderFoodButtons() {
   foodButtons.innerHTML = "";
-  selectedFood = null;
+  selectedFoods = [];
 
   const mealType = mealStages[currentMealIndex];
   let list = [];
@@ -366,16 +366,26 @@ function renderFoodButtons() {
     input.value = 1;
     input.classList.add("quantity-input");
 
+    let isSelected = false;
+
     btn.addEventListener("click", () => {
-      document.querySelectorAll(".food-btn").forEach(b => b.classList.remove("selected"));
-      btn.classList.add("selected");
-      selectedFood = { ...item, quantity: parseInt(input.value) || 1 };
+      isSelected = !isSelected;
+      btn.classList.toggle("selected");
+
+      const quantity = parseInt(input.value) || 1;
+      const index = selectedFoods.findIndex(f => f.food === item.food);
+
+      if (isSelected) {
+        selectedFoods.push({ ...item, quantity });
+      } else {
+        if (index !== -1) selectedFoods.splice(index, 1);
+      }
     });
 
     input.addEventListener("input", () => {
-      if (btn.classList.contains("selected")) {
-        selectedFood = { ...item, quantity: parseInt(input.value) || 1 };
-      }
+      const quantity = parseInt(input.value) || 1;
+      const index = selectedFoods.findIndex(f => f.food === item.food);
+      if (index !== -1) selectedFoods[index].quantity = quantity;
     });
 
     container.appendChild(btn);
@@ -385,7 +395,7 @@ function renderFoodButtons() {
 }
 
 mealTimeSlider.addEventListener("input", () => {
-  sliderLabel.textContent = `${mealTimeSlider.value % 24}:00`;
+  sliderLabel.textContent = ${mealTimeSlider.value % 24}:00;
 });
 
 confirmTimeBtn.addEventListener("click", () => {
@@ -393,7 +403,7 @@ confirmTimeBtn.addEventListener("click", () => {
   timeInput.value = selectedHour;
   timeLabel.textContent = selectedHour % 24;
 
-  mealLabel.textContent = `Log your ${mealStages[currentMealIndex]}:`;
+  mealLabel.textContent = Log your ${mealStages[currentMealIndex]}:;
   promptBox.classList.add("hidden");
   mealForm.style.display = "block";
 
@@ -401,27 +411,35 @@ confirmTimeBtn.addEventListener("click", () => {
 });
 
 submitBtn.addEventListener("click", () => {
-  if (!selectedFood) {
-    alert("pick a food item first!");
+  if (selectedFoods.length === 0) {
+    alert("Pick at least one food item!");
     return;
   }
 
   const hour = parseInt(timeInput.value);
   const mealType = mealStages[currentMealIndex];
-  const { calories, carbs, sugars, protein, fiber, fat } = selectedFood;
   let gender = document.location.pathname.includes("/female/") ? 0 : 1;
 
-  const quantity = selectedFood.quantity || 1;
+  const quantityTotal = selectedFoods.reduce((acc, food) => {
+    const { quantity, calories, carbs, sugars, protein, fiber, fat } = food;
+    acc.calories += calories * quantity;
+    acc.carbs    += carbs    * quantity;
+    acc.sugars   += sugars   * quantity;
+    acc.protein  += protein  * quantity;
+    acc.fiber    += fiber    * quantity;
+    acc.fat      += fat      * quantity;
+    return acc;
+  }, { calories: 0, carbs: 0, sugars: 0, protein: 0, fiber: 0, fat: 0 });
 
   const increment =
-    calories * quantity * weights.calories +
-    carbs    * quantity * weights.total_carb +
-    sugars   * quantity * weights.sugar +
-    protein  * quantity * weights.protein +
-    fiber    * quantity * weights.dietary_fiber +
-    fat      * quantity * weights.total_fat +
-    hour     * weights.hour +
-    gender   * weights.gender;
+    quantityTotal.calories * weights.calories +
+    quantityTotal.carbs    * weights.total_carb +
+    quantityTotal.sugars   * weights.sugar +
+    quantityTotal.protein  * weights.protein +
+    quantityTotal.fiber    * weights.dietary_fiber +
+    quantityTotal.fat      * weights.total_fat +
+    hour                   * weights.hour +
+    gender                 * weights.gender;
 
   let currentGlucose = getGlucoseAtHour(hour);
 
@@ -456,16 +474,6 @@ submitBtn.addEventListener("click", () => {
   const peakHour = hour + 1;
   const peakValue = currentGlucose + increment;
 
-  if (peakHour >= 23) {
-    data.push({ hour: peakHour, glucose: peakValue });
-    drawLine();
-    setTimeout(() => {
-      const tooFlag = too_dangerous ? 1 : 0;
-      window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
-    }, 800); // optional pause
-    return;
-  }  
-
   if (peakValue > 180) danger_count++;
   if (peakValue >= 240) too_dangerous = true;
 
@@ -475,13 +483,11 @@ submitBtn.addEventListener("click", () => {
 
   if (currentMealIndex >= mealStages.length) {
     drawLine();
-    // jump to results.html and bring danger_count、too_dangerous 
-    // const tooFlag = too_dangerous ? 1 : 0;
-    // window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
   } else {
     drawLine();
   }
 });
+
 
 initializeShip();
 promptNextMeal();
