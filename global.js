@@ -7,7 +7,7 @@ const height = 800;
 console.log(width);
 
 const breakfast = [
-  {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
+  {food: "Coffee", calories: 3580.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
   {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
   {food: "Pepsi",  calories: 150.0, carbs: 41.0, sugars: 41.0, protein: 0.0,  fiber: 0.0, fat: 0.0},
   {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
@@ -205,6 +205,10 @@ defs.append("filter")
 
 function animateSmokyPath(startLength, endLength) {
   ship.style.display = "block";
+  let gender = "male";
+  if (document.location.pathname.includes("/female/")) {
+    gender = "female";
+  }
 
   const duration = 4000;
   let startTime = null;
@@ -226,12 +230,26 @@ function animateSmokyPath(startLength, endLength) {
   
     let shipTop = point.y + graphRect.top - ship.offsetHeight / 2;
     if (dy < 0) {
-      shipTop -=70;
+      shipTop -= 70;
     }
 
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
     ship.style.transform = `rotate(${angle}deg)`;
+    const currentGlucose = y.invert(point.y);
+    if (currentGlucose > 180) {
+      if (gender === "female" && !ship.src.includes("redF.png")) {
+        ship.src = "../images/redF.png";
+      } else if (gender === "male" && !ship.src.includes("redM.png")) {
+        ship.src = "../images/redM.png";
+      }
+    } else {
+      if (gender === "female" && !ship.src.includes("rocketg.png")) {
+        ship.src = "../images/rocketg.png";
+      } else if (gender === "male" && !ship.src.includes("rocketb.png")) {
+        ship.src = "../images/rocketb.png";
+      }
+    }
 
     updatePromptPosition(shipLeft + 20, shipTop + 20);
 
@@ -254,7 +272,6 @@ function animateSmokyPath(startLength, endLength) {
 
   requestAnimationFrame(step);
 }
-
 function getGlucoseAtHour(targetHour) {
   for (let i = 1; i < data.length; i++) {
     const prev = data[i - 1];
