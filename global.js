@@ -174,9 +174,11 @@ function drawLine() {
 
 function animateLineAndShip(startLength, endLength) {
   ship.style.display = "block";
-  const duration = 4000;
 
-  function animate(timestamp) {
+  const duration = 4000;
+  let startTime = null;
+
+  function step(timestamp) {
     if (!startTime) startTime = timestamp;
     const elapsed = timestamp - startTime;
     const progress = Math.min(elapsed / duration, 1);
@@ -192,7 +194,7 @@ function animateLineAndShip(startLength, endLength) {
     ship.style.top = `${point.y + graphRect.top - 20}px`;
 
     if (progress < 1) {
-      requestAnimationFrame(animate);
+      requestAnimationFrame(step);
     } else {
       // Draw dots
       svg.selectAll(".dot").data(data)
