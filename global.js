@@ -227,7 +227,7 @@ function animateSmokyPath(startLength, endLength) {
     svg.append("circle")
       .attr("cx", point.x)
       .attr("cy", point.y)
-      .attr("r", Math.random() * 4 + 2)
+      .attr("r", Math.random() * 8 + 4)
       .attr("fill", "white")
       .attr("opacity", 0.05 + Math.random() * 0.1) 
       .attr("filter", "url(#smoke-blur)");
