@@ -226,7 +226,7 @@ function animateSmokyPath(startLength, endLength) {
   
     let shipTop = point.y + graphRect.top - ship.offsetHeight / 2;
     if (dy < 0) {
-      shipTop -=50;
+      shipTop -=90;
     }
 
     ship.style.left = `${shipLeft}px`;
