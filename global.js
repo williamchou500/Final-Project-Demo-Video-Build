@@ -7,7 +7,7 @@ const height = 800;
 console.log(width);
 
 const breakfast = [
-  {food: "Coffee", calories: 3580.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
+  {food: "Coffee", calories: 2080.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
   {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
   {food: "Pepsi",  calories: 150.0, carbs: 41.0, sugars: 41.0, protein: 0.0,  fiber: 0.0, fat: 0.0},
   {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
@@ -246,7 +246,7 @@ function animateSmokyPath(startLength, endLength) {
     } else {
       if (gender === "female" && !ship.src.includes("rocketg.png")) {
         ship.src = "../images/rocketg.png";
-      } else if (gender === "male" && !ship.src.includes("rocketb.png")) {
+      } else if (gender === "male" && !ship.src.includes("rocketm.png")) {
         ship.src = "../images/rocketb.png";
       }
     }
