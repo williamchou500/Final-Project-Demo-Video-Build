@@ -82,3 +82,20 @@ label, select, input {
 #sliderLabel {
   color: white;
 }
+
+.food-btn {
+  padding: 10px 15px;
+  margin: 5px;
+  border-radius: 6px;
+  border: 2px solid #ccc;
+  background-color: #fff;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.food-btn.selected {
+  background-color: #2196F3;
+  color: white;
+  border-color: #2196F3;
+  font-weight: bold;
+}
