@@ -247,7 +247,7 @@ function animateSmokyPath(startLength, endLength) {
       if (gender === "female" && !ship.src.includes("rocketg.png")) {
         ship.src = "../images/rocketg.png";
       } else if (gender === "male" && !ship.src.includes("rocketm.png")) {
-        ship.src = "../images/rocketb.png";
+        ship.src = "../images/rocketm.png";
       }
     }
 
