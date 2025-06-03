@@ -45,8 +45,8 @@ label, select, input {
 
 #ship {
   position: absolute;
-  width: 100px; /* Adjust size */
-  height: 100px;
+  width: 200px; /* Adjust size */
+  height: auto;
   pointer-events: none; /* So it doesn’t interfere with UI */
   transform: translate(-50%, -50%) rotate(0deg); /* Center the ship on the coordinate */
   transition: transform 0.1s linear;
