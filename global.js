@@ -353,15 +353,34 @@ function renderFoodButtons() {
   else if (mealType === "dinner") list = dinner;
 
   list.forEach(item => {
+    const container = document.createElement("div");
+    container.classList.add("food-item");
+
     const btn = document.createElement("button");
     btn.textContent = item.food;
     btn.classList.add("food-btn");
+
+    const input = document.createElement("input");
+    input.type = "number";
+    input.min = 1;
+    input.value = 1;
+    input.classList.add("quantity-input");
+
     btn.addEventListener("click", () => {
       document.querySelectorAll(".food-btn").forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
-      selectedFood = item;
+      selectedFood = { ...item, quantity: parseInt(input.value) || 1 };
     });
-    foodButtons.appendChild(btn);
+
+    input.addEventListener("input", () => {
+      if (btn.classList.contains("selected")) {
+        selectedFood = { ...item, quantity: parseInt(input.value) || 1 };
+      }
+    });
+
+    container.appendChild(btn);
+    container.appendChild(input);
+    foodButtons.appendChild(container);
   });
 }
 
@@ -392,13 +411,15 @@ submitBtn.addEventListener("click", () => {
   const { calories, carbs, sugars, protein, fiber, fat } = selectedFood;
   let gender = document.location.pathname.includes("/female/") ? 0 : 1;
 
+  const quantity = selectedFood.quantity || 1;
+
   const increment =
-    calories * weights.calories +
-    carbs    * weights.total_carb +
-    sugars   * weights.sugar +
-    protein  * weights.protein +
-    fiber    * weights.dietary_fiber +
-    fat      * weights.total_fat +
+    calories * quantity * weights.calories +
+    carbs    * quantity * weights.total_carb +
+    sugars   * quantity * weights.sugar +
+    protein  * quantity * weights.protein +
+    fiber    * quantity * weights.dietary_fiber +
+    fat      * quantity * weights.total_fat +
     hour     * weights.hour +
     gender   * weights.gender;
 
