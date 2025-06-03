@@ -139,6 +139,7 @@ let selectedFood = null;
 
 function drawLine() {
   svg.selectAll(".glucose-line").remove();
+
   const path = svg.append("path")
     .datum(data)
     .attr("class", "glucose-line")
@@ -191,7 +192,6 @@ function drawLine() {
 
   requestAnimationFrame(animateShip);
 }
-
 
 function getGlucoseAtHour(targetHour) {
   for (let i = 1; i < data.length; i++) {
