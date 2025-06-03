@@ -5,7 +5,7 @@ const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
 console.log(width);
-const ceilingGlucose = 220;
+const ceilingGlucose = 240;
 const breakfast = [
   {food: "Coffee", calories: 780.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
   {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
@@ -214,7 +214,7 @@ function createBangEffect(x, y) {
 
   bang.transition()
     .duration(600) 
-    .attr("r", 70)
+    .attr("r", 90)
     .attr("opacity", 0)
     .remove();
 }
@@ -240,6 +240,25 @@ function animateSmokyPath(startLength, endLength) {
     const dx = nextPoint.x - point.x;
     const dy = nextPoint.y - point.y;
     const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+    const currentGlucose = y.invert(point.y);
+    if (currentGlucose >= ceilingGlucose) {
+      const ceilingY = y(ceilingGlucose);
+      const graphRect = graph.node().getBoundingClientRect();
+      const adjustedShipTop = ceilingY + graphRect.top - ship.offsetHeight / 2;
+      ship.style.left = `${shipLeft}px`;      
+      ship.style.top = `${adjustedShipTop}px`; 
+      ship.style.transform = `rotate(${angle}deg)`; 
+
+      createBangEffect(point.x, ceilingY);
+
+      if (gender === "female") {
+        ship.src = "../images/deadF.png";
+      } else {
+        ship.src = "../images/deadM.png";
+      }
+
+      return;
+    }
 
     const graphRect = graph.node().getBoundingClientRect();
     const shipLeft = point.x + graphRect.left;
@@ -252,23 +271,6 @@ function animateSmokyPath(startLength, endLength) {
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
     ship.style.transform = `rotate(${angle}deg)`;
-    const currentGlucose = y.invert(point.y);
-    if (currentGlucose >= ceilingGlucose) {
-      const ceilingY = y(ceilingGlucose);
-      const graphRect = graph.node().getBoundingClientRect();
-      const adjustedShipTop = ceilingY + graphRect.top - ship.offsetHeight / 2;
-      ship.style.top = `${adjustedShipTop}px`;
-
-      createBangEffect(point.x, ceilingY);
-
-      if (gender === "female") {
-        ship.src = "../images/deadF.png";
-      } else {
-        ship.src = "../images/deadM.png";
-      }
-
-      return;
-    }
     if (currentGlucose > 180) {
       if (gender === "female" && !ship.src.includes("redF.png")) {
         ship.src = "../images/redF.png";
