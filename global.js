@@ -24,6 +24,7 @@ const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
 let danger_count = 0;
+let too_dangerous = false;
 const ceilingGlucose = 240;
 
 const breakfast = [
