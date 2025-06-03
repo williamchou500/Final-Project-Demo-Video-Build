@@ -340,7 +340,7 @@ function promptNextMeal() {
   const shipRect = ship.getBoundingClientRect();
   updatePromptPosition(shipRect.left, shipRect.top);
 }
-
+let selectedFoods = [];
 function renderFoodButtons() {
   foodButtons.innerHTML = "";
   selectedFoods = [];
@@ -395,7 +395,7 @@ function renderFoodButtons() {
 }
 
 mealTimeSlider.addEventListener("input", () => {
-  sliderLabel.textContent = ${mealTimeSlider.value % 24}:00;
+  sliderLabel.textContent = `${mealTimeSlider.value % 24}:00`;
 });
 
 confirmTimeBtn.addEventListener("click", () => {
@@ -403,7 +403,7 @@ confirmTimeBtn.addEventListener("click", () => {
   timeInput.value = selectedHour;
   timeLabel.textContent = selectedHour % 24;
 
-  mealLabel.textContent = Log your ${mealStages[currentMealIndex]}:;
+  mealLabel.textContent = `Log your ${mealStages[currentMealIndex]}:`;
   promptBox.classList.add("hidden");
   mealForm.style.display = "block";
 
