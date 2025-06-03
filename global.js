@@ -718,7 +718,3 @@ submitBtn.addEventListener("click", () => {
 });
 
 
-initializeShip();
-promptNextMeal();
-
-
