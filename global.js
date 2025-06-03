@@ -5,7 +5,7 @@ const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
 console.log(width);
-
+const ceilingGlucose = 240;
 const breakfast = [
   {food: "Coffee", calories: 780.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
   {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
@@ -203,6 +203,22 @@ defs.append("filter")
   .attr("in", "SourceGraphic")
   .attr("stdDeviation", 2); 
 
+function createBangEffect(x, y) {
+  const bang = svg.append("circle")
+    .attr("cx", x)
+    .attr("cy", y)
+    .attr("r", 0)
+    .attr("fill", "white")
+    .attr("opacity", 0.8)
+    .attr("filter", "url(#smoke-blur)");
+
+  bang.transition()
+    .duration(500)
+    .attr("r", 40) 
+    .attr("opacity", 0)
+    .remove();
+}
+
 function animateSmokyPath(startLength, endLength) {
   ship.style.display = "block";
   let gender = "male";
@@ -237,6 +253,15 @@ function animateSmokyPath(startLength, endLength) {
     ship.style.top = `${shipTop}px`;
     ship.style.transform = `rotate(${angle}deg)`;
     const currentGlucose = y.invert(point.y);
+    if (currentGlucose >= ceilingGlucose) {
+      createBangEffect(point.x, point.y);
+    if (gender === "female") {
+      ship.src = "../images/deadF.png";
+    } else {
+      ship.src = "../images/deadM.png";
+    }
+    return;
+    }
     if (currentGlucose > 180) {
       if (gender === "female" && !ship.src.includes("redF.png")) {
         ship.src = "../images/redF.png";
@@ -250,6 +275,7 @@ function animateSmokyPath(startLength, endLength) {
         ship.src = "../images/rocketm.png";
       }
     }
+    
 
     updatePromptPosition(shipLeft + 20, shipTop + 20);
 
