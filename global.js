@@ -264,7 +264,7 @@ function animateSmokyPath(startLen, endLen) {
     updatePromptPosition(shipLeft + 20, shipTop + 20);
     svg.append("circle")
       .attr("cx", point.x)
-      .attr("cy", point.y - shipYOffset)
+      .attr("cy", point.y + shipYOffset)
       .attr("r", Math.random() * 8 + 4)
       .attr("fill", "white")
       .attr("opacity", 0.05 + Math.random() * 0.1)
