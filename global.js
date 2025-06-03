@@ -251,6 +251,7 @@ function animateSmokyPath(startLen, endLen) {
       
       setTimeout(() => {
         const tooFlag = 1;
+        localStorage.setItem("glucoseData", JSON.stringify(data));  
         window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
       }, 800);
       
@@ -298,6 +299,7 @@ function animateSmokyPath(startLen, endLen) {
         } else {
           setTimeout(() => {
             const tooFlag = too_dangerous ? 1 : 0;
+            localStorage.setItem("glucoseData", JSON.stringify(data));  
             window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
           }, 1000); // slight pause after animation
         }
@@ -472,6 +474,17 @@ submitBtn.addEventListener("click", () => {
 
   const peakHour = hour + 1;
   const peakValue = currentGlucose + increment;
+
+  if (peakHour >= 27) {
+    data.push({ hour: peakHour, glucose: currentGlucose + increment });
+    localStorage.setItem("glucoseData", JSON.stringify(data));
+    drawLine();
+    setTimeout(() => {
+      const tooFlag = too_dangerous ? 1 : 0;
+      window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
+    }, 1000); // optional pause for animation
+    return;
+  }
 
   if (peakValue > 180) danger_count++;
   if (peakValue >= 240) too_dangerous = true;
