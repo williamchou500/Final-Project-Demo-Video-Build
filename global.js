@@ -140,20 +140,10 @@ const foodButtons    = document.getElementById("foodButtons");
 const submitBtn      = document.getElementById("submit");
 const ship           = document.getElementById("ship");
 
-let danger_count = 0;
-let too_dangerous = false;
-
-let total_carbs = 0;
-let total_sugars = 0;
-let total_protein = 0;
-let total_fiber = 0;
-let total_fat = 0;
-
 let selectedFood = null;
 let path = null;
 let previousLength = 0;
 
-// Initialize ship position at starting point (4:00 AM, 110 glucose)
 function initializeShip() {
   ship.style.display = "block";
   const startX = x(4);
@@ -161,10 +151,9 @@ function initializeShip() {
   const graphRect = graph.node().getBoundingClientRect();
   ship.style.left = `${startX + graphRect.left}px`;
   ship.style.top = `${startY + graphRect.top - 20}px`;
-  // Position prompt next to ship
   updatePromptPosition(startX + graphRect.left, startY + graphRect.top);
 }
-  // Function to update prompt position next to ship
+
 function updatePromptPosition(shipX, shipY) {
   if (promptBox && !promptBox.classList.contains("hidden")) {
     promptBox.style.position = "absolute";
@@ -427,7 +416,7 @@ submitBtn.addEventListener("click", () => {
 
   if (currentMealIndex >= mealStages.length) {
     drawLine();
-    // jump to results.html, bring danger_count、too_dangerous to URL 
+    // jump to results.html and bring danger_count、too_dangerous 
     const tooFlag = too_dangerous ? 1 : 0;
     window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
   } else {
