@@ -220,13 +220,15 @@ function animateSmokyPath(startLength, endLength) {
     const dy = nextPoint.y - point.y;
     const angle = Math.atan2(dy, dx) * (180 / Math.PI);
     const graphRect = graph.node().getBoundingClientRect();
-   const shipLeft = point.x + graphRect.left;
-  const shipTop = point.y + graphRect.top - (ship.offsetHeight / 2);
-
-
-    ship.style.left = `${shipLeft}px`;
-    ship.style.top = `${shipTop}px`;
-    ship.style.transform = `rotate(${angle}deg)`;
+    const shipLeft = point.x + graphRect.left;
+    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+  let verticalOffset = -ship.offsetHeight / 2;
+  if (angle < -45 || angle > 135) {
+    verticalOffset -= 10;
+  }
+  ship.style.left = `${shipLeft}px`;
+  ship.style.top = `${point.y + graphRect.top + verticalOffset}px`;
+  ship.style.transform = `rotate(${angle}deg)`;
 
     updatePromptPosition(shipLeft + 20, shipTop + 20);
     svg.append("circle")
