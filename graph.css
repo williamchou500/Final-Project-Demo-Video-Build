@@ -147,3 +147,16 @@ label, select, input {
 #timeLabel {
   display: none;
 }
+
+#restartBtn {
+  margin-top: 30px;
+  font-size: 1rem;
+  padding: 10px 20px;
+  font-family: 'Orbitron', sans-serif;
+  background: #222;
+  color: white;
+  border: 1px solid #555;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
