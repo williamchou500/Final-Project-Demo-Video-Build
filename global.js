@@ -221,6 +221,7 @@ function createBangEffect(x, y) {
 
 function animateSmokyPath(startLength, endLength) {
   ship.style.display = "block";
+
   let gender = "male";
   if (document.location.pathname.includes("/female/")) {
     gender = "female";
@@ -240,15 +241,18 @@ function animateSmokyPath(startLength, endLength) {
     const dx = nextPoint.x - point.x;
     const dy = nextPoint.y - point.y;
     const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
     const currentGlucose = y.invert(point.y);
-    if (currentGlucose >= ceilingGlucose) {
+    const nextGlucose = y.invert(nextPoint.y); 
+    if (nextGlucose >= ceilingGlucose) {
       const ceilingY = y(ceilingGlucose);
       const graphRect = graph.node().getBoundingClientRect();
       const shipLeft = point.x + graphRect.left;
       const adjustedShipTop = ceilingY + graphRect.top - ship.offsetHeight / 2;
-      ship.style.left = `${shipLeft}px`;      
-      ship.style.top = `${adjustedShipTop}px`; 
-      ship.style.transform = `rotate(${angle}deg)`; 
+
+      ship.style.left = `${shipLeft}px`;
+      ship.style.top = `${adjustedShipTop}px`;
+      ship.style.transform = `rotate(${angle}deg)`;
 
       createBangEffect(point.x, ceilingY);
 
@@ -260,10 +264,9 @@ function animateSmokyPath(startLength, endLength) {
 
       return;
     }
-
     const graphRect = graph.node().getBoundingClientRect();
     const shipLeft = point.x + graphRect.left;
-  
+
     let shipTop = point.y + graphRect.top - ship.offsetHeight / 2;
     if (dy < 0) {
       shipTop -= 70;
@@ -285,10 +288,8 @@ function animateSmokyPath(startLength, endLength) {
         ship.src = "../images/rocketm.png";
       }
     }
-    
 
     updatePromptPosition(shipLeft + 20, shipTop + 20);
-
     svg.append("circle")
       .attr("cx", point.x)
       .attr("cy", point.y)
