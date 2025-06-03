@@ -260,11 +260,11 @@ function animateSmokyPath(startLen, endLen) {
       if (gender === "female" && !ship.src.includes("rocketg.png")) ship.src = "../images/rocketg.png";
       else if (gender === "male" && !ship.src.includes("rocketm.png")) ship.src = "../images/rocketm.png";
     }
-
+    const shipYOffset = ship.offsetHeight / 2;
     updatePromptPosition(shipLeft + 20, shipTop + 20);
     svg.append("circle")
       .attr("cx", point.x)
-      .attr("cy", point.y)
+      .attr("cy", point.y - shipYOffset)
       .attr("r", Math.random() * 8 + 4)
       .attr("fill", "white")
       .attr("opacity", 0.05 + Math.random() * 0.1)
