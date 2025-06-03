@@ -1,9 +1,10 @@
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
-const svg = graph.append("svg").attr("width", "80%").attr("height", 800);
+const svg = graph.append("svg").attr("width", "100%").attr("height", 800);
 const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
+console.log(width);
 
 const breakfast = [
   {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
@@ -43,11 +44,17 @@ const line = d3.line()
   .y(d => y(d.glucose))
   .curve(d3.curveMonotoneX);
 
-
 const xAxis = svg.append("g")
   .attr("transform", `translate(0,${height - 50})`)
   .attr("stroke", "white")
-  .call(d3.axisBottom(x).ticks(24).tickFormat(d => `${(d % 24).toString().padStart(2, '0')}:00`))
+  .call(
+    d3.axisBottom(x)
+      .tickValues(d3.range(4, 28))  // Ensure every hour is a tick
+      .tickFormat(d => {
+        const hour = d >= 24 ? d - 24 : d;
+        return `${hour.toString().padStart(2, '0')}:00`;
+      })
+  );
 
 xAxis.select("path.domain").attr("stroke", "white");
 xAxis.selectAll("line").attr("stroke", "white");

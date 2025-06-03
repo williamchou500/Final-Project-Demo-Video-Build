@@ -17,10 +17,11 @@ body {
 }
 
 #graph {
-  width: 100%;
+  width: 80%;
   height: 800px;
   background: transparent;
   text-align: center;
+  margin: 0 auto;
 }
 
 #mealForm {
@@ -39,6 +40,7 @@ label, select, input {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  text-align: center;
 }
 
 #ship {
