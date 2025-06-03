@@ -179,9 +179,9 @@ function updatePromptPosition(shipX, shipY) {
 
 function drawLine() {
   if (!path) {
-  
     path = svg.append("path")
       .datum(data)
+      .attr("class", "glucose-line")
       .attr("fill", "none")
       .attr("stroke", "none")
       .attr("d", line);
@@ -192,11 +192,18 @@ function drawLine() {
   }
 
   const newLength = path.node().getTotalLength();
-  animateBlurredPathAndShip(previousLength, newLength);
+  const segmentLength = newLength - previousLength;
+  animateSmokyPath(previousLength, newLength);
   previousLength = newLength;
 }
+const defs = svg.append("defs");
+defs.append("filter")
+  .attr("id", "smoke-blur")
+  .append("feGaussianBlur")
+  .attr("in", "SourceGraphic")
+  .attr("stdDeviation", 2); 
 
-function animateBlurredPathAndShip(startLength, endLength) {
+function animateSmokyPath(startLength, endLength) {
   ship.style.display = "block";
 
   const duration = 4000;
@@ -217,7 +224,13 @@ function animateBlurredPathAndShip(startLength, endLength) {
     ship.style.top = `${shipTop}px`;
 
     updatePromptPosition(shipLeft + 20, shipTop + 20);
-    createBlurredCircle(point.x, point.y);
+    svg.append("circle")
+      .attr("cx", point.x)
+      .attr("cy", point.y)
+      .attr("r", Math.random() * 4 + 2)
+      .attr("fill", "white")
+      .attr("opacity", 0.05 + Math.random() * 0.1) 
+      .attr("filter", "url(#smoke-blur)");
 
     if (progress < 1) {
       requestAnimationFrame(step);
@@ -229,29 +242,6 @@ function animateBlurredPathAndShip(startLength, endLength) {
   }
 
   requestAnimationFrame(step);
-}
-function createBlurredCircle(x, y) {
-  const randomRadius = 4 + Math.random() * 8;
-  const blurFilterId = "blurFilter";
-
-  if (!svg.select(`#${blurFilterId}`).node()) {
-    svg.append("defs")
-      .append("filter")
-      .attr("id", blurFilterId)
-      .append("feGaussianBlur")
-      .attr("stdDeviation", 3);
-  }
-
-  svg.append("circle")
-    .attr("cx", x)
-    .attr("cy", y)
-    .attr("r", randomRadius)
-    .attr("fill", "rgba(255,255,255,0.2)")
-    .attr("filter", `url(#${blurFilterId})`)
-    .transition()
-    .duration(3000)
-    .attr("opacity", 0)
-    .remove();
 }
 
 
