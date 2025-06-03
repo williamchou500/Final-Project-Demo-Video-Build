@@ -179,32 +179,24 @@ function updatePromptPosition(shipX, shipY) {
 
 function drawLine() {
   if (!path) {
+  
     path = svg.append("path")
       .datum(data)
-      .attr("class", "glucose-line")
       .attr("fill", "none")
-      .attr("stroke", "white")
-      .attr("stroke-width", 2)
+      .attr("stroke", "none")
       .attr("d", line);
 
     previousLength = 0;
-    path.attr("stroke-dasharray", `${previousLength} ${previousLength}`);
-    path.attr("stroke-dashoffset", previousLength);
   } else {
     path.datum(data).attr("d", line);
   }
 
   const newLength = path.node().getTotalLength();
-  const segmentLength = newLength - previousLength;
-
-  path.attr("stroke-dasharray", `${newLength} ${newLength}`);
-  path.attr("stroke-dashoffset", segmentLength);
-
-  animateLineAndShip(previousLength, newLength);
+  animateBlurredPathAndShip(previousLength, newLength);
   previousLength = newLength;
 }
 
-function animateLineAndShip(startLength, endLength) {
+function animateBlurredPathAndShip(startLength, endLength) {
   ship.style.display = "block";
 
   const duration = 4000;
@@ -216,33 +208,20 @@ function animateLineAndShip(startLength, endLength) {
     const progress = Math.min(elapsed / duration, 1);
     const currentLength = startLength + (endLength - startLength) * progress;
 
-    // Update line stroke offset
-    path.attr("stroke-dashoffset", endLength - currentLength);
-
-    // Move ship
     const point = path.node().getPointAtLength(currentLength);
     const graphRect = graph.node().getBoundingClientRect();
     const shipLeft = point.x + graphRect.left;
     const shipTop = point.y + graphRect.top - 20;
-    
+
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
-    
-    // Update prompt position to follow ship
+
     updatePromptPosition(shipLeft + 20, shipTop + 20);
+    createBlurredCircle(point.x, point.y);
 
     if (progress < 1) {
       requestAnimationFrame(step);
     } else {
-      // Draw dots
-      svg.selectAll(".dot").data(data)
-        .join("circle")
-        .attr("class", "dot")
-        .attr("cx", d => x(d.hour))
-        .attr("cy", d => y(d.glucose))
-        .attr("r", 4)
-        .attr("fill", "orange");
-
       if (currentMealIndex < mealStages.length) {
         setTimeout(promptNextMeal, 500);
       }
@@ -250,6 +229,29 @@ function animateLineAndShip(startLength, endLength) {
   }
 
   requestAnimationFrame(step);
+}
+function createBlurredCircle(x, y) {
+  const randomRadius = 4 + Math.random() * 8;
+  const blurFilterId = "blurFilter";
+
+  if (!svg.select(`#${blurFilterId}`).node()) {
+    svg.append("defs")
+      .append("filter")
+      .attr("id", blurFilterId)
+      .append("feGaussianBlur")
+      .attr("stdDeviation", 3);
+  }
+
+  svg.append("circle")
+    .attr("cx", x)
+    .attr("cy", y)
+    .attr("r", randomRadius)
+    .attr("fill", "rgba(255,255,255,0.2)")
+    .attr("filter", `url(#${blurFilterId})`)
+    .transition()
+    .duration(3000)
+    .attr("opacity", 0)
+    .remove();
 }
 
 
