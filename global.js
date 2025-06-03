@@ -244,6 +244,7 @@ function animateSmokyPath(startLength, endLength) {
     if (currentGlucose >= ceilingGlucose) {
       const ceilingY = y(ceilingGlucose);
       const graphRect = graph.node().getBoundingClientRect();
+      const shipLeft = point.x + graphRect.left;
       const adjustedShipTop = ceilingY + graphRect.top - ship.offsetHeight / 2;
       ship.style.left = `${shipLeft}px`;      
       ship.style.top = `${adjustedShipTop}px`; 
