@@ -1,6 +1,6 @@
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
-const svg = graph.append("svg").attr("width", "100%").attr("height", 800);
+const svg = graph.append("svg").attr("width", "90%").attr("height", 800);
 const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
@@ -51,6 +51,34 @@ svg.append("g")
 svg.append("g")
   .attr("transform", `translate(50,0)`)
   .call(d3.axisLeft(y));
+
+// Y axis label
+svg.append("text")
+  .attr("transform", "rotate(-90)")
+  .attr("y", 15)          // position left side, tweak as needed
+  .attr("x", -height / 2)
+  .attr("dy", "-3.5em")   // vertical shift
+  .attr("text-anchor", "middle")
+  .attr("font-size", "14px")
+  .attr("fill", "black")
+  .text("Glucose (mg/dL)");
+
+svg.append("line")
+  .attr("x1", 50)
+  .attr("x2", width - 50)
+  .attr("y1", y(180))
+  .attr("y2", y(180))
+  .attr("stroke", "red")
+  .attr("stroke-width", 2)
+  .attr("stroke-dasharray", "6,6");
+
+svg.append("rect")
+  .attr("x", 50)
+  .attr("y", 50)                  // top of the chart area (lowest y value)
+  .attr("width", width - 100)
+  .attr("height", y(180) - 50)   // height from top down to y(180)
+  .attr("fill", "red")
+  .attr("opacity", 0.3);
 
 let data = [{ hour: 4, glucose: 110 }];
 const baseline = 110;
