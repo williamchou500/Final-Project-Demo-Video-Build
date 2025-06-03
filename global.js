@@ -209,12 +209,12 @@ function createBangEffect(x, y) {
     .attr("cy", y)
     .attr("r", 0)
     .attr("fill", "white")
-    .attr("opacity", 0.8)
+    .attr("opacity", 0.9)
     .attr("filter", "url(#smoke-blur)");
 
   bang.transition()
-    .duration(500)
-    .attr("r", 40) 
+    .duration(600) 
+    .attr("r", 70)
     .attr("opacity", 0)
     .remove();
 }
@@ -254,13 +254,20 @@ function animateSmokyPath(startLength, endLength) {
     ship.style.transform = `rotate(${angle}deg)`;
     const currentGlucose = y.invert(point.y);
     if (currentGlucose >= ceilingGlucose) {
-      createBangEffect(point.x, point.y);
-    if (gender === "female") {
-      ship.src = "../images/deadF.png";
-    } else {
-      ship.src = "../images/deadM.png";
-    }
-    return;
+      const ceilingY = y(ceilingGlucose);
+      const graphRect = graph.node().getBoundingClientRect();
+      const adjustedShipTop = ceilingY + graphRect.top - ship.offsetHeight / 2;
+      ship.style.top = `${adjustedShipTop}px`;
+
+      createBangEffect(point.x, ceilingY);
+
+      if (gender === "female") {
+        ship.src = "../images/deadF.png";
+      } else {
+        ship.src = "../images/deadM.png";
+      }
+
+      return;
     }
     if (currentGlucose > 180) {
       if (gender === "female" && !ship.src.includes("redF.png")) {
