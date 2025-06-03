@@ -19,7 +19,6 @@ const breakfast = [
   {food: "Orange Juice (1 glass)", calories: 110.0, carbs: 26.0, sugars: 21.0, protein: 2.0, fiber: 0.5, fat: 0.5},
   {food: "Cappuccino (1 cup)", calories: 60.0, carbs: 6.0, sugars: 5.0, protein: 3.0, fiber: 0.0, fat: 3.0},
   {food: "Water (1 glass)", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
-  {food: "Milk (1 glass)", calories: 120.0, carbs: 12.0, sugars: 12.0, protein: 8.0, fiber: 0.0, fat: 5.0},
   {food: "Oatmeal", calories: 150.0, carbs: 27.0, sugars: 1.0, protein: 5.0, fiber: 4.0, fat: 3.0},
   {food: "Avocado Toast", calories: 220.0, carbs: 20.0, sugars: 1.0, protein: 5.0, fiber: 5.0, fat: 14.0}
 ];
