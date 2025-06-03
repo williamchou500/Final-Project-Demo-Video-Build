@@ -2,6 +2,20 @@
 let danger_count = 0;
 let too_dangerous = false;
 
+const queryParams = new URLSearchParams(window.location.search);
+if (queryParams.get("restart") === "1") {
+  // Reset all global state
+  danger_count = 0;
+  too_dangerous = false;
+  data = [{ hour: 4, glucose: 110 }];
+  currentMealIndex = 0;
+  lastMeal = null;
+
+  // Optional: clear localStorage if needed
+  // localStorage.removeItem("glucoseData");
+}
+
+
 
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
@@ -16,9 +30,9 @@ const breakfast = [
   {food: "Bacon", calories: 180.0, carbs: 1.4, sugars: 0.0, protein: 12.0, fiber: 0.0, fat: 15.0},
   {food: "Pancakes with Syrup", calories: 350.0, carbs: 60.0, sugars: 14.0, protein: 6.0, fiber: 1.0, fat: 9.0},
   {food: "Bagel with Cream Cheese", calories: 290.0, carbs: 36.0, sugars: 5.0, protein: 9.0, fiber: 2.0, fat: 11.0},
-  {food: "Orange Juice (1 glass)", calories: 110.0, carbs: 26.0, sugars: 21.0, protein: 2.0, fiber: 0.5, fat: 0.5},
-  {food: "Cappuccino (1 cup)", calories: 60.0, carbs: 6.0, sugars: 5.0, protein: 3.0, fiber: 0.0, fat: 3.0},
-  {food: "Water (1 glass)", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Orange Juice", calories: 110.0, carbs: 26.0, sugars: 21.0, protein: 2.0, fiber: 0.5, fat: 0.5},
+  {food: "Cappuccino", calories: 60.0, carbs: 6.0, sugars: 5.0, protein: 3.0, fiber: 0.0, fat: 3.0},
+  {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
   {food: "Oatmeal", calories: 150.0, carbs: 27.0, sugars: 1.0, protein: 5.0, fiber: 4.0, fat: 3.0},
   {food: "Avocado Toast", calories: 220.0, carbs: 20.0, sugars: 1.0, protein: 5.0, fiber: 5.0, fat: 14.0}
 ];
@@ -28,29 +42,27 @@ const snack = [
   {food: "Cheese Sticks", calories: 80.0, carbs: 1.0, sugars: 0.5, protein: 6.0, fiber: 0.0, fat: 6.0},
   {food: "Apple Slices with Peanut Butter", calories: 150.0, carbs: 18.0, sugars: 9.0, protein: 4.0, fiber: 3.0, fat: 8.0},
   {food: "Crackers with Hummus", calories: 200.0, carbs: 22.0, sugars: 1.0, protein: 5.0, fiber: 3.0, fat: 10.0},
-  {food: "Iced Tea (sweetened)", calories: 90.0, carbs: 23.0, sugars: 22.0, protein: 0.0, fiber: 0.0, fat: 0.0},
-  {food: "Smoothie (fruit blend, 8 oz)", calories: 140.0, carbs: 30.0, sugars: 25.0, protein: 2.0, fiber: 2.0, fat: 1.0},
-  {food: "Sparkling Water (flavored)", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
+  {food: "Iced Tea", calories: 90.0, carbs: 23.0, sugars: 22.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Smoothie", calories: 140.0, carbs: 30.0, sugars: 25.0, protein: 2.0, fiber: 2.0, fat: 1.0},
+  {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
 ];
 const lunch = [
   {food: "Grilled Chicken Sandwich", calories: 430.0, carbs: 40.0, sugars: 6.0, protein: 35.0, fiber: 3.0, fat: 15.0},
   {food: "Cheeseburger", calories: 520.0, carbs: 35.0, sugars: 7.0, protein: 25.0, fiber: 2.0, fat: 30.0},
   {food: "Caesar Salad with Chicken", calories: 410.0, carbs: 10.0, sugars: 2.0, protein: 30.0, fiber: 3.0, fat: 28.0},
-  {food: "Turkey Wrap", calories: 390.0, carbs: 30.0, sugars: 3.0, protein: 22.0, fiber: 2.5, fat: 20.0},
   {food: "Vegetable Stir Fry with Rice", calories: 450.0, carbs: 55.0, sugars: 8.0, protein: 10.0, fiber: 5.0, fat: 15.0},
   {food: "Lemonade", calories: 120.0, carbs: 31.0, sugars: 29.0, protein: 0.0, fiber: 0.0, fat: 0.0},
   {food: "Iced Coffee with Cream", calories: 90.0, carbs: 10.0, sugars: 7.0, protein: 2.0, fiber: 0.0, fat: 4.0},
-  {food: "Water (1 glass)", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
+  {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
 ];
 const dinner = [
   {food: "Grilled Salmon with Veggies", calories: 520.0, carbs: 10.0, sugars: 3.0, protein: 40.0, fiber: 4.0, fat: 32.0},
   {food: "Spaghetti with Marinara Sauce", calories: 480.0, carbs: 65.0, sugars: 9.0, protein: 15.0, fiber: 6.0, fat: 12.0},
-  {food: "Beef Tacos (2)", calories: 560.0, carbs: 30.0, sugars: 3.0, protein: 28.0, fiber: 4.0, fat: 36.0},
+  {food: "Beef Tacos", calories: 560.0, carbs: 30.0, sugars: 3.0, protein: 28.0, fiber: 4.0, fat: 36.0},
   {food: "Chicken Stir Fry with Noodles", calories: 510.0, carbs: 45.0, sugars: 6.0, protein: 32.0, fiber: 4.0, fat: 20.0},
-  {food: "Vegetable Curry with Rice", calories: 490.0, carbs: 55.0, sugars: 7.0, protein: 10.0, fiber: 5.0, fat: 22.0},
-  {food: "Red Wine (5 oz)", calories: 125.0, carbs: 4.0, sugars: 1.0, protein: 0.1, fiber: 0.0, fat: 0.0},
-  {food: "Sparkling Water (unsweetened)", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
-  {food: "Apple Juice (1 glass)", calories: 110.0, carbs: 28.0, sugars: 24.0, protein: 0.5, fiber: 0.2, fat: 0.3}
+  {food: "Red Wine", calories: 125.0, carbs: 4.0, sugars: 1.0, protein: 0.1, fiber: 0.0, fat: 0.0},
+  {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Apple Juice", calories: 110.0, carbs: 28.0, sugars: 24.0, protein: 0.5, fiber: 0.2, fat: 0.3}
 ];
 
 const x = d3.scaleLinear().domain([4, 27]).range([50, width - 50]);
@@ -481,7 +493,6 @@ function renderFoodButtons() {
     "Fried Eggs": "egg.png",
     "Bacon": "bacon.png",
     "Pancakes with Syrup": "pancakes.png",
-    "Hash Browns": "toast.png",
     "Bagel with Cream Cheese": "bagel.png",
     "Orange Juice (1 glass)": "juice.png",
     "Cappuccino (1 cup)": "coffee.png",
@@ -493,31 +504,27 @@ function renderFoodButtons() {
     "Avocado Toast": "toast.png",
 
     "Granola Bar": "oatmeal.png",
-    "Bag of Chips (2.5 oz)": "toast.png",
-    "Cheese Sticks": "bagel.png",
-    "Apple Slices with Peanut Butter": "juice.png",
-    "Crackers with Hummus": "toast.png",
-    "Iced Tea (sweetened)": "juice.png",
-    "Smoothie (fruit blend, 8 oz)": "juice.png",
-    "Sparkling Water (flavored)": "water.png",
+    "Bag of Chips": "toast.png",
+    "Apple Slices": "juice.png",
+    "Iced Tea": "juice.png",
+    "Smoothie": "juice.png",
+    "Water": "water.png",
 
     "Grilled Chicken Sandwich": "bagel.png",
     "Cheeseburger": "bacon.png",
     "Caesar Salad with Chicken": "egg.png",
-    "Turkey Wrap": "toast.png",
     "Vegetable Stir Fry with Rice": "oatmeal.png",
     "Lemonade": "juice.png",
     "Iced Coffee with Cream": "coffee.png",
-    "Water (1 glass)": "water.png",
+    "Water": "water.png",
 
     "Grilled Salmon with Veggies": "bacon.png",
     "Spaghetti with Marinara Sauce": "toast.png",
-    "Beef Tacos (2)": "bacon.png",
+    "Beef Tacos": "bacon.png",
     "Chicken Stir Fry with Noodles": "egg.png",
-    "Vegetable Curry with Rice": "oatmeal.png",
-    "Red Wine (5 oz)": "juice.png",
-    "Sparkling Water (unsweetened)": "water.png",
-    "Apple Juice (1 glass)": "juice.png"
+    "Red Wine": "juice.png",
+    "Water": "water.png",
+    "Apple Juice": "juice.png"
   };
 
   list.forEach(item => {
@@ -704,3 +711,13 @@ submitBtn.addEventListener("click", () => {
 
 initializeShip();
 promptNextMeal();
+
+document.getElementById("restartBtnF").addEventListener("click", () => {
+  window.location.href = "female/index.html?restart=1";
+});
+
+document.getElementById("restartBtnM").addEventListener("click", () => {
+  window.location.href = "male/index.html?restart=1";
+});
+
+
