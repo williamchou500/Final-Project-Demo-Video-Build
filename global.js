@@ -151,6 +151,13 @@ const weights = {
   gender:        0.048618
 };
 
+let total_calories = 0;
+let total_carbs = 0;
+let total_sugars = 0;
+let total_protein = 0;
+let total_fiber = 0;
+let total_fat = 0;
+
 const mealForm       = document.getElementById("mealForm");
 const mealLabel      = document.getElementById("mealLabel");
 const promptBox      = document.getElementById("promptBox");
@@ -388,10 +395,8 @@ function animateSmokyPath(startLen, endLen) {
       setTimeout(() => {
         const tooFlag = 1;
         localStorage.setItem("glucoseData", JSON.stringify(data));  
-        window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
+        window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
       }, 800);
-      
-      return;
     }
 
     const nextPoint = path.node().getPointAtLength(Math.min(currentLength + 1, endLen));
@@ -436,7 +441,7 @@ function animateSmokyPath(startLen, endLen) {
           setTimeout(() => {
             const tooFlag = too_dangerous ? 1 : 0;
             localStorage.setItem("glucoseData", JSON.stringify(data));  
-            window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
+            window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
           }, 1000); // slight pause after animation
         }
       }
@@ -649,6 +654,13 @@ submitBtn.addEventListener("click", () => {
     quantityTotal.fat      * weights.total_fat +
     hour                   * weights.hour +
     gender                 * weights.gender;
+
+  total_calories += quantityTotal.calories;
+  total_carbs += quantityTotal.carbs;
+  total_sugars += quantityTotal.sugars;
+  total_protein += quantityTotal.protein;
+  total_fiber += quantityTotal.fiber;
+  total_fat += quantityTotal.fat;
 
   let currentGlucose = getGlucoseAtHour(hour);
 
