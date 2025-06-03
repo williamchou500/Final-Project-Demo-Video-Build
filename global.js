@@ -1,11 +1,16 @@
+
+let danger_count = 0;
+let too_dangerous = false;
+
+
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
 const svg = graph.append("svg").attr("width", "100%").attr("height", 800);
 const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
-console.log(width);
 const ceilingGlucose = 240;
+
 const breakfast = [
   {food: "Coffee", calories: 780.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
   {food: "Milk",   calories: 120.0, carbs: 9.0,  sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
@@ -35,7 +40,6 @@ const dinner = [
   {food: "Donut",  calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
 ];
 
-
 const x = d3.scaleLinear().domain([4, 27]).range([50, width - 50]);
 const y = d3.scaleLinear().domain([100, 240]).range([height - 50, 50]);
 
@@ -49,7 +53,7 @@ const xAxis = svg.append("g")
   .attr("stroke", "white")
   .call(
     d3.axisBottom(x)
-      .tickValues(d3.range(4, 28))  // Ensure every hour is a tick
+      .tickValues(d3.range(4, 28))
       .tickFormat(d => {
         const hour = d >= 24 ? d - 24 : d;
         return `${hour.toString().padStart(2, '0')}:00`;
@@ -69,7 +73,7 @@ yAxis.select("path.domain").attr("stroke", "white");
 yAxis.selectAll("line").attr("stroke", "white");
 yAxis.selectAll("text").attr("fill", "white");
 
-// Y axis label
+// Y axis lable
 svg.append("text")
   .attr("transform", "rotate(-90)")
   .attr("y", 60)
@@ -79,7 +83,6 @@ svg.append("text")
   .attr("font-size", "14px")
   .attr("fill", "white")
   .text("Glucose (mg/dL)");
-
 
 svg.append("line")
   .attr("x1", 50)
@@ -98,14 +101,11 @@ svg.append("rect")
   .attr("fill", "red")
   .attr("opacity", 0.3);
 
-
-
-let data = [{ hour: 4, glucose: 110 }];  
-const baseline = 110;                    
+let data = [{ hour: 4, glucose: 110 }];
+const baseline = 110;
 const mealStages = ["breakfast", "a snack", "lunch", "a snack", "dinner"];
 let currentMealIndex = 0;
 let lastMeal = null;
-
 
 const dropRates = {
   breakfast: 10,
@@ -113,7 +113,6 @@ const dropRates = {
   lunch:     12,
   dinner:    14
 };
-
 
 const weights = {
   hour:          0.280645,
@@ -162,17 +161,15 @@ function initializeShip() {
   const graphRect = graph.node().getBoundingClientRect();
   ship.style.left = `${startX + graphRect.left}px`;
   ship.style.top = `${startY + graphRect.top - 20}px`;
-  
   // Position prompt next to ship
   updatePromptPosition(startX + graphRect.left, startY + graphRect.top);
 }
-
-// Function to update prompt position next to ship
+  // Function to update prompt position next to ship
 function updatePromptPosition(shipX, shipY) {
   if (promptBox && !promptBox.classList.contains("hidden")) {
     promptBox.style.position = "absolute";
-    promptBox.style.left = `${shipX-60}px`; // 50px to the right of ship
-    promptBox.style.top = `${shipY-180}px`;  // Slightly above ship center
+    promptBox.style.left = `${shipX - 60}px`;
+    promptBox.style.top = `${shipY - 180}px`;
     promptBox.style.zIndex = "1000";
   }
 }
@@ -192,34 +189,34 @@ function drawLine() {
   }
 
   const newLength = path.node().getTotalLength();
-  const segmentLength = newLength - previousLength;
   animateSmokyPath(previousLength, newLength);
   previousLength = newLength;
 }
+
 const defs = svg.append("defs");
 defs.append("filter")
   .attr("id", "smoke-blur")
   .append("feGaussianBlur")
   .attr("in", "SourceGraphic")
-  .attr("stdDeviation", 2); 
+  .attr("stdDeviation", 2);
 
-function createBangEffect(x, y) {
+function createBangEffect(cx, cy) {
   const bang = svg.append("circle")
-    .attr("cx", x)
-    .attr("cy", y)
+    .attr("cx", cx)
+    .attr("cy", cy)
     .attr("r", 0)
     .attr("fill", "white")
     .attr("opacity", 0.9)
     .attr("filter", "url(#smoke-blur)");
 
   bang.transition()
-    .duration(600) 
+    .duration(600)
     .attr("r", 90)
     .attr("opacity", 0)
     .remove();
 }
 
-function animateSmokyPath(startLength, endLength) {
+function animateSmokyPath(startLen, endLen) {
   ship.style.display = "block";
 
   let gender = "male";
@@ -234,13 +231,9 @@ function animateSmokyPath(startLength, endLength) {
     if (!startTime) startTime = timestamp;
     const elapsed = timestamp - startTime;
     const progress = Math.min(elapsed / duration, 1);
-    const currentLength = startLength + (endLength - startLength) * progress;
+    const currentLength = startLen + (endLen - startLen) * progress;
 
     const point = path.node().getPointAtLength(currentLength);
-    const dx = 1; 
-    const dy = 1; 
-    const angle = 0;
-
     const currentGlucose = y.invert(point.y);
 
     if (currentGlucose >= ceilingGlucose) {
@@ -251,20 +244,14 @@ function animateSmokyPath(startLength, endLength) {
 
       ship.style.left = `${shipLeft}px`;
       ship.style.top = `${adjustedShipTop}px`;
-      ship.style.transform = `rotate(${angle}deg)`;
+      ship.style.transform = `rotate(0deg)`;
 
       createBangEffect(point.x, ceilingY);
-      if (gender === "female") {
-        ship.src = "../images/deadF.png";
-      } else {
-        ship.src = "../images/deadM.png";
-      }
-
-      return; 
+      if (gender === "female") ship.src = "../images/deadF.png"; else ship.src = "../images/deadM.png";
+      return;
     }
 
-  
-    const nextPoint = path.node().getPointAtLength(Math.min(currentLength + 1, endLength));
+    const nextPoint = path.node().getPointAtLength(Math.min(currentLength + 1, endLen));
     const ndx = nextPoint.x - point.x;
     const ndy = nextPoint.y - point.y;
     const nang = Math.atan2(ndy, ndx) * (180 / Math.PI);
@@ -272,25 +259,18 @@ function animateSmokyPath(startLength, endLength) {
     const graphRect = graph.node().getBoundingClientRect();
     const shipLeft = point.x + graphRect.left;
     let shipTop = point.y + graphRect.top - ship.offsetHeight / 2;
-    if (ndy < 0) {
-      shipTop -= 70;
-    }
+    if (ndy < 0) shipTop -= 70;
 
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
     ship.style.transform = `rotate(${nang}deg)`;
+
     if (currentGlucose > 180) {
-      if (gender === "female" && !ship.src.includes("redF.png")) {
-        ship.src = "../images/redF.png";
-      } else if (gender === "male" && !ship.src.includes("redM.png")) {
-        ship.src = "../images/redM.png";
-      }
+      if (gender === "female" && !ship.src.includes("redF.png")) ship.src = "../images/redF.png";
+      else if (gender === "male" && !ship.src.includes("redM.png")) ship.src = "../images/redM.png";
     } else {
-      if (gender === "female" && !ship.src.includes("rocketg.png")) {
-        ship.src = "../images/rocketg.png";
-      } else if (gender === "male" && !ship.src.includes("rocketm.png")) {
-        ship.src = "../images/rocketm.png";
-      }
+      if (gender === "female" && !ship.src.includes("rocketg.png")) ship.src = "../images/rocketg.png";
+      else if (gender === "male" && !ship.src.includes("rocketm.png")) ship.src = "../images/rocketm.png";
     }
 
     updatePromptPosition(shipLeft + 20, shipTop + 20);
@@ -302,9 +282,8 @@ function animateSmokyPath(startLength, endLength) {
       .attr("opacity", 0.05 + Math.random() * 0.1)
       .attr("filter", "url(#smoke-blur)");
 
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    } else {
+    if (progress < 1) requestAnimationFrame(step);
+    else {
       if (currentMealIndex < mealStages.length) {
         setTimeout(promptNextMeal, 500);
       }
@@ -313,6 +292,7 @@ function animateSmokyPath(startLength, endLength) {
 
   requestAnimationFrame(step);
 }
+
 function getGlucoseAtHour(targetHour) {
   for (let i = 1; i < data.length; i++) {
     const prev = data[i - 1];
@@ -325,12 +305,9 @@ function getGlucoseAtHour(targetHour) {
   return baseline;
 }
 
-
 function promptNextMeal() {
   let suggestedNextHour = 4;
-  if (lastMeal) {
-    suggestedNextHour = lastMeal.peakHour;
-  }
+  if (lastMeal) suggestedNextHour = lastMeal.peakHour;
 
   const minHour = Math.max(4, Math.floor(suggestedNextHour));
   mealTimeSlider.min = minHour;
@@ -342,15 +319,12 @@ function promptNextMeal() {
   mealForm.style.display = "none";
   promptBox.classList.remove("hidden");
   promptMessage.textContent = `I want to eat ${mealStages[currentMealIndex]} at:`;
-  
-  // Update prompt position to current ship location
+
   const shipRect = ship.getBoundingClientRect();
   updatePromptPosition(shipRect.left, shipRect.top);
 }
 
-
 function renderFoodButtons() {
-
   foodButtons.innerHTML = "";
   selectedFood = null;
 
@@ -361,12 +335,11 @@ function renderFoodButtons() {
   else if (mealType === "lunch") list = lunch;
   else if (mealType === "dinner") list = dinner;
 
-  list.forEach((item, i) => {
+  list.forEach(item => {
     const btn = document.createElement("button");
     btn.textContent = item.food;
     btn.classList.add("food-btn");
     btn.addEventListener("click", () => {
-    
       document.querySelectorAll(".food-btn").forEach(b => b.classList.remove("selected"));
       btn.classList.add("selected");
       selectedFood = item;
@@ -375,11 +348,9 @@ function renderFoodButtons() {
   });
 }
 
-
 mealTimeSlider.addEventListener("input", () => {
   sliderLabel.textContent = `${mealTimeSlider.value % 24}:00`;
 });
-
 
 confirmTimeBtn.addEventListener("click", () => {
   const selectedHour = parseInt(mealTimeSlider.value);
@@ -390,10 +361,8 @@ confirmTimeBtn.addEventListener("click", () => {
   promptBox.classList.add("hidden");
   mealForm.style.display = "block";
 
-
   renderFoodButtons();
 });
-
 
 submitBtn.addEventListener("click", () => {
   if (!selectedFood) {
@@ -403,12 +372,8 @@ submitBtn.addEventListener("click", () => {
 
   const hour = parseInt(timeInput.value);
   const mealType = mealStages[currentMealIndex];
-
-
   const { calories, carbs, sugars, protein, fiber, fat } = selectedFood;
-
-
-  let gender = (document.location.pathname.includes("/female/")) ? 0 : 1;
+  let gender = document.location.pathname.includes("/female/") ? 0 : 1;
 
   const increment =
     calories * weights.calories +
@@ -420,9 +385,7 @@ submitBtn.addEventListener("click", () => {
     hour     * weights.hour +
     gender   * weights.gender;
 
- 
   let currentGlucose = getGlucoseAtHour(hour);
-
 
   if (lastMeal) {
     const timeSinceLastPeak = hour - lastMeal.peakHour;
@@ -431,11 +394,9 @@ submitBtn.addEventListener("click", () => {
     const projectedGlucose = lastMeal.peakValue - expectedDrop;
 
     if (projectedGlucose > baseline) {
-
       data.push({ hour, glucose: projectedGlucose });
       currentGlucose = projectedGlucose;
     } else {
-
       const timeToBaseline = (lastMeal.peakValue - baseline) / dropRate;
       const baselineHour = Math.ceil(lastMeal.peakHour + timeToBaseline);
 
@@ -450,25 +411,15 @@ submitBtn.addEventListener("click", () => {
       }
     }
   } else {
-
     data.push({ hour, glucose: baseline });
     currentGlucose = baseline;
   }
 
-
   const peakHour = hour + 1;
   const peakValue = currentGlucose + increment;
 
-  if (peakValue > 180) {
-    danger_count++;
-  } 
-
-  if (peakValue >= 240) {
-      too_dangerous = true;
-  }
-
-  console.log(`Number of Dangerous Spikes: ${danger_count}`);
-  console.log(`It got too dangerous? ${too_dangerous}`);
+  if (peakValue > 180) danger_count++;
+  if (peakValue >= 240) too_dangerous = true;
 
   data.push({ hour: peakHour, glucose: peakValue });
   lastMeal = { hour, peakHour, peakValue, type: mealType };
@@ -476,13 +427,13 @@ submitBtn.addEventListener("click", () => {
 
   if (currentMealIndex >= mealStages.length) {
     drawLine();
-    mealForm.innerHTML = "<h3 style=color:white;>All meals logged! Here's your glucose curve for the day.</h3>";
+    // jump to results.html, bring danger_count、too_dangerous to URL 
+    const tooFlag = too_dangerous ? 1 : 0;
+    window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
   } else {
     drawLine();
   }
 });
 
-// Initialize ship position when the page loads
 initializeShip();
-
 promptNextMeal();
