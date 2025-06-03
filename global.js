@@ -160,7 +160,7 @@ function initializeShip() {
   const startX = x(4);
   const startY = y(110);
   const graphRect = graph.node().getBoundingClientRect();
-  ship.style.left = `${startX + graphRect.left + 200}px`;
+  ship.style.left = `${startX + graphRect.left}px`;
   ship.style.top = `${startY + graphRect.top - 20}px`;
   
   // Position prompt next to ship
