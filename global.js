@@ -233,7 +233,13 @@ function animateSmokyPath(startLen, endLen) {
       ship.style.transform = `rotate(0deg)`;
 
       createBangEffect(point.x, ceilingY);
-      ship.src = gender === "female" ? "../images/deadF.png" : "../images/deadM.png";
+      if (gender === "female") ship.src = "../images/deadF.png"; else ship.src = "../images/deadM.png";
+      
+      setTimeout(() => {
+        const tooFlag = 1;
+        window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
+      }, 800);
+      
       return;
     }
 
@@ -270,12 +276,20 @@ function animateSmokyPath(startLen, endLen) {
 
     updatePromptPosition(shipLeft + 20, shipTop + 20);
 
-    if (progress < 1) {
-      requestAnimationFrame(step);
-    } else if (currentMealIndex < mealStages.length) {
-      setTimeout(promptNextMeal, 500);
-    }
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        if (currentMealIndex < mealStages.length) {
+          setTimeout(promptNextMeal, 500);
+        } else {
+          setTimeout(() => {
+            const tooFlag = too_dangerous ? 1 : 0;
+            window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
+          }, 1000); // slight pause after animation
+        }
+      }
   }
+      
 
   requestAnimationFrame(step);
 }
@@ -414,8 +428,8 @@ submitBtn.addEventListener("click", () => {
   if (currentMealIndex >= mealStages.length) {
     drawLine();
     // jump to results.html and bring danger_count、too_dangerous 
-    const tooFlag = too_dangerous ? 1 : 0;
-    window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
+    // const tooFlag = too_dangerous ? 1 : 0;
+    // window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
   } else {
     drawLine();
   }
