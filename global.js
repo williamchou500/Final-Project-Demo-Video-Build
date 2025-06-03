@@ -237,10 +237,13 @@ function animateSmokyPath(startLength, endLength) {
     const currentLength = startLength + (endLength - startLength) * progress;
 
     const point = path.node().getPointAtLength(currentLength);
-    const nextLength = Math.min(currentLength + 1, endLength);
-    const nextPoint = path.node().getPointAtLength(nextLength);
-    const nextGlucose = y.invert(nextPoint.y);
-    if (nextGlucose >= ceilingGlucose) {
+    const dx = 1; 
+    const dy = 1; 
+    const angle = 0;
+
+    const currentGlucose = y.invert(point.y);
+
+    if (currentGlucose >= ceilingGlucose) {
       const ceilingY = y(ceilingGlucose);
       const graphRect = graph.node().getBoundingClientRect();
       const shipLeft = point.x + graphRect.left;
@@ -248,34 +251,34 @@ function animateSmokyPath(startLength, endLength) {
 
       ship.style.left = `${shipLeft}px`;
       ship.style.top = `${adjustedShipTop}px`;
-      ship.style.transform = `rotate(${Math.atan2(nextPoint.y - point.y, nextPoint.x - point.x) * (180 / Math.PI)}deg)`;
+      ship.style.transform = `rotate(${angle}deg)`;
 
       createBangEffect(point.x, ceilingY);
-
       if (gender === "female") {
         ship.src = "../images/deadF.png";
       } else {
         ship.src = "../images/deadM.png";
       }
 
-      return;
+      return; 
     }
-    const dx = nextPoint.x - point.x;
-    const dy = nextPoint.y - point.y;
-    const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+  
+    const nextPoint = path.node().getPointAtLength(Math.min(currentLength + 1, endLength));
+    const ndx = nextPoint.x - point.x;
+    const ndy = nextPoint.y - point.y;
+    const nang = Math.atan2(ndy, ndx) * (180 / Math.PI);
+
     const graphRect = graph.node().getBoundingClientRect();
     const shipLeft = point.x + graphRect.left;
-
     let shipTop = point.y + graphRect.top - ship.offsetHeight / 2;
-    if (dy < 0) {
+    if (ndy < 0) {
       shipTop -= 70;
     }
 
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
-    ship.style.transform = `rotate(${angle}deg)`;
-
-    const currentGlucose = y.invert(point.y);
+    ship.style.transform = `rotate(${nang}deg)`;
     if (currentGlucose > 180) {
       if (gender === "female" && !ship.src.includes("redF.png")) {
         ship.src = "../images/redF.png";
@@ -291,8 +294,6 @@ function animateSmokyPath(startLength, endLength) {
     }
 
     updatePromptPosition(shipLeft + 20, shipTop + 20);
-
-    
     svg.append("circle")
       .attr("cx", point.x)
       .attr("cy", point.y)
