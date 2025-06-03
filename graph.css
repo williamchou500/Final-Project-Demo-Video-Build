@@ -138,3 +138,15 @@ label, select, input {
 .food-item.selected .quantity-input {
   display: inline-block;
 }
+
+#time {
+  display: none;
+}
+
+.hourText {
+  display: none;
+}
+
+#timeLabel {
+  display: none;
+}
