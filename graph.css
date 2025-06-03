@@ -19,6 +19,7 @@ body {
   width: 100%;
   height: 800px;
   background: transparent;
+  margin: 20px;
 }
 
 #mealForm {
@@ -62,5 +63,3 @@ label, select, input {
 .prompt-box.hidden {
   display: none;
 }
-
-

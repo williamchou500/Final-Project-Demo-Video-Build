@@ -1,6 +1,6 @@
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
-const svg = graph.append("svg").attr("width", "90%").attr("height", 800);
+const svg = graph.append("svg").attr("width", "100%").attr("height", 800);
 const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
@@ -55,7 +55,7 @@ svg.append("g")
 // Y axis label
 svg.append("text")
   .attr("transform", "rotate(-90)")
-  .attr("y", 15)          // position left side, tweak as needed
+  .attr("y", 60)          // position left side, tweak as needed
   .attr("x", -height / 2)
   .attr("dy", "-3.5em")   // vertical shift
   .attr("text-anchor", "middle")
