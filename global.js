@@ -157,6 +157,131 @@ let selectedFood = null;
 let path = null;
 let previousLength = 0;
 
+// Add this CSS for the tooltip (add to your existing CSS)
+const tooltipStyles = `
+.food-tooltip {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.4;
+  z-index: 1000;
+  pointer-events: none;
+  min-width: 200px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.food-tooltip h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.nutrition-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 12px;
+}
+
+.nutrition-item {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nutrition-label {
+  font-weight: 500;
+}
+
+.nutrition-value {
+  color: #FFF;
+}
+`;
+
+// Add the styles to the document
+const styleSheet = document.createElement('style');
+styleSheet.textContent = tooltipStyles;
+document.head.appendChild(styleSheet);
+
+// Create tooltip element
+let tooltip = null;
+
+function createTooltip() {
+  if (!tooltip) {
+    tooltip = document.createElement('div');
+    tooltip.classList.add('food-tooltip');
+    tooltip.style.display = 'none';
+    document.body.appendChild(tooltip);
+  }
+  return tooltip;
+}
+
+function showTooltip(event, foodItem) {
+  const tooltip = createTooltip();
+  
+  // Format nutritional information
+  const nutritionHTML = `
+    <h4>${foodItem.food}</h4>
+    <div class="nutrition-grid">
+      <div class="nutrition-item">
+        <span class="nutrition-label">Calories:</span>
+        <span class="nutrition-value">${foodItem.calories}</span>
+      </div>
+      <div class="nutrition-item">
+        <span class="nutrition-label">Carbs:</span>
+        <span class="nutrition-value">${foodItem.carbs}g</span>
+      </div>
+      <div class="nutrition-item">
+        <span class="nutrition-label">Sugars:</span>
+        <span class="nutrition-value">${foodItem.sugars}g</span>
+      </div>
+      <div class="nutrition-item">
+        <span class="nutrition-label">Protein:</span>
+        <span class="nutrition-value">${foodItem.protein}g</span>
+      </div>
+      <div class="nutrition-item">
+        <span class="nutrition-label">Fiber:</span>
+        <span class="nutrition-value">${foodItem.fiber}g</span>
+      </div>
+      <div class="nutrition-item">
+        <span class="nutrition-label">Fat:</span>
+        <span class="nutrition-value">${foodItem.fat}g</span>
+      </div>
+    </div>
+  `;
+  
+  tooltip.innerHTML = nutritionHTML;
+  tooltip.style.display = 'block';
+  
+  // Position tooltip
+  const rect = event.target.getBoundingClientRect();
+  const tooltipRect = tooltip.getBoundingClientRect();
+  
+  let left = rect.right + 10;
+  let top = rect.top;
+  
+  // Adjust if tooltip would go off screen
+  if (left + tooltipRect.width > window.innerWidth) {
+    left = rect.left - tooltipRect.width - 10;
+  }
+  
+  if (top + tooltipRect.height > window.innerHeight) {
+    top = window.innerHeight - tooltipRect.height - 10;
+  }
+  
+  tooltip.style.left = `${left}px`;
+  tooltip.style.top = `${top}px`;
+}
+
+function hideTooltip() {
+  if (tooltip) {
+    tooltip.style.display = 'none';
+  }
+}
+
 function initializeShip() {
   ship.style.display = "block";
   const startX = x(4);
@@ -339,6 +464,8 @@ function promptNextMeal() {
   updatePromptPosition(shipRect.left, shipRect.top);
 }
 let selectedFoods = [];
+
+// Modified renderFoodButtons function
 function renderFoodButtons() {
   foodButtons.innerHTML = "";
   selectedFoods = [];
@@ -358,7 +485,7 @@ function renderFoodButtons() {
     "Bagel with Cream Cheese": "bagel.png",
     "Orange Juice (1 glass)": "juice.png",
     "Cappuccino (1 cup)": "coffee.png",
-    "Syrup (1 tbsp)": "pancakes.png", // fallback
+    "Syrup (1 tbsp)": "pancakes.png",
     "Water (1 glass)": "water.png",
     "Milk (1 glass)": "juice.png",
     "Granola with Greek Yogurt": "oatmeal.png",
@@ -403,6 +530,30 @@ function renderFoodButtons() {
     const imageName = imageMap[item.food] || "toast.png";
     img.src = `../images/${imageName}`;
     img.alt = item.food;
+
+    // Add tooltip event listeners to the image
+    img.addEventListener("mouseenter", (e) => showTooltip(e, item));
+    img.addEventListener("mouseleave", hideTooltip);
+    img.addEventListener("mousemove", (e) => {
+      if (tooltip && tooltip.style.display === 'block') {
+        const rect = e.target.getBoundingClientRect();
+        const tooltipRect = tooltip.getBoundingClientRect();
+        
+        let left = rect.right + 10;
+        let top = rect.top;
+        
+        if (left + tooltipRect.width > window.innerWidth) {
+          left = rect.left - tooltipRect.width - 10;
+        }
+        
+        if (top + tooltipRect.height > window.innerHeight) {
+          top = window.innerHeight - tooltipRect.height - 10;
+        }
+        
+        tooltip.style.left = `${left}px`;
+        tooltip.style.top = `${top}px`;
+      }
+    });
 
     const label = document.createElement("div");
     label.classList.add("food-label");
