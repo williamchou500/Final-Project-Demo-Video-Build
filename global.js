@@ -503,28 +503,28 @@ function renderFoodButtons() {
     "Oatmeal": "oatmeal.png",
     "Avocado Toast": "toast.png",
 
-    "Granola Bar": "oatmeal.png",
-    "Bag of Chips": "toast.png",
-    "Apple Slices": "juice.png",
-    "Iced Tea": "juice.png",
-    "Smoothie": "juice.png",
+    "Granola Bar": "granola.png",
+    "Bag of Chips": "chips.png",
+    "Apple Slices": "apple.png",
+    "Iced Tea": "tea.png",
+    "Smoothie": "smoothie.png",
     "Water": "water.png",
 
-    "Grilled Chicken Sandwich": "bagel.png",
-    "Cheeseburger": "bacon.png",
-    "Caesar Salad with Chicken": "egg.png",
-    "Vegetable Stir Fry with Rice": "oatmeal.png",
-    "Lemonade": "juice.png",
-    "Iced Coffee with Cream": "coffee.png",
+    "Grilled Chicken Sandwich": "sandwhich.png",
+    "Cheeseburger": "burger.png",
+    "Caesar Salad with Chicken": "salad.png",
+    "Vegetable Stir Fry with Rice": "veggie.png",
+    "Lemonade": "lemonade.png",
+    "Iced Coffee with Cream": "iced.png",
     "Water": "water.png",
 
-    "Grilled Salmon with Veggies": "bacon.png",
-    "Spaghetti with Marinara Sauce": "toast.png",
-    "Beef Tacos": "bacon.png",
-    "Chicken Stir Fry with Noodles": "egg.png",
-    "Red Wine": "juice.png",
+    "Grilled Salmon with Veggies": "salmon.png",
+    "Spaghetti with Marinara Sauce": "pasta.png",
+    "Beef Tacos": "tacos.png",
+    "Chicken Stir Fry with Noodles": "chicken.png",
+    "Red Wine": "wine.png",
     "Water": "water.png",
-    "Apple Juice": "juice.png"
+    "Apple Juice": "apple juicee.png"
   };
 
   list.forEach(item => {
