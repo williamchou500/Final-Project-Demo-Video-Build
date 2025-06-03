@@ -44,13 +44,23 @@ const line = d3.line()
   .y(d => y(d.glucose))
   .curve(d3.curveMonotoneX);
 
-svg.append("g")
+const xAxis = svg.append("g")
   .attr("transform", `translate(0,${height - 50})`)
-  .call(d3.axisBottom(x).ticks(24).tickFormat(d => `${(d % 24).toString().padStart(2, '0')}:00`));
+  .attr("stroke", "white")
+  .call(d3.axisBottom(x).ticks(24).tickFormat(d => `${(d % 24).toString().padStart(2, '0')}:00`))
 
-svg.append("g")
+xAxis.select("path.domain").attr("stroke", "white");
+xAxis.selectAll("line").attr("stroke", "white");
+xAxis.selectAll("text").attr("fill", "white");
+
+const yAxis = svg.append("g")
   .attr("transform", `translate(50,0)`)
+  .attr("stroke", "white")
   .call(d3.axisLeft(y));
+
+yAxis.select("path.domain").attr("stroke", "white");
+yAxis.selectAll("line").attr("stroke", "white");
+yAxis.selectAll("text").attr("fill", "white");
 
 // Y axis label
 svg.append("text")
@@ -60,7 +70,7 @@ svg.append("text")
   .attr("dy", "-3.5em")   // vertical shift
   .attr("text-anchor", "middle")
   .attr("font-size", "14px")
-  .attr("fill", "black")
+  .attr("fill", "white")
   .text("Glucose (mg/dL)");
 
 svg.append("line")
@@ -124,7 +134,7 @@ function drawLine() {
     .datum(data)
     .attr("class", "glucose-line")
     .attr("fill", "none")
-    .attr("stroke", "steelblue")
+    .attr("stroke", "white")
     .attr("stroke-width", 2)
     .attr("d", line);
 
