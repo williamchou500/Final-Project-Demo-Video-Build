@@ -65,7 +65,14 @@
     container.innerHTML = html;
   </script>
 
-  <button id="restartBtnM">Restart Simulation</button>
+
+  <button id="restartBtnF">Restart Simulation</button>
+  <script>
+  const restartBtn = document.getElementById("restartBtnF");
+  restartBtn.addEventListener("click", () => {
+    window.location.href = "../female/index.html?restart=1";
+  });
+</script>
 
 </body>
 </html>
