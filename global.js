@@ -19,7 +19,6 @@ const breakfast = [
   {food: "Orange Juice (1 glass)", calories: 110.0, carbs: 26.0, sugars: 21.0, protein: 2.0, fiber: 0.5, fat: 0.5},
   {food: "Cappuccino (1 cup)", calories: 60.0, carbs: 6.0, sugars: 5.0, protein: 3.0, fiber: 0.0, fat: 3.0},
   {food: "Water (1 glass)", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
-  {food: "Milk (1 glass)", calories: 120.0, carbs: 12.0, sugars: 12.0, protein: 8.0, fiber: 0.0, fat: 5.0},
   {food: "Oatmeal", calories: 150.0, carbs: 27.0, sugars: 1.0, protein: 5.0, fiber: 4.0, fat: 3.0},
   {food: "Avocado Toast", calories: 220.0, carbs: 20.0, sugars: 1.0, protein: 5.0, fiber: 5.0, fat: 14.0}
 ];
@@ -251,6 +250,7 @@ function animateSmokyPath(startLen, endLen) {
       
       setTimeout(() => {
         const tooFlag = 1;
+        localStorage.setItem("glucoseData", JSON.stringify(data));  
         window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
       }, 800);
       
@@ -298,6 +298,7 @@ function animateSmokyPath(startLen, endLen) {
         } else {
           setTimeout(() => {
             const tooFlag = too_dangerous ? 1 : 0;
+            localStorage.setItem("glucoseData", JSON.stringify(data));  
             window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
           }, 1000); // slight pause after animation
         }
@@ -349,12 +350,63 @@ function renderFoodButtons() {
   else if (mealType === "lunch") list = lunch;
   else if (mealType === "dinner") list = dinner;
 
+  const imageMap = {
+    "Fried Eggs": "egg.png",
+    "Bacon": "bacon.png",
+    "Pancakes with Syrup": "pancakes.png",
+    "Hash Browns": "toast.png",
+    "Bagel with Cream Cheese": "bagel.png",
+    "Orange Juice (1 glass)": "juice.png",
+    "Cappuccino (1 cup)": "coffee.png",
+    "Syrup (1 tbsp)": "pancakes.png", // fallback
+    "Water (1 glass)": "water.png",
+    "Milk (1 glass)": "juice.png",
+    "Granola with Greek Yogurt": "oatmeal.png",
+    "Oatmeal": "oatmeal.png",
+    "Avocado Toast": "toast.png",
+
+    "Granola Bar": "oatmeal.png",
+    "Bag of Chips (2.5 oz)": "toast.png",
+    "Cheese Sticks": "bagel.png",
+    "Apple Slices with Peanut Butter": "juice.png",
+    "Crackers with Hummus": "toast.png",
+    "Iced Tea (sweetened)": "juice.png",
+    "Smoothie (fruit blend, 8 oz)": "juice.png",
+    "Sparkling Water (flavored)": "water.png",
+
+    "Grilled Chicken Sandwich": "bagel.png",
+    "Cheeseburger": "bacon.png",
+    "Caesar Salad with Chicken": "egg.png",
+    "Turkey Wrap": "toast.png",
+    "Vegetable Stir Fry with Rice": "oatmeal.png",
+    "Lemonade": "juice.png",
+    "Iced Coffee with Cream": "coffee.png",
+    "Water (1 glass)": "water.png",
+
+    "Grilled Salmon with Veggies": "bacon.png",
+    "Spaghetti with Marinara Sauce": "toast.png",
+    "Beef Tacos (2)": "bacon.png",
+    "Chicken Stir Fry with Noodles": "egg.png",
+    "Vegetable Curry with Rice": "oatmeal.png",
+    "Red Wine (5 oz)": "juice.png",
+    "Sparkling Water (unsweetened)": "water.png",
+    "Apple Juice (1 glass)": "juice.png"
+  };
+
   list.forEach(item => {
     const container = document.createElement("div");
     container.classList.add("food-item");
 
-    const name = document.createElement("div");
-    name.textContent = item.food;
+    const img = document.createElement("img");
+    img.classList.add("food-img");
+
+    const imageName = imageMap[item.food] || "toast.png";
+    img.src = `../images/${imageName}`;
+    img.alt = item.food;
+
+    const label = document.createElement("div");
+    label.classList.add("food-label");
+    label.textContent = item.food;
 
     const input = document.createElement("input");
     input.type = "number";
@@ -386,12 +438,12 @@ function renderFoodButtons() {
       if (index !== -1) selectedFoods[index].quantity = quantity;
     });
 
-    container.appendChild(name);
+    container.appendChild(img);
+    container.appendChild(label);
     container.appendChild(input);
     foodButtons.appendChild(container);
   });
 }
-
 
 mealTimeSlider.addEventListener("input", () => {
   sliderLabel.textContent = `${mealTimeSlider.value % 24}:00`;
@@ -472,6 +524,17 @@ submitBtn.addEventListener("click", () => {
 
   const peakHour = hour + 1;
   const peakValue = currentGlucose + increment;
+
+  if (peakHour >= 27) {
+    data.push({ hour: peakHour, glucose: currentGlucose + increment });
+    localStorage.setItem("glucoseData", JSON.stringify(data));
+    drawLine();
+    setTimeout(() => {
+      const tooFlag = too_dangerous ? 1 : 0;
+      window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
+    }, 1000); // optional pause for animation
+    return;
+  }
 
   if (peakValue > 180) danger_count++;
   if (peakValue >= 240) too_dangerous = true;
