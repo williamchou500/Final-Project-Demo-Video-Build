@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Glucose Tracker Results</title>
+  <link rel="stylesheet" href="../graph.css">
+  <style>
+    body {
+      background: url('../images/stars.png') center/cover no-repeat fixed;
+      color: white;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 40px;
+      text-align: center;
+    }
+    #results {
+      max-width: 600px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 20px;
+      border-radius: 8px;
+      font-size: 1.2rem;
+      line-height: 1.6;
+      color: #ff6666;
+    }
+    #results p {
+      margin: 12px 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="results">
+ 
+  </div>
+
+  <script>
+
+    const params = new URLSearchParams(window.location.search);
+    const dangerCount = parseInt(params.get("danger")) || 0;
+    const tooDangerous = params.get("too") === "1";
+
+    const container = document.getElementById("results");
+    let html = "";
+
+    if (tooDangerous) {
+      html = `
+        <p><strong>⚠️ Critical Alert!</strong></p>
+        <p>Your glucose exceeded <strong>240 mg/dL</strong> at least once.</p>
+        <p>Please seek medical advice immediately.</p>
+      `;
+    } else if (dangerCount > 0) {
+      html = `
+        <p><strong>Warning:</strong></p>
+        <p>Your glucose rose above <strong>180 mg/dL</strong> <strong>${dangerCount}</strong> time(s).</p>
+        <p>Consider adjusting your meal timing or food choices.</p>
+      `;
+    } else {
+      html = `
+        <p><strong>Good job!</strong></p>
+        <p>Your glucose never rose above <strong>180 mg/dL</strong>.</p>
+        <p>Keep maintaining this balanced meal plan!</p>
+      `;
+    }
+
+    container.innerHTML = html;
+  </script>
+</body>
+</html>
