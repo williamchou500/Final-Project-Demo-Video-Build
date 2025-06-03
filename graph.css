@@ -106,19 +106,18 @@ label, select, input {
     width: 80px;
     height: 80px;
     object-fit: contain;
-    transition: transform 0.2s ease;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    filter: drop-shadow(0 0 0px transparent);
   }
 
-  .food-item:hover .food-img {
-    transform: scale(1.1);
-    box-shadow: 0 0 12px white;
-  }
+.food-item:hover .food-img {
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 8px white);
+}
 
-  .food-item.selected {
-    box-shadow: 0 0 20px 4px white;
-    border: 2px solid white;
-  }
-
+.food-item.selected .food-img {
+  filter: drop-shadow(0 0 10px white);
+}
   .quantity-input {
     margin-top: 6px;
     width: 50px;
