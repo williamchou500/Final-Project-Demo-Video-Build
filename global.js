@@ -170,8 +170,8 @@ function initializeShip() {
 function updatePromptPosition(shipX, shipY) {
   if (promptBox && !promptBox.classList.contains("hidden")) {
     promptBox.style.position = "absolute";
-    promptBox.style.left = `${shipX - 60}px`;
-    promptBox.style.top = `${shipY - 180}px`;
+    promptBox.style.left = `${shipX + 40}px`;
+    promptBox.style.top = `${shipY - 160}px`;
     promptBox.style.zIndex = "1000";
   }
 }
