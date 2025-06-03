@@ -1,6 +1,6 @@
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
-const svg = graph.append("svg").attr("width", "100%").attr("height", 800);
+const svg = graph.append("svg").attr("width", "80%").attr("height", 800);
 const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
@@ -42,6 +42,7 @@ const line = d3.line()
   .x(d => x(d.hour))
   .y(d => y(d.glucose))
   .curve(d3.curveMonotoneX);
+
 
 const xAxis = svg.append("g")
   .attr("transform", `translate(0,${height - 50})`)
@@ -91,9 +92,10 @@ svg.append("rect")
   .attr("opacity", 0.3);
 
 
+
 let data = [{ hour: 4, glucose: 110 }];  
 const baseline = 110;                    
-const mealStages = ["breakfast", "snack", "lunch", "snack", "dinner"];
+const mealStages = ["breakfast", "a snack", "lunch", "a snack", "dinner"];
 let currentMealIndex = 0;
 let lastMeal = null;
 
@@ -151,8 +153,21 @@ function initializeShip() {
   const startX = x(4);
   const startY = y(110);
   const graphRect = graph.node().getBoundingClientRect();
-  ship.style.left = `${startX + graphRect.left - 20}px`;
+  ship.style.left = `${startX + graphRect.left + 200}px`;
   ship.style.top = `${startY + graphRect.top - 20}px`;
+  
+  // Position prompt next to ship
+  updatePromptPosition(startX + graphRect.left, startY + graphRect.top);
+}
+
+// Function to update prompt position next to ship
+function updatePromptPosition(shipX, shipY) {
+  if (promptBox && !promptBox.classList.contains("hidden")) {
+    promptBox.style.position = "absolute";
+    promptBox.style.left = `${shipX-120}px`; // 50px to the right of ship
+    promptBox.style.top = `${shipY-200}px`;  // Slightly above ship center
+    promptBox.style.zIndex = "1000";
+  }
 }
 
 function drawLine() {
@@ -200,8 +215,14 @@ function animateLineAndShip(startLength, endLength) {
     // Move ship
     const point = path.node().getPointAtLength(currentLength);
     const graphRect = graph.node().getBoundingClientRect();
-    ship.style.left = `${point.x + graphRect.left - 20}px`;
-    ship.style.top = `${point.y + graphRect.top - 20}px`;
+    const shipLeft = point.x + graphRect.left + 200;
+    const shipTop = point.y + graphRect.top - 20;
+    
+    ship.style.left = `${shipLeft}px`;
+    ship.style.top = `${shipTop}px`;
+    
+    // Update prompt position to follow ship
+    updatePromptPosition(shipLeft + 20, shipTop + 20);
 
     if (progress < 1) {
       requestAnimationFrame(step);
@@ -253,7 +274,11 @@ function promptNextMeal() {
 
   mealForm.style.display = "none";
   promptBox.classList.remove("hidden");
-  promptMessage.textContent = `When would you like to eat your ${mealStages[currentMealIndex]}?`;
+  promptMessage.textContent = `I want to eat ${mealStages[currentMealIndex]} at:`;
+  
+  // Update prompt position to current ship location
+  const shipRect = ship.getBoundingClientRect();
+  updatePromptPosition(shipRect.left, shipRect.top);
 }
 
 
@@ -265,7 +290,7 @@ function renderFoodButtons() {
   const mealType = mealStages[currentMealIndex];
   let list = [];
   if (mealType === "breakfast") list = breakfast;
-  else if (mealType === "snack") list = snack;
+  else if (mealType === "a snack") list = snack;
   else if (mealType === "lunch") list = lunch;
   else if (mealType === "dinner") list = dinner;
 
