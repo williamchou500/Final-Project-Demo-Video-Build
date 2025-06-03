@@ -4,6 +4,38 @@ const svg = graph.append("svg").attr("width", "100%").attr("height", 800);
 const width = graph.node().getBoundingClientRect().width;
 const height = 800;
 
+const breakfast = [
+  {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
+  {food: "Milk", calories: 120, carbs: 9.0, sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
+  {food: "Pepsi", calories: 150, carbs: 41, sugars: 41, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
+  {food: "Donut", calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+]
+
+const snack = [
+  {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
+  {food: "Milk", calories: 120, carbs: 9.0, sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
+  {food: "Pepsi", calories: 150, carbs: 41, sugars: 41, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
+  {food: "Donut", calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+]
+
+const lunch = [
+  {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
+  {food: "Milk", calories: 120, carbs: 9.0, sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
+  {food: "Pepsi", calories: 150, carbs: 41, sugars: 41, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
+  {food: "Donut", calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+]
+
+const dinner = [
+  {food: "Coffee", calories: 358.0, carbs: 70.0, sugars: 1.3, protein: 13.0, fiber: 0.0, fat: 0.1},
+  {food: "Milk", calories: 120, carbs: 9.0, sugars: 8.0, protein: 12.0, fiber: 0.0, fat: 5.0},
+  {food: "Pepsi", calories: 150, carbs: 41, sugars: 41, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Toast - Butter, Cheese, Mayo", calories: 111.0, carbs: 14.0, sugars: 1.6, protein: 2.6, fiber: 0.8, fat: 4.8},
+  {food: "Donut", calories: 253.0, carbs: 29.0, sugars: 14.0, protein: 3.7, fiber: 1.3, fat: 14.0}
+]
+
 const x = d3.scaleLinear().domain([4, 27]).range([50, width - 50]);
 const y = d3.scaleLinear().domain([100, 240]).range([height - 50, 50]);
 
