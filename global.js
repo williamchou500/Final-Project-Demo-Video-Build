@@ -139,6 +139,7 @@ let path = null;
 let previousLength = 0;
 function drawLine() {
   if (!path) {
+    
     path = svg.append("path")
       .datum(data)
       .attr("class", "glucose-line")
@@ -146,8 +147,7 @@ function drawLine() {
       .attr("stroke", "white")
       .attr("stroke-width", 2)
       .attr("d", line);
-
-    previousLength = path.node().getTotalLength();
+    previousLength = 0;
   } else {
     path.datum(data)
       .attr("d", line);
@@ -156,7 +156,6 @@ function drawLine() {
   const newLength = path.node().getTotalLength();
   const segmentLength = newLength - previousLength;
 
-  
   ship.style.display = "block";
   let startTime = null;
   const duration = 4000;
@@ -170,6 +169,7 @@ function drawLine() {
     path
       .attr("stroke-dasharray", `${newLength} ${newLength}`)
       .attr("stroke-dashoffset", segmentLength - currentSegmentLength);
+
     const currentLength = previousLength + currentSegmentLength;
     const point = path.node().getPointAtLength(currentLength);
     const graphRect = graph.node().getBoundingClientRect();
@@ -198,7 +198,6 @@ function drawLine() {
 
   requestAnimationFrame(animate);
 }
-
 function getGlucoseAtHour(targetHour) {
   for (let i = 1; i < data.length; i++) {
     const prev = data[i - 1];
