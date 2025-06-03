@@ -222,7 +222,7 @@ function animateLineAndShip(startLength, endLength) {
     // Move ship
     const point = path.node().getPointAtLength(currentLength);
     const graphRect = graph.node().getBoundingClientRect();
-    const shipLeft = point.x + graphRect.left + 200;
+    const shipLeft = point.x + graphRect.left;
     const shipTop = point.y + graphRect.top - 20;
     
     ship.style.left = `${shipLeft}px`;
