@@ -15,14 +15,11 @@ const breakfast = [
   {food: "Fried Eggs", calories: 90.0, carbs: 0.4, sugars: 0.4, protein: 6.3, fiber: 0.0, fat: 7.0},
   {food: "Bacon", calories: 180.0, carbs: 1.4, sugars: 0.0, protein: 12.0, fiber: 0.0, fat: 15.0},
   {food: "Pancakes with Syrup", calories: 350.0, carbs: 60.0, sugars: 14.0, protein: 6.0, fiber: 1.0, fat: 9.0},
-  {food: "Hash Browns", calories: 140.0, carbs: 15.0, sugars: 0.3, protein: 1.5, fiber: 1.3, fat: 9.0},
   {food: "Bagel with Cream Cheese", calories: 290.0, carbs: 36.0, sugars: 5.0, protein: 9.0, fiber: 2.0, fat: 11.0},
   {food: "Orange Juice (1 glass)", calories: 110.0, carbs: 26.0, sugars: 21.0, protein: 2.0, fiber: 0.5, fat: 0.5},
   {food: "Cappuccino (1 cup)", calories: 60.0, carbs: 6.0, sugars: 5.0, protein: 3.0, fiber: 0.0, fat: 3.0},
-  {food: "Syrup (1 tbsp)", calories: 52.0, carbs: 13.0, sugars: 12.0, protein: 0.0, fiber: 0.0, fat: 0.0},
   {food: "Water (1 glass)", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
   {food: "Milk (1 glass)", calories: 120.0, carbs: 12.0, sugars: 12.0, protein: 8.0, fiber: 0.0, fat: 5.0},
-  {food: "Granola with Greek Yogurt", calories: 270.0, carbs: 28.0, sugars: 12.0, protein: 14.0, fiber: 2.5, fat: 11.0},
   {food: "Oatmeal", calories: 150.0, carbs: 27.0, sugars: 1.0, protein: 5.0, fiber: 4.0, fat: 3.0},
   {food: "Avocado Toast", calories: 220.0, carbs: 20.0, sugars: 1.0, protein: 5.0, fiber: 5.0, fat: 14.0}
 ];
