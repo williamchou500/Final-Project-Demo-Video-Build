@@ -506,9 +506,13 @@ function promptNextMeal() {
   updatePromptPosition(shipRect.left, shipRect.top);
 
   if (mealType === "a snack") {
-    promptMessage.innerHTML = `Do I want to have a snack?<br/><br/>
-      <button id="yesSnackBtn">Yes</button> 
-      <button id="noSnackBtn">No</button>`;
+    promptMessage.innerHTML = `
+      <div style="text-align: center; max-width: 300px; margin: 0 auto;">
+        <p style="white-space: nowrap; font-size: 20px;">Do I want to have a snack?</p>
+        <button id="yesSnackBtn">Yes</button> 
+        <button id="noSnackBtn">No</button>
+      </div>
+    `;
 
     confirmTimeBtn.classList.add("hidden");
     mealTimeSlider.style.display = "none";
