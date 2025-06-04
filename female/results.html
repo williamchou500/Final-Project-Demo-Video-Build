@@ -214,13 +214,13 @@
       } else if (riskLevel === "moderate") {
         icon = "⚠️";
         resultMessage = `
-          <p class="status-moderate"><strong>${icon} Not bad!</strong></p>
-          <p>Your ship almost overheated with one glucose spike.</p>
+          <p class="status-moderate"><strong>${icon} Warning!</strong></p>
+          <p>Your ship almost overheated with one glucose spike (over 180 mg/dL).</p>
         `;
         tipIntro = `${icon} Tip: Consider these adjustments to prevent spikes next time...`;
 
       } else if (tooDangerous) {
-        icon = "🟥";
+        icon = "❌";
         resultMessage = `
           <p class="status-high"><strong>${icon} Crash!</strong></p>
           <p class="status-high">Your ship crashed from a severe glucose spike (over 240 mg/dL).</p>
@@ -230,10 +230,10 @@
       } else {
         icon = "❌";
         resultMessage = `
-          <p class="status-high"><strong>${icon} Warning!</strong></p>
-          <p>Your ship took critical damage from multiple glucose spikes.</p>
+          <p class="status-high"><strong>${icon} Mission Failed!</strong></p>
+          <p>Your ship took critical damage from multiple glucose spikes (over 180 mg/dL).</p>
         `;
-        tipIntro = `${icon} Tip: You’ll need to revise your choices. Start with these suggestions...`;
+        tipIntro = `${icon} Tip: You’ll need to revise your choices to save the bunny. Start with these suggestions...`;
       }
       let tipsHTML = "";
       const hasTips = Object.values(advice).some(arr => arr.length > 0);
