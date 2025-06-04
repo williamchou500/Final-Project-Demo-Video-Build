@@ -67,19 +67,19 @@
 
   <button id="restartBtnF" class="restartBtn">Restart Simulation</button>
   <script>
-    const restartBtn = document.getElementById("restartBtnF");
-    restartBtn.addEventListener("click", () => {
-      window.location.href = "../female/index.html?restart=1";
-    });
+      
+    document.getElementById("restartBtnF").onclick = () => {
+      window.location.href = "index.html?restart=1";
+    };
   </script>
   
   <button id="resetBtnF" class="resetBtn">Reset Simulation</button>
   <script>
-    const resetBtn = document.getElementById("resetBtnF");
-    resetBtn.addEventListener("click", () => {
+    
+    document.getElementById("resetBtnF").onclick = () => {
+      localStorage.removeItem("allGlucoseRuns");
       window.location.href = "../";
-    });
-    localStorage.clear();
+    };
   </script>
 
 </body>
