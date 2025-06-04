@@ -91,11 +91,6 @@ const dinner = [
 const x = d3.scaleLinear().domain([4, 27]).range([50, width - 50]);
 const y = d3.scaleLinear().domain([100, 240]).range([height - 50, 50]);
 
-console.log("Y scale test:");
-console.log("y(110) =", y(110)); // Should be around 718 pixels
-console.log("y(135) =", y(135)); // Check what 135 maps to
-console.log("y.invert(y(110)) =", y.invert(y(110))); // Should return 110
-
 const line = d3.line()
   .x(d => x(d.hour))
   .y(d => y(d.glucose))
@@ -351,13 +346,6 @@ function updatePromptPosition(shipX, shipY) {
 }
 
 function drawLine() {
-  console.log("Drawing data:", data);
-  console.log("First point coordinates:", {
-    x: x(data[0].hour), 
-    y: y(data[0].glucose),
-    glucose: data[0].glucose
-  });
-
   if (!path) {
     path = svg.append("path")
       .datum(data)
