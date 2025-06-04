@@ -1,7 +1,5 @@
 let allRuns = JSON.parse(localStorage.getItem("allGlucoseRuns") || "[]");
 
-
-
 window.onload = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const restart = queryParams.get("restart");
@@ -359,8 +357,27 @@ function initializeShip() {
 function updatePromptPosition(shipX, shipY) {
   if (promptBox && !promptBox.classList.contains("hidden")) {
     promptBox.style.position = "absolute";
-    promptBox.style.left = `${shipX - 60}px`;
-    promptBox.style.top = `${shipY - 240}px`;
+
+    const boxWidth = promptBox.offsetWidth || 200;
+    const boxHeight = promptBox.offsetHeight || 240;
+
+    let left = shipX - 60;
+    let top = shipY - 240;
+
+    // Clamp horizontally
+    if (left < 10) left = 50;
+    if (left + boxWidth > window.innerWidth) {
+      left = window.innerWidth - boxWidth - 10;
+    }
+
+    // Clamp vertically
+    if (top < 10) top = 50;
+    if (top + boxHeight > window.innerHeight) {
+      top = window.innerHeight - boxHeight - 10;
+    }
+
+    promptBox.style.left = `${left}px`;
+    promptBox.style.top = `${top}px`;
     promptBox.style.zIndex = "1000";
   }
 }
@@ -537,7 +554,7 @@ function promptNextMeal() {
   promptBox.classList.remove("hidden");
 
   const shipRect = ship.getBoundingClientRect();
-  updatePromptPosition(shipRect.left, shipRect.top);
+  updatePromptPosition(shipRect.left + 90, shipRect.top + 60);
 
   if (mealType === "a snack") {
     promptMessage.innerHTML = `
