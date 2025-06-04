@@ -1,21 +1,45 @@
 window.onload = () => {
   const queryParams = new URLSearchParams(window.location.search);
-  if (queryParams.get("restart") === "1") {
-    // Reset all global state
+  const restart = queryParams.get("restart");
+
+  let previousData = null;
+
+  if (restart === "1") {
+    // Load the old data (to show as reference)
+    const saved = localStorage.getItem("glucoseData");
+    if (saved) {
+      previousData = JSON.parse(saved);
+    }
+
+    // Start new simulation
     danger_count = 0;
     too_dangerous = false;
     data = [{ hour: 4, glucose: 110 }];
     currentMealIndex = 0;
     lastMeal = null;
 
-    // Optional: clear localStorage if needed
+    // You can optionally clear storage here
     // localStorage.removeItem("glucoseData");
   }
 
-  // Always initialize the sim
   initializeShip();
+
+  // If we have previous data, draw it in a different style
+  if (previousData) {
+    svg.append("path")
+      .datum(previousData)
+      .attr("fill", "none")
+      .attr("stroke", "gray")
+      .attr("stroke-width", 2)
+      .attr("stroke-dasharray", "4,4")
+      .attr("d", line);
+  }
+
+  // Draw initial data line (will animate as user proceeds)
+  drawLine();
   promptNextMeal();
 };
+
 
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
