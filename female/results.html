@@ -167,6 +167,7 @@
           <p>Your flight stayed smooth and healthy — no dangerous spikes detected.</p>
         `;
         tipIntro = `${icon} Tip: You’re doing well! To make your next meal even better, try...`;
+
       } else if (riskLevel === "moderate") {
         icon = "⚠️";
         resultMessage = `
@@ -174,6 +175,15 @@
           <p>Your ship almost overheated with one glucose spike.</p>
         `;
         tipIntro = `${icon} Tip: Consider these adjustments to prevent spikes next time...`;
+
+      } else if (tooDangerous) {
+        icon = "🟥";
+        resultMessage = `
+          <p><strong>${icon} Crash!</strong></p>
+          <p>Your ship crashed from a severe glucose spike (over 240 mg/dL).</p>
+        `;
+        tipIntro = `${icon} Tip: This was a critical crash — adjust your meals urgently. Try these changes...`;
+
       } else {
         icon = "❌";
         resultMessage = `
@@ -201,7 +211,9 @@
 
     container.innerHTML = generateResultsMessage(dangerCount, tooDangerous, foodData);
     const resultImage = document.getElementById("resultImage");
-    if (tooDangerous || dangerCount >= 2) {
+    if (tooDangerous) {
+      resultImage.src = "../images/deadF.png";
+    } else if (dangerCount >= 2) {
       resultImage.src = "../images/f2.png";
     } else if (dangerCount === 1) {
       resultImage.src = "../female.png";
