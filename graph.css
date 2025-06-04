@@ -158,3 +158,66 @@ label, select, input {
   border-radius: 5px;
   cursor: pointer;
 }
+.axis text {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  fill: white;
+}
+
+.axis line,
+.axis path {
+  stroke: white;
+  stroke-width: 2;
+}
+#mealLabel,
+#promptMessage {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 24px;
+  color: white;
+  text-shadow: 0 0 6px white;
+}
+#mealTimeSlider {
+  -webkit-appearance: none;
+  width: 200px;
+  height: 6px;
+  background: #fff;
+  border-radius: 5px;
+  outline: none;
+  margin: 10px 0;
+}
+
+#mealTimeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 6px white;
+}
+
+#mealTimeSlider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 6px white;
+}
+button {
+  font-family: 'Orbitron', sans-serif;
+  padding: 10px 20px;
+  background-color: #111;
+  color: white;
+  border: 2px solid white;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+button:hover {
+  background-color: white;
+  color: #111;
+  box-shadow: 0 0 10px white;
+}
