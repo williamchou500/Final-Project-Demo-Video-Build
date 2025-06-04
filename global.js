@@ -4,18 +4,18 @@ window.onload = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const restart = queryParams.get("restart");
 
-  if (restart === "1") {
-    // Start fresh by clearing just the glucose data
-    localStorage.removeItem("allGlucoseRuns");
-    allRuns = []; // reset in memory too
+  // Load ALL past runs
+  const allRuns = JSON.parse(localStorage.getItem("allGlucoseRuns") || "[]");
 
+  if (restart === "1") {
+    // Start a new run
     danger_count = 0;
     too_dangerous = false;
     data = [{ hour: 4, glucose: 110 }];
     currentMealIndex = 0;
     lastMeal = null;
   } else {
-    // If not restarting, try to recover most recent data
+    // If not a restart, you can optionally recover most recent run
     const lastRun = allRuns.length > 0 ? allRuns[allRuns.length - 1].data : null;
     if (lastRun) {
       data = lastRun;
@@ -24,7 +24,7 @@ window.onload = () => {
 
   initializeShip();
 
-  // Draw all past runs
+  // Draw all past runs (gray, dashed)
   allRuns.forEach(run => {
     svg.append("path")
       .datum(run.data)
@@ -34,10 +34,7 @@ window.onload = () => {
       .attr("stroke-dasharray", "4,4")
       .attr("d", line);
   });
-
-  drawLine();
-  promptNextMeal();
-};
+}
 
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
@@ -411,7 +408,7 @@ function animateSmokyPath(startLen, endLen) {
 
   const duration = 4000;
   let startTime = null;
-
+  
   function step(timestamp) {
     if (!startTime) startTime = timestamp;
     const elapsed = timestamp - startTime;
@@ -777,7 +774,7 @@ submitBtn.addEventListener("click", () => {
   const peakHour = hour + 1;
   const peakValue = currentGlucose + increment;
 
-  if (peakHour >= 23) {
+  if (peakHour >= 27) {
     data.push({ hour: peakHour, glucose: currentGlucose + increment });
     allRuns.push({
       timestamp: new Date().toISOString(),
