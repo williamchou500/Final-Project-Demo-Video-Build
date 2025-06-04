@@ -4,86 +4,284 @@
   <meta charset="UTF-8">
   <title>Glucose Tracker Results</title>
   <link rel="stylesheet" href="../graph.css">
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
   <style>
     body {
+      font-family: 'Orbitron', sans-serif;
       background: url('../stars.png') center/cover no-repeat fixed;
       color: white;
-      font-family: 'Orbitron', sans-serif;
       margin: 0;
       padding: 40px;
       text-align: center;
     }
+
     #results {
-      max-width: 600px;
+      width: 100%;
+      max-width: 1000px;
       margin: 0 auto;
       background: rgba(255, 255, 255, 0.1);
       padding: 20px;
       border-radius: 8px;
       font-size: 1.2rem;
       line-height: 1.6;
-      color: #ff6666;
     }
-    #results p {
-      margin: 12px 0;
+    #results p.status-high:first-of-type,
+    #results p.status-moderate:first-of-type,
+    #results p.status-healthy:first-of-type {
+      font-size: 2.3rem;
+      text-shadow: 0 0 18px currentColor, 0 0 40px currentColor;
+      letter-spacing: 1.5px;
+      margin-bottom: 0.3em;
+    }
+    #results h4 {
+      font-size: 1.5rem;
+      color: #fff;
+      text-align: left;
+      margin: 1.4em 0 0.3em 0;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-shadow: 0 0 8px #123, 0 0 2px #fff8;
+    }
+
+    #results p.status-high {
+      color: #ff4444;
+      font-weight: bold;
+    }
+    #results p.status-moderate {
+      color: #ffcc00;
+      font-weight: bold;
+    }
+    #results p.status-healthy {
+      color: #66ff66;
+      font-weight: bold;
+    }
+
+    .status-high {
+      color: #ff4444;
+      font-weight: bold;
+    }
+
+    .status-moderate {
+      color: #ffcc00;
+      font-weight: bold;
+    }
+
+    .status-healthy {
+      color: #66ff66;
+      font-weight: bold;
+    }
+
+    #resultImage {
+      display: block;
+      margin: 0 auto 20px auto;
+      max-width: 300px;
+      height: auto;
+      filter: drop-shadow(0 0 10px white);
+    }
+
+    button {
+      display: inline-block;
+      margin: 10px auto;
     }
   </style>
 </head>
 <body>
-  <div id="results">
- 
-  </div>
+  <div id="results"></div>
+  <img id="resultImage" src="" alt="Result Bunny" style="max-width: 40%; height: auto; margin-bottom: 20px;" />
 
   <script>
-
     const params = new URLSearchParams(window.location.search);
     const dangerCount = parseInt(params.get("danger")) || 0;
     const tooDangerous = params.get("too") === "1";
 
     const rawData = localStorage.getItem("foodlist");
-    const foodData = JSON.parse(rawData);
-
+    const foodData = JSON.parse(rawData || "[]");
     const container = document.getElementById("results");
-    let html = "";
 
-    if (tooDangerous) {
-      html = `
-        <p><strong>⚠️ Critical Alert!</strong></p>
-        <p>Your glucose exceeded <strong>240 mg/dL</strong> at least once.</p>
-        <p>Please seek medical advice immediately.</p>
-      `;
-    } else if (dangerCount > 0) {
-      html = `
-        <p><strong>Warning:</strong></p>
-        <p>Your glucose rose above <strong>180 mg/dL</strong> <strong>${dangerCount}</strong> time(s).</p>
-        <p>Consider adjusting your meal timing or food choices.</p>
-      `;
-    } else {
-      html = `
-        <p><strong>Good job!</strong></p>
-        <p>Your glucose never rose above <strong>180 mg/dL</strong>.</p>
-        <p>Keep maintaining this balanced meal plan!</p>
-      `;
+    const breakfast = [
+      {food: "Fried Eggs", calories: 90.0, carbs: 0.4, sugars: 0.4, protein: 6.3, fiber: 0.0, fat: 7.0},
+      {food: "Bacon", calories: 180.0, carbs: 1.4, sugars: 0.0, protein: 12.0, fiber: 0.0, fat: 15.0},
+      {food: "Pancakes with Syrup", calories: 350.0, carbs: 60.0, sugars: 14.0, protein: 6.0, fiber: 1.0, fat: 9.0},
+      {food: "Bagel with Cream Cheese", calories: 290.0, carbs: 36.0, sugars: 5.0, protein: 9.0, fiber: 2.0, fat: 11.0},
+      {food: "Orange Juice", calories: 110.0, carbs: 26.0, sugars: 21.0, protein: 2.0, fiber: 0.5, fat: 0.5},
+      {food: "Cappuccino", calories: 60.0, carbs: 6.0, sugars: 5.0, protein: 3.0, fiber: 0.0, fat: 3.0},
+      {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+      {food: "Oatmeal", calories: 150.0, carbs: 27.0, sugars: 1.0, protein: 5.0, fiber: 4.0, fat: 3.0},
+      {food: "Avocado Toast", calories: 220.0, carbs: 20.0, sugars: 1.0, protein: 5.0, fiber: 5.0, fat: 14.0}
+    ];
+
+    const snack = [
+      {food: "Granola Bar", calories: 190.0, carbs: 25.0, sugars: 10.0, protein: 4.0, fiber: 2.0, fat: 7.0},
+      {food: "Bag of Chips (2.5 oz)", calories: 390.0, carbs: 37.0, sugars: 0.5, protein: 4.0, fiber: 2.0, fat: 25.0},
+      {food: "Apple Slices", calories: 80.0, carbs: 21.0, sugars: 16.0, protein: 0.5, fiber: 3.0, fat: 0.0},
+      {food: "Iced Tea", calories: 90.0, carbs: 23.0, sugars: 22.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+      {food: "Smoothie", calories: 140.0, carbs: 30.0, sugars: 25.0, protein: 2.0, fiber: 2.0, fat: 1.0},
+      {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
+    ];
+
+    const lunch = [
+      {food: "Grilled Chicken Sandwich", calories: 430.0, carbs: 40.0, sugars: 6.0, protein: 35.0, fiber: 3.0, fat: 15.0},
+      {food: "Cheeseburger", calories: 520.0, carbs: 35.0, sugars: 7.0, protein: 25.0, fiber: 2.0, fat: 30.0},
+      {food: "Caesar Salad with Chicken", calories: 410.0, carbs: 10.0, sugars: 2.0, protein: 30.0, fiber: 3.0, fat: 28.0},
+      {food: "Vegetable Stir Fry with Rice", calories: 450.0, carbs: 55.0, sugars: 8.0, protein: 10.0, fiber: 5.0, fat: 15.0},
+      {food: "Lemonade", calories: 120.0, carbs: 31.0, sugars: 29.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+      {food: "Iced Coffee with Cream", calories: 90.0, carbs: 10.0, sugars: 7.0, protein: 2.0, fiber: 0.0, fat: 4.0},
+      {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
+    ];
+
+    const dinner = [
+      {food: "Grilled Salmon with Veggies", calories: 520.0, carbs: 10.0, sugars: 3.0, protein: 40.0, fiber: 4.0, fat: 32.0},
+      {food: "Spaghetti with Marinara Sauce", calories: 480.0, carbs: 65.0, sugars: 9.0, protein: 15.0, fiber: 6.0, fat: 12.0},
+      {food: "Beef Tacos", calories: 560.0, carbs: 30.0, sugars: 3.0, protein: 28.0, fiber: 4.0, fat: 36.0},
+      {food: "Chicken Stir Fry with Noodles", calories: 510.0, carbs: 45.0, sugars: 6.0, protein: 32.0, fiber: 4.0, fat: 20.0},
+      {food: "Red Wine", calories: 125.0, carbs: 4.0, sugars: 1.0, protein: 0.1, fiber: 0.0, fat: 0.0},
+      {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+      {food: "Apple Juice", calories: 110.0, carbs: 28.0, sugars: 24.0, protein: 0.5, fiber: 0.2, fat: 0.3}
+    ];
+
+    const swapSuggestions = {
+      breakfast: {
+        "Pancakes with Syrup": ["Avocado Toast", "Oatmeal"],
+        "Bagel with Cream Cheese": ["Oatmeal", "Avocado Toast"],
+        "Orange Juice": ["Water", "Cappuccino"]
+      },
+      snack: {
+        "Bag of Chips (2.5 oz)": ["Apple Slices", "Granola Bar"],
+        "Smoothie": ["Apple Slices", "Water"],
+        "Iced Tea": ["Water"]
+      },
+      lunch: {
+        "Cheeseburger": ["Grilled Chicken Sandwich", "Caesar Salad with Chicken"],
+        "Lemonade": ["Water", "Iced Coffee with Cream"]
+      },
+      dinner: {
+        "Spaghetti with Marinara Sauce": ["Grilled Salmon with Veggies", "Chicken Stir Fry with Noodles"],
+        "Apple Juice": ["Water", "Red Wine"]
+      }
+    };
+
+    function generateResultsMessage(dangerCount, tooDangerous, foodData) {
+      const riskLevel = tooDangerous || dangerCount >= 2
+        ? "high"
+        : dangerCount === 1
+        ? "moderate"
+        : "healthy";
+
+      const advice = { breakfast: [], lunch: [], dinner: [], snack: [] };
+
+      const categories = { breakfast, lunch, dinner, snack };
+      const foodToMealMap = {};
+      Object.entries(categories).forEach(([meal, list]) => {
+        list.forEach(f => foodToMealMap[f.food] = meal);
+      });
+
+      foodData.forEach(item => {
+        const { food, carbs, sugars, quantity = 1 } = item;
+        const meal = foodToMealMap[food];
+        if (!meal) return;
+
+        const isSugary = sugars > 15;
+        const isCarby = carbs > 40;
+        const isHighQty = quantity > 2;
+        const suggestions = swapSuggestions[meal]?.[food];
+        let tips = [];
+
+        if (isHighQty) {
+          tips.push(`You had ${quantity} × ${food}. Consider lowering to 1–2 servings.`);
+        }
+
+        if ((isSugary || isCarby) && suggestions) {
+          tips.push(`Swap ${food} for ${suggestions.join(" or ")} to reduce sugar or carb impact.`);
+        }
+
+        if (tips.length > 0) {
+          advice[meal].push(...tips);
+        }
+      });
+
+      let resultMessage = "";
+      let icon = "";
+      let tipIntro = "";
+
+      if (riskLevel === "healthy") {
+        icon = "✅";
+        resultMessage = `
+          <p class="status-healthy"><strong>${icon} Great job!</strong></p>
+          <p>Your flight stayed smooth and healthy — no dangerous spikes detected.</p>
+        `;
+        tipIntro = `${icon} Tip: You’re doing well! To make your next meal even better, try...`;
+      } else if (riskLevel === "moderate") {
+        icon = "⚠️";
+        resultMessage = `
+          <p class="status-moderate"><strong>${icon} Warning!</strong></p>
+          <p>Your ship almost overheated with one glucose spike (over 180 mg/dL).</p>
+        `;
+        tipIntro = `${icon} Tip: Consider these adjustments to prevent spikes next time...`;
+      } else if (tooDangerous) {
+        icon = "❌";
+        resultMessage = `
+          <p class="status-high"><strong>${icon} Crash!</strong></p>
+          <p class="status-high">Your ship crashed from a severe glucose spike (over 240 mg/dL).</p>
+        `;
+        tipIntro = `${icon} Tip: This was a critical crash — adjust your meals urgently. Try these changes...`;
+      } else {
+        icon = "❌";
+        resultMessage = `
+          <p class="status-high"><strong>${icon} Mission Failed!</strong></p>
+          <p>Your ship took critical damage from multiple glucose spikes (over 180 mg/dL).</p>
+        `;
+        tipIntro = `${icon} Tip: You’ll need to revise your choices to save the bunny. Start with these suggestions...`;
+      }
+
+      let tipsHTML = "";
+      const hasTips = Object.values(advice).some(arr => arr.length > 0);
+      if (hasTips) {
+        tipsHTML += `<p><strong>${tipIntro}</strong></p>`;
+        Object.entries(advice).forEach(([meal, tips]) => {
+          if (tips.length > 0) {
+            tipsHTML += `<h4>${meal.charAt(0).toUpperCase() + meal.slice(1)}:</h4><ul>`;
+            tips.forEach(t => tipsHTML += `<li>${t}</li>`);
+            tipsHTML += `</ul>`;
+          }
+        });
+      } else if (riskLevel === "healthy") {
+        tipsHTML += `<p>Great job! Your flight stayed smooth and healthy — no dangerous spikes detected.</p>`;
+      }
+
+      return resultMessage + tipsHTML;
     }
 
-    container.innerHTML = html;
+    container.innerHTML = generateResultsMessage(dangerCount, tooDangerous, foodData) + `
+      <p style="margin-top:2em;font-size:1.1em;background:rgba(0,0,0,0.22);padding:0.8em 1em;border-radius:8px;">
+      <b>Please, be mindful:</b> spacing out your meals can save you from the high glucose spike! Keep your bunny safe!
+      </p>
+    `;
+
+    const resultImage = document.getElementById("resultImage");
+    if (tooDangerous) {
+      resultImage.src = "../images/deadM.png";
+    } else if (dangerCount >= 2) {
+      resultImage.src = "../images/m2.png";
+    } else if (dangerCount === 1) {
+      resultImage.src = "../male.png";
+    } else {
+      resultImage.src = "../images/m1.png";
+    }
   </script>
 
   <button id="restartBtnF" class="restartBtn">Restart Simulation</button>
   <script>
-      
     document.getElementById("restartBtnF").onclick = () => {
       window.location.href = "index.html?restart=1";
     };
   </script>
-  
+
   <button id="resetBtnF" class="resetBtn">Reset Simulation</button>
   <script>
-    
     document.getElementById("resetBtnF").onclick = () => {
       localStorage.removeItem("allGlucoseRuns");
       window.location.href = "../";
     };
   </script>
-
 </body>
 </html>
