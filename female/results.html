@@ -26,12 +26,18 @@
     #results p {
       margin: 12px 0;
     }
+    #resultImage {
+      max-width: 100%;
+      height: auto;
+      margin-bottom: 20px;
+      filter: drop-shadow(0 0 10px white);
+    }
   </style>
 </head>
 <body>
-  <img id="resultImage" src="" alt="Result Bunny" style="max-width: 100%; height: auto; margin-bottom: 20px;" />
   <div id="results">
   </div>
+  <img id="resultImage" src="" alt="Result Bunny" style="max-width: 100%; height: auto; margin-bottom: 20px;" />
 
   <script>
     const params = new URLSearchParams(window.location.search);
