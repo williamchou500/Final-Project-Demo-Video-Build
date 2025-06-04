@@ -1,30 +1,21 @@
-const savedRuns = localStorage.getItem("allGlucoseRuns");
-
-localStorage.clear();
-
-if (savedRuns) {
-  localStorage.setItem("allGlucoseRuns", savedRuns);
-}
-
-
 let allRuns = JSON.parse(localStorage.getItem("allGlucoseRuns") || "[]");
 
 window.onload = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const restart = queryParams.get("restart");
 
-  // Load ALL past runs
-  const allRuns = JSON.parse(localStorage.getItem("allGlucoseRuns") || "[]");
-
   if (restart === "1") {
-    // Start a new run
+    // Start fresh by clearing just the glucose data
+    localStorage.removeItem("allGlucoseRuns");
+    allRuns = []; // reset in memory too
+
     danger_count = 0;
     too_dangerous = false;
     data = [{ hour: 4, glucose: 110 }];
     currentMealIndex = 0;
     lastMeal = null;
   } else {
-    // If not a restart, you can optionally recover most recent run
+    // If not restarting, try to recover most recent data
     const lastRun = allRuns.length > 0 ? allRuns[allRuns.length - 1].data : null;
     if (lastRun) {
       data = lastRun;
@@ -33,7 +24,7 @@ window.onload = () => {
 
   initializeShip();
 
-  // Draw all past runs (gray, dashed)
+  // Draw all past runs
   allRuns.forEach(run => {
     svg.append("path")
       .datum(run.data)
@@ -44,10 +35,8 @@ window.onload = () => {
       .attr("d", line);
   });
 
-  // Draw active run line (starts with baseline point)
   drawLine();
   promptNextMeal();
-  localStorage.clear()
 };
 
 d3.select("#graph").html("");
