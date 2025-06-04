@@ -507,36 +507,45 @@ function promptNextMeal() {
   mealTimeSlider.min = minHour;
   mealTimeSlider.max = 27;
   mealTimeSlider.value = minHour;
-
   sliderLabel.textContent = `${minHour % 24}:00`;
 
   const mealType = mealStages[currentMealIndex];
-
   mealForm.style.display = "none";
   promptBox.classList.remove("hidden");
-  if (mealType === "a snack") {
-    promptMessage.innerHTML = `Do I want to have a snack? <br/><br/>
-      <button id="yesSnackBtn">Yes</button> 
-      <button id="noSnackBtn">No</button>`;
-
-    document.getElementById("yesSnackBtn").onclick = () => {
-      promptMessage.textContent = `I want to eat a snack at:`;
-      confirmTimeBtn.classList.remove("hidden");
-    };
-
-    document.getElementById("noSnackBtn").onclick = () => {
-      currentMealIndex++; 
-      promptNextMeal();
-    };
-
-    confirmTimeBtn.classList.add("hidden");
-  } else {
-    promptMessage.textContent = `I want to eat ${mealType} at:`;
-    confirmTimeBtn.classList.remove("hidden");
-  }
 
   const shipRect = ship.getBoundingClientRect();
   updatePromptPosition(shipRect.left, shipRect.top);
+
+  if (mealType === "a snack") {
+    promptMessage.innerHTML = `
+      <div style="text-align: center; max-width: 300px; margin: 0 auto;">
+        <p style="white-space: nowrap; font-size: 20px;">Do I want to have a snack?</p>
+        <button id="yesSnackBtn">Yes</button> 
+        <button id="noSnackBtn">No</button>
+      </div>
+    `;
+
+    mealTimeSlider.style.display = "none";
+    sliderLabel.style.display = "none";
+    confirmTimeBtn.style.display = "none";
+
+    document.getElementById("yesSnackBtn").onclick = () => {
+      promptMessage.textContent = `I want to eat a snack at:`;
+      mealTimeSlider.style.display = "block";
+      sliderLabel.style.display = "block";
+      confirmTimeBtn.style.display = "block";
+    };
+
+    document.getElementById("noSnackBtn").onclick = () => {
+      currentMealIndex++;
+      promptNextMeal();
+    };
+  } else {
+    promptMessage.textContent = `I want to eat ${mealType} at:`;
+    mealTimeSlider.style.display = "block";
+    sliderLabel.style.display = "block";
+    confirmTimeBtn.style.display = "block";
+  }
 }
 let selectedFoods = [];
 
