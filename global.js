@@ -134,6 +134,14 @@ svg.append("text")
   .attr("fill", "white")
   .text("Glucose (mg/dL)");
 
+svg.append("text")
+  .attr("x", width / 2)
+  .attr("y", height - 10)
+  .attr("text-anchor", "middle")
+  .attr("font-size", "14px")
+  .attr("fill", "white")
+  .text("Time");
+
 svg.append("line")
   .attr("x1", 50)
   .attr("x2", width - 50)
@@ -150,6 +158,16 @@ svg.append("rect")
   .attr("height", y(180) - 50)
   .attr("fill", "red")
   .attr("opacity", 0.3);
+
+svg.append("text")
+  .attr("x", width - 60)
+  .attr("y", y(180) - 10)
+  .attr("fill", "red")
+  .attr("font-size", "18px")
+  .attr("font-family", "Orbitron")
+  .attr("text-anchor", "end")
+  .style("text-shadow", "0 0 6px red")
+  .text("Danger Zone");
 
 let data = [{ hour: 4, glucose: 110 }];
 const baseline = 110;
