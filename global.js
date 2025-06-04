@@ -132,6 +132,7 @@ svg.append("text")
   .attr("text-anchor", "middle")
   .attr("font-size", "14px")
   .attr("fill", "white")
+  .attr("font-family", "Orbitron")
   .text("Glucose (mg/dL)");
 
 svg.append("text")
@@ -140,6 +141,7 @@ svg.append("text")
   .attr("text-anchor", "middle")
   .attr("font-size", "14px")
   .attr("fill", "white")
+  .attr("font-family", "Orbitron")
   .text("Time");
 
 svg.append("line")
