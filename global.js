@@ -4,43 +4,41 @@ window.onload = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const restart = queryParams.get("restart");
 
-  let previousData = null;
+  // Load ALL past runs
+  const allRuns = JSON.parse(localStorage.getItem("allGlucoseRuns") || "[]");
 
   if (restart === "1") {
-    // Load the old data (to show as reference)
-    const saved = localStorage.getItem("glucoseData");
-    if (saved) {
-      previousData = JSON.parse(saved);
-    }
-
-    // Start new simulation
+    // Start a new run
     danger_count = 0;
     too_dangerous = false;
     data = [{ hour: 4, glucose: 110 }];
     currentMealIndex = 0;
     lastMeal = null;
-
-    // You can optionally clear storage here
-    // localStorage.removeItem("glucoseData");
+  } else {
+    // If not a restart, you can optionally recover most recent run
+    const lastRun = allRuns.length > 0 ? allRuns[allRuns.length - 1].data : null;
+    if (lastRun) {
+      data = lastRun;
+    }
   }
+
   initializeShip();
 
-  // If we have previous data, draw it in a different style
-  if (previousData) {
+  // Draw all past runs (gray, dashed)
+  allRuns.forEach(run => {
     svg.append("path")
-      .datum(previousData)
+      .datum(run.data)
       .attr("fill", "none")
       .attr("stroke", "gray")
-      .attr("stroke-width", 2)
+      .attr("stroke-width", 1.5)
       .attr("stroke-dasharray", "4,4")
       .attr("d", line);
-  }
+  });
 
-  // Draw initial data line (will animate as user proceeds)
+  // Draw active run line (starts with baseline point)
   drawLine();
   promptNextMeal();
 };
-
 
 d3.select("#graph").html("");
 const graph = d3.select("#graph");
