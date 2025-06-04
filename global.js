@@ -437,13 +437,7 @@ function animateSmokyPath(startLen, endLen) {
       
       setTimeout(() => {
         const tooFlag = 1;
-        allRuns.push({
-          timestamp: new Date().toISOString(),
-          data: [...data],  // clone so it won't mutate later
-        });
-        
-        localStorage.setItem("allGlucoseRuns", JSON.stringify(allRuns));
-        
+        localStorage.setItem("glucoseData", JSON.stringify(data));  
         window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
       }, 800);
     }
@@ -481,30 +475,27 @@ function animateSmokyPath(startLen, endLen) {
 
     updatePromptPosition(shipLeft + 20, shipTop + 20);
 
-      if (progress < 1) {
-        requestAnimationFrame(step);
-      } else {
-        if (currentMealIndex < mealStages.length) {
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      if (currentMealIndex < mealStages.length) {
+        // Only prompt next meal if user isn't already selecting food
+        if (mealForm.style.display === "none" && promptBox.classList.contains("hidden")) {
           setTimeout(promptNextMeal, 500);
-        } else {
-          setTimeout(() => {
-            const tooFlag = too_dangerous ? 1 : 0;
-            allRuns.push({
-              timestamp: new Date().toISOString(),
-              data: [...data],  // clone so it won't mutate later
-            });
-            
-            localStorage.setItem("allGlucoseRuns", JSON.stringify(allRuns));
-            
-            window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
-          }, 1000); // slight pause after animation
         }
+      } else {
+        setTimeout(() => {
+          const tooFlag = too_dangerous ? 1 : 0;
+          localStorage.setItem("glucoseData", JSON.stringify(data));  
+          window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
+        }, 1000); // slight pause after animation
       }
+    }
   }
-      
 
   requestAnimationFrame(step);
 }
+
 function getGlucoseAtHour(targetHour) {
   for (let i = 1; i < data.length; i++) {
     const prev = data[i - 1];
