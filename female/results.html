@@ -30,7 +30,7 @@
 </head>
 <body>
   <div id="results">
- 
+     <img id="resultImage" src="" alt="Result Bunny" style="max-width: 100%; height: auto; margin-bottom: 20px;" />
   </div>
 
   <script>
@@ -187,6 +187,14 @@
     }
 
     container.innerHTML = generateResultsMessage(dangerCount, tooDangerous, foodData);
+    const resultImage = document.getElementById("resultImage");
+    if (tooDangerous || dangerCount >= 2) {
+      resultImage.src = "f2.png";
+    } else if (dangerCount === 1) {
+      resultImage.src = "female.png";
+    } else {
+      resultImage.src = "f1.png";
+    }
   </script>
 
   <button id="restartBtnF" class="restartBtn">Restart Simulation</button>
