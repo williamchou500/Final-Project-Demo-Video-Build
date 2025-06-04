@@ -426,7 +426,6 @@ function animateSmokyPath(startLen, endLen) {
         
         localStorage.setItem("allGlucoseRuns", JSON.stringify(allRuns));
         
-        localStorage.setItem("glucoseData", JSON.stringify(data));  
         window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
       }, 800);
     }
@@ -479,7 +478,6 @@ function animateSmokyPath(startLen, endLen) {
             
             localStorage.setItem("allGlucoseRuns", JSON.stringify(allRuns));
             
-            localStorage.setItem("glucoseData", JSON.stringify(data));  
             window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
           }, 1000); // slight pause after animation
         }
@@ -763,7 +761,6 @@ submitBtn.addEventListener("click", () => {
 
   if (peakHour >= 23) {
     data.push({ hour: peakHour, glucose: currentGlucose + increment });
-    localStorage.setItem("glucoseData", JSON.stringify(data));
     allRuns.push({
       timestamp: new Date().toISOString(),
       data: [...data],  // clone so it won't mutate later
