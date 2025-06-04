@@ -74,5 +74,14 @@
   });
 </script>
 
+<button id="resetBtnF" class="resetBtn">Reset Simulation</button>
+  <script>
+    const resetBtn = document.getElementById("resetBtnF");
+    resetBtn.addEventListener("click", () => {
+      window.location.href = "../";
+    });
+    localStorage.clear();
+  </script>
+
 </body>
 </html>

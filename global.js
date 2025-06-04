@@ -1,7 +1,7 @@
 let allRuns = JSON.parse(localStorage.getItem("allGlucoseRuns") || "[]");
 
 const check_url = new URLSearchParams(window.location.search);
-if (check_url.get("restart") != "1") {
+  if (check_url.get("restart") != "1") {
   localStorage.clear();
 }
 
