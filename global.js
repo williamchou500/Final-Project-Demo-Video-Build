@@ -1,3 +1,12 @@
+const savedRuns = localStorage.getItem("allGlucoseRuns");
+
+localStorage.clear();
+
+if (savedRuns) {
+  localStorage.setItem("allGlucoseRuns", savedRuns);
+}
+
+
 let allRuns = JSON.parse(localStorage.getItem("allGlucoseRuns") || "[]");
 
 window.onload = () => {
@@ -38,6 +47,7 @@ window.onload = () => {
   // Draw active run line (starts with baseline point)
   drawLine();
   promptNextMeal();
+  localStorage.clear()
 };
 
 d3.select("#graph").html("");
