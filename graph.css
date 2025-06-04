@@ -300,3 +300,7 @@ button:hover {
 #helpContent strong {
   color: #66ffcc;
 }
+.hidden {
+  display: none !important;
+}
+
