@@ -9,6 +9,22 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
+  <div id="helpContainer">
+    <button id="toggleHelp">Need help?</button>
+    <div id="helpContent" class="hidden">
+      <h3>Instructions</h3>
+      <ul>
+        <li><strong>Choose a meal time</strong><br>Select the time you want to have your breakfast, lunch, or dinner using the slider.</li>
+        <li><strong>Pick your food and drinks</strong><br>Choose the items you'd like to eat and drink for that meal, and enter how many servings of each.</li>
+        <li><strong>Snack time?</strong><br>When prompted, decide if you want a snack. If you say yes, you'll select a time and pick your snack items just like a regular meal.</li>
+        <li><strong>Watch the red zone!</strong><br>The red area on the graph shows a glucose danger zone. If your glucose rises too high, your bunny could be in trouble!</li>
+        <li><strong>Too high? Uh-oh!</strong><br>The top of the red zone means a serious glucose spike — your bunny will crash if you hit this level. Choose wisely!</li>
+        <li><strong>Want to restart?</strong><br>At the end of the simulation line, you’ll get the option to restart and test a new set of choices.</li>
+        <li><strong>Restart = try again</strong><br>Restarting lets you keep your data from previous runs, so you can compare and fine-tune your meal strategy.</li>
+        <li><strong>Reset = start fresh</strong><br>Resetting clears all data and lets you begin a brand-new journey, including picking a new character.</li>
+      </ul>
+    </div>
+  </div>
 
   <div id="shipPromptContainer" style="position: absolute; display: flex; align-items: center;">
     <img id="ship" src="../images/rocketm.png" style="display:none;" />
@@ -45,6 +61,15 @@
       <button id="submit" style="padding: 6px 14px;">Submit</button>
     </div>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggle = document.getElementById("toggleHelp");
+      const helpBox = document.getElementById("helpContent");
+      toggle.addEventListener("click", () => {
+        helpBox.classList.toggle("hidden");
+      });
+    });
+  </script>
 
 </body>
 </html>
