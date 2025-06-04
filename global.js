@@ -21,7 +21,6 @@ window.onload = () => {
     // You can optionally clear storage here
     // localStorage.removeItem("glucoseData");
   }
-
   initializeShip();
 
   // If we have previous data, draw it in a different style
@@ -91,6 +90,11 @@ const dinner = [
 
 const x = d3.scaleLinear().domain([4, 27]).range([50, width - 50]);
 const y = d3.scaleLinear().domain([100, 240]).range([height - 50, 50]);
+
+console.log("Y scale test:");
+console.log("y(110) =", y(110)); // Should be around 718 pixels
+console.log("y(135) =", y(135)); // Check what 135 maps to
+console.log("y.invert(y(110)) =", y.invert(y(110))); // Should return 110
 
 const line = d3.line()
   .x(d => x(d.hour))
@@ -347,6 +351,13 @@ function updatePromptPosition(shipX, shipY) {
 }
 
 function drawLine() {
+  console.log("Drawing data:", data);
+  console.log("First point coordinates:", {
+    x: x(data[0].hour), 
+    y: y(data[0].glucose),
+    glucose: data[0].glucose
+  });
+
   if (!path) {
     path = svg.append("path")
       .datum(data)
@@ -408,8 +419,8 @@ function animateSmokyPath(startLen, endLen) {
     if (currentGlucose >= ceilingGlucose) {
       const ceilingY = y(ceilingGlucose);
       const graphRect = graph.node().getBoundingClientRect();
-      const shipLeft = point.x + graphRect.left + 200;
-      const shipTop = point.y + graphRect.top - 20;
+      const shipLeft = point.x + graphRect.left -80;
+      const shipTop = point.y + graphRect.top - 80;
 
       ship.style.left = `${shipLeft}px`;
       ship.style.top = `${shipTop}px`;
@@ -430,7 +441,7 @@ function animateSmokyPath(startLen, endLen) {
     const ndy = nextPoint.y - point.y;
     const nang = Math.atan2(ndy, ndx) * (180 / Math.PI);
 
-    const smokeY = point.y - ship.offsetHeight;
+    const smokeY = point.y
 
     svg.append("circle")
       .attr("cx", point.x)
@@ -442,7 +453,7 @@ function animateSmokyPath(startLen, endLen) {
 
     const graphRect = graph.node().getBoundingClientRect();
     const shipLeft = point.x + graphRect.left - 80;
-    const shipTop = point.y + graphRect.top - 200;
+    const shipTop = point.y + graphRect.top - 80;
 
     ship.style.left = `${shipLeft}px`;
     ship.style.top = `${shipTop}px`;
@@ -764,4 +775,7 @@ submitBtn.addEventListener("click", () => {
   }
 });
 
+// Initialize ship position when the page loads
+initializeShip();
 
+promptNextMeal();
