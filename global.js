@@ -76,6 +76,7 @@ const line = d3.line()
 const xAxis = svg.append("g")
   .attr("transform", `translate(0,${height - 50})`)
   .attr("stroke", "white")
+  .attr("class", "xAxis")
   .call(
     d3.axisBottom(x)
       .tickValues(d3.range(4, 28))
@@ -92,6 +93,7 @@ xAxis.selectAll("text").attr("fill", "white");
 const yAxis = svg.append("g")
   .attr("transform", `translate(50,0)`)
   .attr("stroke", "white")
+  .attr("class", "yAxis")
   .call(d3.axisLeft(y));
 
 yAxis.select("path.domain").attr("stroke", "white");
