@@ -204,6 +204,8 @@
             tipsHTML += `</ul>`;
           }
         });
+      } else if (riskLevel === "healthy") {
+        tipsHTML += `<p>Great job! Your flight stayed smooth and healthy — no dangerous spikes detected.</p>`;
       }
 
       return resultMessage + tipsHTML;
