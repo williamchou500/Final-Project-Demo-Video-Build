@@ -514,26 +514,26 @@ function promptNextMeal() {
       </div>
     `;
 
-    confirmTimeBtn.classList.add("hidden");
     mealTimeSlider.style.display = "none";
     sliderLabel.style.display = "none";
+    confirmTimeBtn.style.display = "none";
 
     document.getElementById("yesSnackBtn").onclick = () => {
       promptMessage.textContent = `I want to eat a snack at:`;
       mealTimeSlider.style.display = "block";
       sliderLabel.style.display = "block";
-      confirmTimeBtn.classList.remove("hidden");
+      confirmTimeBtn.style.display = "block";
     };
 
     document.getElementById("noSnackBtn").onclick = () => {
-      currentMealIndex++;  
-      promptNextMeal(); 
+      currentMealIndex++;
+      promptNextMeal();
     };
   } else {
     promptMessage.textContent = `I want to eat ${mealType} at:`;
     mealTimeSlider.style.display = "block";
     sliderLabel.style.display = "block";
-    confirmTimeBtn.classList.remove("hidden");
+    confirmTimeBtn.style.display = "block";
   }
 }
 let selectedFoods = [];
