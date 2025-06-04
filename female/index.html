@@ -61,6 +61,15 @@
       <button id="submit" style="padding: 6px 14px;">Submit</button>
     </div>
   </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const toggle = document.getElementById("toggleHelp");
+      const helpBox = document.getElementById("helpContent");
+      toggle.addEventListener("click", () => {
+        helpBox.classList.toggle("hidden");
+      });
+    });
+  </script>
 
 </body>
 </html>
