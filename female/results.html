@@ -254,6 +254,12 @@
     }
 
     container.innerHTML = generateResultsMessage(dangerCount, tooDangerous, foodData);
+    container.innerHTML += `
+      <p style="margin-top:2em;font-size:1.1em;background:rgba(0,0,0,0.22);padding:0.8em 1em;border-radius:8px;">
+        <b>Please, be mindful:</b> spacing out your meals can save you from the high glucose spike!
+      </p>
+    `;
+
     const resultImage = document.getElementById("resultImage");
     if (tooDangerous) {
       resultImage.src = "../images/deadF.png";
