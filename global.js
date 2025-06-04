@@ -1,16 +1,13 @@
 let allRuns = JSON.parse(localStorage.getItem("allGlucoseRuns") || "[]");
 
-const check_url = new URLSearchParams(window.location.search);
-  if (check_url.get("restart") != "1") {
-  localStorage.clear();
-}
+
 
 window.onload = () => {
   const queryParams = new URLSearchParams(window.location.search);
   const restart = queryParams.get("restart");
 
   // Load ALL past runs
-  const allRuns = JSON.parse(localStorage.getItem("allGlucoseRuns") || "[]");
+  allRuns = JSON.parse(localStorage.getItem("allGlucoseRuns") || "[]");
 
   if (restart === "1") {
     // Start a new run
