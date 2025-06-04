@@ -189,11 +189,11 @@
     container.innerHTML = generateResultsMessage(dangerCount, tooDangerous, foodData);
     const resultImage = document.getElementById("resultImage");
     if (tooDangerous || dangerCount >= 2) {
-      resultImage.src = "f2.png";
+      resultImage.src = "images/f2.png";
     } else if (dangerCount === 1) {
-      resultImage.src = "female.png";
+      resultImage.src = "images/female.png";
     } else {
-      resultImage.src = "f1.png";
+      resultImage.src = "images/f1.png";
     }
   </script>
 
