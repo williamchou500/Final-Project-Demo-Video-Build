@@ -39,6 +39,9 @@
     const dangerCount = parseInt(params.get("danger")) || 0;
     const tooDangerous = params.get("too") === "1";
 
+    const rawData = localStorage.getItem("foodlist");
+    const foodData = JSON.parse(rawData);
+
     const container = document.getElementById("results");
     let html = "";
 

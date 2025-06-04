@@ -46,6 +46,8 @@ const height = 800;
 
 let danger_count = 0;
 let too_dangerous = false;
+let picked_foods = [];
+
 const ceilingGlucose = 240;
 
 const breakfast = [
@@ -355,8 +357,8 @@ function initializeShip() {
 function updatePromptPosition(shipX, shipY) {
   if (promptBox && !promptBox.classList.contains("hidden")) {
     promptBox.style.position = "absolute";
-    promptBox.style.left = `${shipX + 40}px`;
-    promptBox.style.top = `${shipY - 200}px`;
+    promptBox.style.left = `${shipX - 60}px`;
+    promptBox.style.top = `${shipY - 240}px`;
     promptBox.style.zIndex = "1000";
   }
 }
@@ -441,7 +443,8 @@ function animateSmokyPath(startLen, endLen) {
         });
         
         localStorage.setItem("allGlucoseRuns", JSON.stringify(allRuns));
-        
+        localStorage.setItem("foodlist", JSON.stringify(picked_foods));
+            
         window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
       }, 800);
     }
@@ -493,6 +496,7 @@ function animateSmokyPath(startLen, endLen) {
             });
             
             localStorage.setItem("allGlucoseRuns", JSON.stringify(allRuns));
+            localStorage.setItem("foodlist", JSON.stringify(picked_foods));
             
             window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
           }, 1000); // slight pause after animation
@@ -711,6 +715,8 @@ submitBtn.addEventListener("click", () => {
     return;
   }
 
+  picked_foods = [...picked_foods, ...selectedFoods];
+
   const hour = parseInt(timeInput.value);
   const mealType = mealStages[currentMealIndex];
   let gender = document.location.pathname.includes("/female/") ? 0 : 1;
@@ -788,7 +794,11 @@ submitBtn.addEventListener("click", () => {
     drawLine();
     setTimeout(() => {
       const tooFlag = too_dangerous ? 1 : 0;
-      window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}`;
+
+      localStorage.setItem("allGlucoseRuns", JSON.stringify(allRuns));
+      localStorage.setItem("foodlist", JSON.stringify(picked_foods));
+            
+      window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
     }, 1000); // optional pause for animation
     return;
   }
