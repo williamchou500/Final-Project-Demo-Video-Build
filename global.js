@@ -61,7 +61,7 @@ const breakfast = [
 ];
 const snack = [
   {food: "Granola Bar", calories: 190.0, carbs: 25.0, sugars: 10.0, protein: 4.0, fiber: 2.0, fat: 7.0},
-  {food: "Bag of Chips (2.5 oz)", calories: 390.0, carbs: 37.0, sugars: 0.5, protein: 4.0, fiber: 2.0, fat: 25.0},
+  {food: "Bag of Chips", calories: 390.0, carbs: 37.0, sugars: 0.5, protein: 4.0, fiber: 2.0, fat: 25.0},
   {food: "Apple Slices", calories: 80.0, carbs: 21.0, sugars: 16.0, protein: 0.5, fiber: 3.0, fat: 0.0},
   {food: "Iced Tea", calories: 90.0, carbs: 23.0, sugars: 22.0, protein: 0.0, fiber: 0.0, fat: 0.0},
   {food: "Smoothie", calories: 140.0, carbs: 30.0, sugars: 25.0, protein: 2.0, fiber: 2.0, fat: 1.0},
