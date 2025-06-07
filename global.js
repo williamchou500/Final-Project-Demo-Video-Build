@@ -183,15 +183,14 @@ const dropRates = {
 };
 
 const weights = {
-  hour:          0.280645,
-  HbA1c:         0.118344,
-  total_carb:    0.112520,
-  sugar:         0.110247,
-  calories:      0.099352,
-  protein:       0.090501,
-  total_fat:     0.078747,
-  dietary_fiber: 0.061027,
-  gender:        0.048618
+  hour:             0.261404,
+  total_carb:       0.161262,
+  calories:         0.124844,
+  sugar:            0.120052,
+  protein:          0.112327,
+  total_fat:        0.087638,
+  gender:           0.066388,
+  dietary_fiber:    0.066085
 };
 
 let total_calories = 0;
