@@ -26,6 +26,25 @@
     </div>
   </div>
 
+  <div id="ResetButtons">
+    <button id="GraphRestartBtn" class="restartBtn">Restart Simulation</button>
+    <script>
+        
+      document.getElementById("GraphRestartBtn").onclick = () => {
+        window.location.href = "index.html?restart=1";
+      };
+    </script>
+    
+    <button id="GraphResetBtn" class="resetBtn">Reset Simulation</button>
+    <script>
+      
+      document.getElementById("GraphResetBtn").onclick = () => {
+        localStorage.removeItem("allGlucoseRuns");
+        window.location.href = "../";
+      };
+    </script>
+  </div>
+
   <div id="shipPromptContainer" style="position: absolute; display: flex; align-items: center;">
     <img id="ship" src="../images/rocketg.png" style="display:none;" />
     <div id="promptBox" class="prompt-box hidden">
