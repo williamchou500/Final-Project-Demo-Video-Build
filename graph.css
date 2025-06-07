@@ -310,6 +310,7 @@ button:hover {
   right: 20px;
   z-index: 1000;
   font-family: 'Orbitron', sans-serif;
+  margin-bottom: 20px;
 }
 
 #GraphRestartBtn {
@@ -317,5 +318,5 @@ button:hover {
 }
 
 #GraphResetBtn {
-  grid-row: 2;
+  grid-row: 3;
 }

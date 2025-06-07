@@ -852,6 +852,15 @@ submitBtn.addEventListener("click", () => {
   } else {
     drawLine();
   }
+
+  svg.append("line")
+  .attr("x1", x(hour))
+  .attr("x2", x(hour))
+  .attr("y1", y(100))
+  .attr("y2", y(240))
+  .attr("stroke", "yellow")
+  .attr("stroke-width", 2)
+  .attr("stroke-dasharray", "6,6");
 });
 
 // Initialize ship position when the page loads
