@@ -503,7 +503,7 @@ function animateSmokyPath(startLen, endLen) {
       if (progress < 1) {
         requestAnimationFrame(step);
       } else {
-        if (currentMealIndex < mealStages.length) {
+        if (currentMealIndex < mealStages.length & too_dangerous === false) {
           setTimeout(promptNextMeal, 500);
         } else {
           setTimeout(() => {
@@ -800,7 +800,7 @@ submitBtn.addEventListener("click", () => {
   const peakHour = hour + 1;
   const peakValue = currentGlucose + increment;
 
-  if (peakHour >= 27) {
+  if (peakHour === 27) {
     data.push({ hour: peakHour, glucose: currentGlucose + increment });
     allRuns.push({
       timestamp: new Date().toISOString(),
@@ -817,7 +817,26 @@ submitBtn.addEventListener("click", () => {
       localStorage.setItem("foodlist", JSON.stringify(picked_foods));
             
       window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
-    }, 1000); // optional pause for animation
+    }, 4000); // optional pause for animation
+    return;
+  } else if (peakHour > 27) {
+    data.push({ hour: peakHour, glucose: currentGlucose + increment });
+    allRuns.push({
+      timestamp: new Date().toISOString(),
+      data: [...data],  // clone so it won't mutate later
+    });
+    
+    localStorage.setItem("allGlucoseRuns", JSON.stringify(allRuns));
+    
+    drawLine();
+    setTimeout(() => {
+      const tooFlag = too_dangerous ? 1 : 0;
+
+      localStorage.setItem("allGlucoseRuns", JSON.stringify(allRuns));
+      localStorage.setItem("foodlist", JSON.stringify(picked_foods));
+            
+      window.location.href = `results.html?danger=${danger_count}&too=${tooFlag}&calories=${total_calories}&carbs=${total_carbs}&sugars=${total_sugars}&protein=${total_protein}&fiber=${total_fiber}&fat=${total_fat}`;
+    }, 1000); //  optional pause for animation
     return;
   }
 
