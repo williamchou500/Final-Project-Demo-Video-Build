@@ -177,7 +177,6 @@ label, select, input {
   text-shadow: 0 0 6px white;
 }
 #mealTimeSlider {
-  -webkit-appearance: none;
   width: 200px;
   height: 6px;
   background: #fff;
