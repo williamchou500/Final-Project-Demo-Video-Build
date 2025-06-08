@@ -65,7 +65,8 @@ const snack = [
   {food: "Apple Slices", calories: 80.0, carbs: 21.0, sugars: 16.0, protein: 0.5, fiber: 3.0, fat: 0.0},
   {food: "Iced Tea", calories: 90.0, carbs: 23.0, sugars: 22.0, protein: 0.0, fiber: 0.0, fat: 0.0},
   {food: "Smoothie", calories: 140.0, carbs: 30.0, sugars: 25.0, protein: 2.0, fiber: 2.0, fat: 1.0},
-  {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
+  {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+  {food: "Chocolate Bar", calories: 230.0, carbs: 26.0, sugars: 24.0, protein: 3.0, fiber: 1.0, fat: 13.0}
 ];
 const lunch = [
   {food: "Grilled Chicken Sandwich", calories: 430.0, carbs: 40.0, sugars: 6.0, protein: 35.0, fiber: 3.0, fat: 15.0},
@@ -77,13 +78,14 @@ const lunch = [
   {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
 ];
 const dinner = [
-  {food: "Grilled Salmon with Veggies", calories: 520.0, carbs: 10.0, sugars: 3.0, protein: 40.0, fiber: 4.0, fat: 32.0},
+  {food: "Grilled Salmon with Veggies", calories: 310.0, carbs: 6.0, sugars: 2.0, protein: 28.0, fiber: 3.0, fat: 18.0},
   {food: "Spaghetti with Marinara Sauce", calories: 480.0, carbs: 65.0, sugars: 9.0, protein: 15.0, fiber: 6.0, fat: 12.0},
   {food: "Beef Tacos", calories: 560.0, carbs: 30.0, sugars: 3.0, protein: 28.0, fiber: 4.0, fat: 36.0},
   {food: "Chicken Stir Fry with Noodles", calories: 510.0, carbs: 45.0, sugars: 6.0, protein: 32.0, fiber: 4.0, fat: 20.0},
   {food: "Red Wine", calories: 125.0, carbs: 4.0, sugars: 1.0, protein: 0.1, fiber: 0.0, fat: 0.0},
   {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
-  {food: "Apple Juice", calories: 110.0, carbs: 28.0, sugars: 24.0, protein: 0.5, fiber: 0.2, fat: 0.3}
+  {food: "Apple Juice", calories: 110.0, carbs: 28.0, sugars: 24.0, protein: 0.5, fiber: 0.2, fat: 0.3},
+  {food: "Caprese Salad", calories: 220.0, carbs: 5.0, sugars: 3.0, protein: 11.0, fiber: 1.0, fat: 18.0}
 ];
 
 const x = d3.scaleLinear().domain([4, 27]).range([50, width - 50]);
@@ -617,6 +619,7 @@ function renderFoodButtons() {
     "Iced Tea": "tea.png",
     "Smoothie": "smoothie.png",
     "Water": "water.png",
+    "Chocolate Bar": "chocolate.png",
 
     "Grilled Chicken Sandwich": "sandwhich.png",
     "Cheeseburger": "burger.png",
@@ -632,7 +635,8 @@ function renderFoodButtons() {
     "Chicken Stir Fry with Noodles": "chicken.png",
     "Red Wine": "wine.png",
     "Water": "water.png",
-    "Apple Juice": "apple juice.png"
+    "Apple Juice": "apple juice.png",
+    "Caprese Salad": "caprese.png"
   };
 
   list.forEach(item => {
