@@ -845,7 +845,17 @@ submitBtn.addEventListener("click", () => {
   .attr("y2", y(240))
   .attr("stroke", "yellow")
   .attr("stroke-width", 2)
-  .attr("stroke-dasharray", "6,6");
+  .attr("stroke-dasharray", "6,6")
+  .text(`${mealStages[currentMealIndex - 1]} at ${hour % 24}:00`);
+
+  svg.append("text")
+    .attr("x", x(hour) + 5)
+    .attr("y", y(100) - 10) // slightly above the top of the line
+    .attr("fill", "yellow")
+    .attr("font-size", "12px")
+    .attr("font-family", "Orbitron")
+    .attr("text-anchor", "start")
+    .text(`${mealStages[currentMealIndex - 1]}`);
 });
 
 // Initialize ship position when the page loads
