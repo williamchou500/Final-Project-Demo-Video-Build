@@ -117,7 +117,8 @@
       {food: "Apple Slices", calories: 80.0, carbs: 21.0, sugars: 16.0, protein: 0.5, fiber: 3.0, fat: 0.0},
       {food: "Iced Tea", calories: 90.0, carbs: 23.0, sugars: 22.0, protein: 0.0, fiber: 0.0, fat: 0.0},
       {food: "Smoothie", calories: 140.0, carbs: 30.0, sugars: 25.0, protein: 2.0, fiber: 2.0, fat: 1.0},
-      {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0}
+      {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
+      {food: "Chocolate Bar", calories: 230.0, carbs: 26.0, sugars: 24.0, protein: 3.0, fiber: 1.0, fat: 13.0}
     ];
 
     const lunch = [
@@ -131,15 +132,15 @@
     ];
 
     const dinner = [
-      {food: "Grilled Salmon with Veggies", calories: 520.0, carbs: 10.0, sugars: 3.0, protein: 40.0, fiber: 4.0, fat: 32.0},
+      {food: "Grilled Salmon with Veggies", calories: 310.0, carbs: 6.0, sugars: 2.0, protein: 28.0, fiber: 3.0, fat: 18.0},
       {food: "Spaghetti with Marinara Sauce", calories: 480.0, carbs: 65.0, sugars: 9.0, protein: 15.0, fiber: 6.0, fat: 12.0},
       {food: "Beef Tacos", calories: 560.0, carbs: 30.0, sugars: 3.0, protein: 28.0, fiber: 4.0, fat: 36.0},
       {food: "Chicken Stir Fry with Noodles", calories: 510.0, carbs: 45.0, sugars: 6.0, protein: 32.0, fiber: 4.0, fat: 20.0},
       {food: "Red Wine", calories: 125.0, carbs: 4.0, sugars: 1.0, protein: 0.1, fiber: 0.0, fat: 0.0},
       {food: "Water", calories: 0.0, carbs: 0.0, sugars: 0.0, protein: 0.0, fiber: 0.0, fat: 0.0},
-      {food: "Apple Juice", calories: 110.0, carbs: 28.0, sugars: 24.0, protein: 0.5, fiber: 0.2, fat: 0.3}
+      {food: "Apple Juice", calories: 110.0, carbs: 28.0, sugars: 24.0, protein: 0.5, fiber: 0.2, fat: 0.3},
+      {food: "Caprese Salad", calories: 220.0, carbs: 5.0, sugars: 3.0, protein: 11.0, fiber: 1.0, fat: 18.0}
     ];
-
     function generateResultsMessage(dangerCount, tooDangerous, foodData) {
       const riskLevel = tooDangerous || dangerCount >= 2
         ? "high"
@@ -164,15 +165,19 @@
         snack: {
           "Bag of Chips (2.5 oz)": ["Apple Slices", "Granola Bar"],
           "Smoothie": ["Apple Slices", "Water"],
-          "Iced Tea": ["Water"]
+          "Iced Tea": ["Water"],
+          "Chocolate Bar": ["Apple Slices", "Granola Bar"]
         },
         lunch: {
           "Cheeseburger": ["Grilled Chicken Sandwich", "Caesar Salad with Chicken"],
           "Lemonade": ["Water", "Iced Coffee with Cream"]
         },
         dinner: {
-          "Spaghetti with Marinara Sauce": ["Grilled Salmon with Veggies", "Chicken Stir Fry with Noodles"],
-          "Apple Juice": ["Water", "Red Wine"]
+          "Spaghetti with Marinara Sauce": ["Grilled Salmon with Veggies", "Caprese Salad"],
+          "Apple Juice": ["Water"],
+          "Beef Tacos":["Grilled Salmon with Veggies", "Caprese Salad"],
+          "Chicken Stir Fry with Noodles": ["Grilled Salmon with Veggies", "Caprese Salad"],
+          "Red Wine": ["Water"]
         }
       };
 
